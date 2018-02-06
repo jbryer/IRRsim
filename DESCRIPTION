@@ -1,0 +1,15 @@
+Package: IRRsim
+Version: 0.9.0
+Title: Simulate Inter-Rater Reliability Statistics
+Description: This package provides functions and a shiny application to simulate inter-rater 
+	reliability statistics based on various scoring and response models. The initial motivation for 
+	this package is to understand the relationship between percent rater agreement and interclass correlation.
+Authors@R: person("Jason", "Bryer", , "jason@bryer.org", c("aut", "cre"))
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+RoxygenNote: 6.0.1
+Depends: DescTools, ggplot2, reshape2, shiny
+Suggests: irr, knitr, rmarkdown
+VignetteBuilder: knitr

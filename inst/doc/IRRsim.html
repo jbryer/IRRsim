@@ -10,11 +10,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Vignette Author" />
+<meta name="author" content="Jason Bryer" />
 
 <meta name="date" content="2018-02-06" />
 
-<title>Vignette Title</title>
+<title>Relationship between Interclass Correlation (ICC) and Percent Agreement</title>
 
 
 
@@ -68,8 +68,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Vignette Title</h1>
-<h4 class="author"><em>Vignette Author</em></h4>
+<h1 class="title toc-ignore">Relationship between Interclass Correlation (ICC) and Percent Agreement</h1>
+<h4 class="author"><em>Jason Bryer</em></h4>
 <h4 class="date"><em>2018-02-06</em></h4>
 
 
@@ -146,19 +146,19 @@ tests.9levels &lt;-<span class="st"> </span><span class="kw">simulateICC</span>(
 <span class="co">#&gt; lm(formula = ICC1 ~ I(agreement^2), data = tests.3levels)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
-<span class="co">#&gt; -0.201414 -0.033691  0.003348  0.030766  0.306830 </span>
+<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
+<span class="co">#&gt; -0.20141 -0.03369  0.00335  0.03077  0.30683 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -0.094769   0.001871  -50.65   &lt;2e-16 ***</span>
-<span class="co">#&gt; I(agreement^2)  0.752633   0.004489  167.65   &lt;2e-16 ***</span>
+<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)    -0.09477    0.00187   -50.6   &lt;2e-16 ***</span>
+<span class="co">#&gt; I(agreement^2)  0.75263    0.00449   167.7   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.06272 on 2698 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.9124, Adjusted R-squared:  0.9124 </span>
-<span class="co">#&gt; F-statistic: 2.811e+04 on 1 and 2698 DF,  p-value: &lt; 2.2e-16</span>
+<span class="co">#&gt; Residual standard error: 0.0627 on 2698 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.912,  Adjusted R-squared:  0.912 </span>
+<span class="co">#&gt; F-statistic: 2.81e+04 on 1 and 2698 DF,  p-value: &lt;2e-16</span>
 
 lm.out5 &lt;-<span class="st"> </span><span class="kw">lm</span>(ICC1 <span class="op">~</span><span class="st"> </span><span class="kw">I</span>(agreement <span class="op">^</span><span class="st"> </span><span class="dv">2</span>), <span class="dt">data =</span> tests.5levels)
 <span class="kw">summary</span>(lm.out5)
@@ -167,19 +167,19 @@ lm.out5 &lt;-<span class="st"> </span><span class="kw">lm</span>(ICC1 <span clas
 <span class="co">#&gt; lm(formula = ICC1 ~ I(agreement^2), data = tests.5levels)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
-<span class="co">#&gt; -0.24715 -0.03662  0.00506  0.03357  0.32815 </span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -0.2472 -0.0366  0.0051  0.0336  0.3282 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -0.049413   0.002102  -23.51   &lt;2e-16 ***</span>
-<span class="co">#&gt; I(agreement^2)  0.767413   0.005037  152.34   &lt;2e-16 ***</span>
+<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)    -0.04941    0.00210   -23.5   &lt;2e-16 ***</span>
+<span class="co">#&gt; I(agreement^2)  0.76741    0.00504   152.3   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.07047 on 2698 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.8959, Adjusted R-squared:  0.8958 </span>
-<span class="co">#&gt; F-statistic: 2.321e+04 on 1 and 2698 DF,  p-value: &lt; 2.2e-16</span>
+<span class="co">#&gt; Residual standard error: 0.0705 on 2698 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.896,  Adjusted R-squared:  0.896 </span>
+<span class="co">#&gt; F-statistic: 2.32e+04 on 1 and 2698 DF,  p-value: &lt;2e-16</span>
 
 lm.out9 &lt;-<span class="st"> </span><span class="kw">lm</span>(ICC1 <span class="op">~</span><span class="st"> </span><span class="kw">I</span>(agreement <span class="op">^</span><span class="st"> </span><span class="dv">2</span>), <span class="dt">data =</span> tests.9levels)
 <span class="kw">summary</span>(lm.out9)
@@ -188,19 +188,19 @@ lm.out9 &lt;-<span class="st"> </span><span class="kw">lm</span>(ICC1 <span clas
 <span class="co">#&gt; lm(formula = ICC1 ~ I(agreement^2), data = tests.9levels)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
-<span class="co">#&gt; -0.227100 -0.038989  0.002695  0.034725  0.295451 </span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -0.2271 -0.0390  0.0027  0.0347  0.2954 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -0.021036   0.002181  -9.646   &lt;2e-16 ***</span>
-<span class="co">#&gt; I(agreement^2)  0.774675   0.005238 147.892   &lt;2e-16 ***</span>
+<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)    -0.02104    0.00218   -9.65   &lt;2e-16 ***</span>
+<span class="co">#&gt; I(agreement^2)  0.77467    0.00524  147.89   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residual standard error: 0.073 on 2698 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.8902, Adjusted R-squared:  0.8902 </span>
-<span class="co">#&gt; F-statistic: 2.187e+04 on 1 and 2698 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
+<span class="co">#&gt; Multiple R-squared:  0.89,   Adjusted R-squared:  0.89 </span>
+<span class="co">#&gt; F-statistic: 2.19e+04 on 1 and 2698 DF,  p-value: &lt;2e-16</span></code></pre></div>
 
 
 
