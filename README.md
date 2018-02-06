@@ -23,5 +23,5 @@ Many of features of this package can be explored using the included shiny applic
 IRRsim::IRRsim_shiny()
 ```
 
-
+![IRRsim Shiny App](IRRsimScreen.png)
 
