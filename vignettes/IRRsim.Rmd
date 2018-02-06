@@ -1,0 +1,105 @@
+---
+title: "Relationship between Interclass Correlation (ICC) and Percent Agreement"
+author: "Jason Bryer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(ggplot2)
+knitr::opts_chunk$set(echo = TRUE)
+library(IRRsim)
+set.seed(2112) # For reproducibility
+```
+
+This document outlines a simulation to explore the relationship between percent rater agreement and six variations of interclass correlation (ICC). A number of functions are included in the `irr_simulation.R` script. To start, let's look at the `simulateRatingMatrix` function. This function will generate a `nEvents` by `k` matrix. For each row, two columns (which represent raters) are randomly selected and each cell of those cells will randomly have a value between 1 and `nLevels`. The likelihood of those two cell having the same value is defined by the `agree` parameter.
+
+```{r testdata}
+test <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 10)
+test
+```
+
+The `agreement` function will calculate the percent rater agreement for the matrix. 
+
+```{r agreementTest}
+agreement(test)
+```
+
+For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.
+
+```{r simulate, cache = TRUE, message = FALSE, warning = FALSE, results = 'hide'}
+tests.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3)
+tests.5levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 5)
+tests.9levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 9)
+```
+
+Here is a curious artifact of the relationship (you'll see below that it is quadratic), the percent agreement is uniform (as it should be since we designed the simulation this way), the distribution of ICC1 is positively skewed.
+
+```{r}
+ggplot(tests.3levels, aes(x = agreement)) + geom_density()
+ggplot(tests.3levels, aes(x = ICC1)) + geom_density()
+```
+
+The following three figures show ICC1 against percent rater agreement with 3, 5, and 9 score levels, respectively.
+
+```{r}
+ggplot(tests.3levels, aes(x = agreement, y = ICC1, color = factor(k))) + 
+	geom_point(alpha = 0.3) + 
+	geom_smooth(method = 'loess') + 
+	scale_color_hue('n Raters') +
+	xlim(c(0,1)) + ylim(c(-0.25,1)) +
+	xlab('Percent Agreement') + ylab('ICC1') +
+	ggtitle('ICC1 with 3 scoring levels')
+
+ggplot(tests.5levels, aes(x = agreement, y = ICC1, color = factor(k))) + 
+	geom_point(alpha = 0.3) + 
+	geom_smooth(method = 'loess') + 
+	scale_color_hue('n Raters') +
+	xlim(c(0,1)) + ylim(c(-0.25,1)) +
+	xlab('Percent Agreement') + ylab('ICC1') +
+	ggtitle('ICC1 with 5 scoring levels')
+
+ggplot(tests.9levels, aes(x = agreement, y = ICC1, color = factor(k))) + 
+	geom_point(alpha = 0.3) + 
+	geom_smooth(method = 'loess') + 
+	scale_color_hue('n Raters') +
+	xlim(c(0,1)) + ylim(c(-0.25,1)) +
+	xlab('Percent Agreement') + ylab('ICC1') +
+	ggtitle('ICC1 with 9 scoring levels')
+
+```
+
+The figure below show the relationship between percent rater agreement and interclass correlation for the six types of ICC.
+
+```{r}
+tmp <- melt(tests.3levels[,c('i','k','agreement','ICC1','ICC2','ICC3','ICC1k','ICC2k','ICC3k')], 
+			id.vars = c('i','k','agreement'))
+ggplot(tmp, aes(x = agreement, y = value, color = factor(k))) + 
+	geom_smooth(method = 'loess') + 
+	facet_wrap(~ variable) +
+	scale_color_hue('n Raters') +
+	xlim(c(0,1)) +
+	xlab('Percent Agreement') + ylab('ICC') +
+	ggtitle('ICC and Percent Rater Agreement (3 scoring levels)')
+```
+
+The literature suggests that ICC be used over percent agreement (citations?). However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the result $R^2$ is greater than .89!
+
+```{r}
+lm.out3 <- lm(ICC1 ~ I(agreement ^ 2), data = tests.3levels)
+summary(lm.out3)
+
+lm.out5 <- lm(ICC1 ~ I(agreement ^ 2), data = tests.5levels)
+summary(lm.out5)
+
+lm.out9 <- lm(ICC1 ~ I(agreement ^ 2), data = tests.9levels)
+summary(lm.out9)
+```
