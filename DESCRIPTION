@@ -1,5 +1,6 @@
 Package: IRRsim
 Version: 0.9.0
+Date: 2018-02-06
 Title: Simulate Inter-Rater Reliability Statistics
 Description: This package provides functions and a shiny application to simulate inter-rater 
 	reliability statistics based on various scoring and response models. The initial motivation for 
@@ -13,3 +14,5 @@ RoxygenNote: 6.0.1
 Depends: DescTools, ggplot2, reshape2, shiny
 Suggests: irr, knitr, rmarkdown
 VignetteBuilder: knitr
+URL: http://irrsim.bryer.org, http://github.com/jbryer/IRRsim
+BugReports: https://github.com/jbryer/IRRsim/issues

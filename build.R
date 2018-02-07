@@ -6,6 +6,10 @@ build_vignettes()
 install()
 check(cran = TRUE)
 
+pkgdown::build_site()
+
+# Basic usage
+
 library(IRRsim)
 
 vignette(package = 'IRRsim') # Make sure the vignette is listed
