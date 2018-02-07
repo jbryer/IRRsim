@@ -1,4 +1,4 @@
-# IRRsim
+# `IRRsim`: An R Package for Simulating Inter-Rater Reliability
 
 This package provides functions and a shiny application to simulate inter-rater 
 reliability statistics based on various scoring and response models. The initial motivation for 
