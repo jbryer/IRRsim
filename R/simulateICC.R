@@ -8,17 +8,19 @@
 #' @param agreements vector of percent agreements to simulate.
 #' @param response.probs probability weights for the distribution of scores.
 #'        See \code{\link{simulateRatingMatrix}} for more information.
-#' @return a data.frame with the following columns:
-#'        * \code{i} - index of the simulation (a integer between 1 and \code{nSamples})
-#'        * \code{k} - the number of raters used in the simulation.
-#'        * \code{simAgreement} - the calculated percent agreement from the sample.
-#'        * \code{agreement} - the specified percent agreement used for drawing the random sample.
-#'        * \code{ICC1} - ICC1 as described in Shrout and Fleiss (1979)
-#'        * \code{ICC2} - ICC2 as described in Shrout and Fleiss (1979)
-#'        * \code{ICC3} - ICC3 as described in Shrout and Fleiss (1979)
-#'        * \code{ICC1k} - ICC1k as described in Shrout and Fleiss (1979)
-#'        * \code{ICC2k} - ICC2k as described in Shrout and Fleiss (1979)
-#'        * \code{ICC3k} - ICC3k as described in Shrout and Fleiss (1979)
+#' @param parallel whether to simulated the data using multiple cores.
+#' @param numCores number of cores to use if the simulation is run in parallel.
+#' @return a data.frame with the following columns: \describe{
+#'        \item{k}{the number of raters used in the simulation.}
+#'        \item{simAgreement}{the calculated percent agreement from the sample.}
+#'        \item{agreement}{the specified percent agreement used for drawing the random sample.}
+#'        \item{ICC1}{ICC1 as described in Shrout and Fleiss (1979)}
+#'        \item{ICC2}{ICC2 as described in Shrout and Fleiss (1979)}
+#'        \item{ICC3}{ICC3 as described in Shrout and Fleiss (1979)}
+#'        \item{ICC1k}{ICC1k as described in Shrout and Fleiss (1979)}
+#'        \item{ICC2k}{ICC2k as described in Shrout and Fleiss (1979)}
+#'        \item{ICC3k}{ICC3k as described in Shrout and Fleiss (1979)}
+#'        }
 #' @export
 simulateICC <- function(nRaters = c(2),
 						nLevels = 3,
@@ -27,43 +29,89 @@ simulateICC <- function(nRaters = c(2),
 						agreements = seq(0.1, 0.9, by = 0.1),
 						response.probs = rep(1 / nLevels, nLevels),
 						showTextProgress = !showShinyProgress,
-						showShinyProgress = FALSE) {
+						showShinyProgress = FALSE,
+						parallel = (numCores > 1),
+						numCores = (parallel::detectCores() - 1) ) {
 
 	totalIterations <- nSamples * length(nRaters) * length(agreements)
+
 	if(showTextProgress) {
 		pb <- txtProgressBar(style = 3, min = 0, max = totalIterations)
 	}
 
+	progress <- function(...) {
+		if(showTextProgress) { setTxtProgressBar(pb, getTxtProgressBar(pb) + 1) }
+		if(showShinyProgress) { incProgress(1) }
+	}
+
 	simulate <- function() { # Create function so we can optionally wrap in shiny::withProgress
-		tests <- data.frame()
-		iter <- 0
-		for(k in nRaters) {
-			for(a in agreements) {
-				for(i in 1:nSamples) {
-					iter <- iter + 1
-					test <- simulateRatingMatrix(nLevels = nLevels, nEvents = nEvents, k = k, agree = a,
-												 response.probs = response.probs)
-					icc <- DescTools::ICC(test)
-					tests <- rbind(tests, data.frame(
-						i = i,
-						k = k,
-						simAgreement = a,
-						agreement = agreement(test),
-						ICC1 = icc$results[1,]$est,
-						ICC2 = icc$results[2,]$est,
-						ICC3 = icc$results[3,]$est,
-						ICC1k = icc$results[4,]$est,
-						ICC2k = icc$results[5,]$est,
-						ICC3k = icc$results[6,]$est,
-						stringsAsFactors = FALSE
-					))
-					# Update progress bars
-					if(showTextProgress) { setTxtProgressBar(pb, getTxtProgressBar(pb) + 1) }
-					if(showShinyProgress) {
-						incProgress(1,
-									detail = paste0('k = ', k, '; agree = ', a))
-					}
-				}
+		tests <- data.frame(
+			i = rep(1:nSamples, length(nRaters) * length(agreements)),
+			k = rep(nRaters, each = length(agreements) * nSamples),
+			simAgreement = rep(rep(agreements, each = nSamples), length(nRaters)),
+			agreement = rep(NA_integer_, totalIterations),
+			ICC1 = rep(NA_integer_, totalIterations),
+			ICC2 = rep(NA_integer_, totalIterations),
+			ICC3 = rep(NA_integer_, totalIterations),
+			ICC1k = rep(NA_integer_, totalIterations),
+			ICC2k = rep(NA_integer_, totalIterations),
+			ICC3k = rep(NA_integer_, totalIterations),
+			stringsAsFactors = FALSE
+		)
+
+		if(parallel) {
+			no_cores <- parallel::detectCores() - 1
+			cl <- snow::makeCluster(no_cores)
+			doSNOW::registerDoSNOW(cl)
+			snow::clusterEvalQ(cl,library(IRRsim))
+			opts <- list(progress = progress)
+
+			tmp <- apply(tests, 1, FUN = function(X) { list(k = X['k'], agree = X['simAgreement'])})
+
+			tests <- foreach::foreach(params = tmp,
+									  .combine = rbind,
+									  .export = c('nLevels', 'nEvents', 'response.probs'),
+									  .options.snow = opts) %dopar% {
+				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
+											 nEvents = nEvents,
+											 k = params$k,
+											 agree = params$agree,
+											 response.probs = response.probs)
+				icc <- DescTools::ICC(test)
+
+				c(k = unname(params$k),
+				  simAgreement = unname(params$agree),
+				  agreement = agreement(test),
+				  ICC1 = icc$results[1,]$est,
+				  ICC2 = icc$results[2,]$est,
+				  ICC3 = icc$results[3,]$est,
+				  ICC1k = icc$results[4,]$est,
+				  ICC2k = icc$results[5,]$est,
+				  ICC3k = icc$results[6,]$est)
+			}
+
+			snow::stopCluster(cl)
+
+			row.names(tests) <- 1:nrow(tests)
+			tests <- as.data.frame(tests)
+		} else {
+			for(i in 1:nrow(tests)) {
+				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
+													 nEvents = nEvents,
+													 k = tests[i,]$k,
+													 agree = tests[i,]$simAgreement,
+													 response.probs = response.probs)
+				icc <- DescTools::ICC(test)
+
+				tests[i,]$agreement <- IRRsim::agreement(test)
+				tests[i,]$ICC1 <- icc$results[1,]$est
+				tests[i,]$ICC2 <- icc$results[2,]$est
+				tests[i,]$ICC3 <- icc$results[3,]$est
+				tests[i,]$ICC1k <- icc$results[4,]$est
+				tests[i,]$ICC2k <- icc$results[5,]$est
+				tests[i,]$ICC3k <- icc$results[6,]$est
+
+				progress()
 			}
 		}
 

@@ -48,7 +48,7 @@ server <- function(input, output) {
 	output$plot <- renderPlot({
 		test <- getData()
 		if(input$ICC == 'All') {
-			tests.melted <- melt(test, id.vars = c('i', 'k', 'simAgreement', 'agreement'))
+			tests.melted <- melt(test, id.vars = c('k', 'simAgreement', 'agreement'))
 			ggplot(tests.melted, aes(x = agreement, y = value)) +
 				geom_point(alpha = 0.3) +
 				geom_smooth(method = 'loess') +

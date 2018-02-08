@@ -7,11 +7,18 @@ test2 <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 1000,
 							  response.probs = c(.1, .3, .6))
 prop.table(table(as.integer(test2)))
 
+##### Test with defaults
+start <- Sys.time(); test1 <- simulateICC(parallel = TRUE, nSamples = 200); Sys.time() - start
+start <- Sys.time(); test2 <- simulateICC(parallel = FALSE, nSamples = 200); Sys.time() - start
+
+loess.out <- loess(ICC1 ~ agreement, data = test1)
+predict(loess.out, newdata = seq(0.05, 0.95, by = 0.05), se = TRUE)
+
 
 ##### Simulating around 60% agreement
-tests.3levels.50percent <- simulateICC(nRaters = 10, nLevels = 4, agreements = c(.6))
-head(tests.3levels.50percent)
-ggplot(tests.3levels.50percent, aes(x = agreement, y = ICC1)) + geom_point()
+tests.3levels.60percent <- simulateICC(nRaters = 10, nLevels = 4, agreements = c(.6))
+head(tests.3levels.60percent)
+ggplot(tests.3levels.60percent, aes(x = agreement, y = ICC1)) + geom_point()
 
 ##### Uniform response distribution
 tests.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3)

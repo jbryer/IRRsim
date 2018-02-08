@@ -8,7 +8,8 @@ evaluations.}
 simulateICC(nRaters = c(2), nLevels = 3, nEvents = 100, nSamples = 100,
   agreements = seq(0.1, 0.9, by = 0.1), response.probs = rep(1/nLevels,
   nLevels), showTextProgress = !showShinyProgress,
-  showShinyProgress = FALSE)
+  showShinyProgress = FALSE, parallel = (numCores > 1),
+  numCores = (parallel::detectCores() - 1))
 }
 \arguments{
 \item{nRaters}{the number of raters}
@@ -23,19 +24,23 @@ simulateICC(nRaters = c(2), nLevels = 3, nEvents = 100, nSamples = 100,
 
 \item{response.probs}{probability weights for the distribution of scores.
 See \code{\link{simulateRatingMatrix}} for more information.}
+
+\item{parallel}{whether to simulated the data using multiple cores.}
+
+\item{numCores}{number of cores to use if the simulation is run in parallel.}
 }
 \value{
-a data.frame with the following columns:
-       * \code{i} - index of the simulation (a integer between 1 and \code{nSamples})
-       * \code{k} - the number of raters used in the simulation.
-       * \code{simAgreement} - the calculated percent agreement from the sample.
-       * \code{agreement} - the specified percent agreement used for drawing the random sample.
-       * \code{ICC1} - ICC1 as described in Shrout and Fleiss (1979)
-       * \code{ICC2} - ICC2 as described in Shrout and Fleiss (1979)
-       * \code{ICC3} - ICC3 as described in Shrout and Fleiss (1979)
-       * \code{ICC1k} - ICC1k as described in Shrout and Fleiss (1979)
-       * \code{ICC2k} - ICC2k as described in Shrout and Fleiss (1979)
-       * \code{ICC3k} - ICC3k as described in Shrout and Fleiss (1979)
+a data.frame with the following columns: \describe{
+       \item{k}{the number of raters used in the simulation.}
+       \item{simAgreement}{the calculated percent agreement from the sample.}
+       \item{agreement}{the specified percent agreement used for drawing the random sample.}
+       \item{ICC1}{ICC1 as described in Shrout and Fleiss (1979)}
+       \item{ICC2}{ICC2 as described in Shrout and Fleiss (1979)}
+       \item{ICC3}{ICC3 as described in Shrout and Fleiss (1979)}
+       \item{ICC1k}{ICC1k as described in Shrout and Fleiss (1979)}
+       \item{ICC2k}{ICC2k as described in Shrout and Fleiss (1979)}
+       \item{ICC3k}{ICC3k as described in Shrout and Fleiss (1979)}
+       }
 }
 \description{
 Calultes interclass correlations (ICC) for simulated samples of raters and

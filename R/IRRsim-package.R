@@ -8,4 +8,8 @@
 #' @import ggplot2
 #' @import reshape2
 #' @importFrom DescTools ICC
+#' @importFrom foreach foreach
+#' @importFrom parallel detectCores
+#' @importFrom snow makeCluster clusterEvalQ stopCluster
+#' @importFrom doSNOW registerDoSNOW
 NA
