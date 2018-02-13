@@ -20,6 +20,9 @@
 #'        \item{ICC1k}{ICC1k as described in Shrout and Fleiss (1979)}
 #'        \item{ICC2k}{ICC2k as described in Shrout and Fleiss (1979)}
 #'        \item{ICC3k}{ICC3k as described in Shrout and Fleiss (1979)}
+#'        \item{Fleiss_Kappa}{Fleiss' Kappa for m raters as described in Fleiss (1971).}
+#'        \item{Cohen_Kappa}{Cohen's Kappa as calculated in psych::cohen.kappa. Note that this
+#'              calculated for all datasets even though it is only appropriate for two raters.}
 #'        }
 #' @export
 simulateICC <- function(nRaters = c(2),
@@ -56,6 +59,8 @@ simulateICC <- function(nRaters = c(2),
 			ICC1k = rep(NA_integer_, totalIterations),
 			ICC2k = rep(NA_integer_, totalIterations),
 			ICC3k = rep(NA_integer_, totalIterations),
+			Fleiss_Kappa = rep(NA_integer_, totalIterations),
+			Cohen_Kappa = rep(NA_integer_, totalIterations),
 			stringsAsFactors = FALSE
 		)
 
@@ -63,7 +68,7 @@ simulateICC <- function(nRaters = c(2),
 			no_cores <- parallel::detectCores() - 1
 			cl <- snow::makeCluster(no_cores)
 			doSNOW::registerDoSNOW(cl)
-			snow::clusterEvalQ(cl,library(IRRsim))
+			snow::clusterEvalQ(cl,suppressPackageStartupMessages(library(IRRsim)))
 			opts <- list(progress = progress)
 
 			tmp <- apply(tests, 1, FUN = function(X) { list(k = X['k'], agree = X['simAgreement'])})
@@ -78,6 +83,8 @@ simulateICC <- function(nRaters = c(2),
 											 agree = params$agree,
 											 response.probs = response.probs)
 				icc <- DescTools::ICC(test)
+				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+				ck <- psych::cohen.kappa(x = tmp)
 
 				c(k = unname(params$k),
 				  simAgreement = unname(params$agree),
@@ -87,7 +94,10 @@ simulateICC <- function(nRaters = c(2),
 				  ICC3 = icc$results[3,]$est,
 				  ICC1k = icc$results[4,]$est,
 				  ICC2k = icc$results[5,]$est,
-				  ICC3k = icc$results[6,]$est)
+				  ICC3k = icc$results[6,]$est,
+				  Fleiss_Kappa = kappam.fleiss2(test)$value,
+				  Cohen_Kappa = ck$kappa
+				)
 			}
 
 			snow::stopCluster(cl)
@@ -102,6 +112,8 @@ simulateICC <- function(nRaters = c(2),
 													 agree = tests[i,]$simAgreement,
 													 response.probs = response.probs)
 				icc <- DescTools::ICC(test)
+				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+				ck <- psych::cohen.kappa(x = tmp)
 
 				tests[i,]$agreement <- IRRsim::agreement(test)
 				tests[i,]$ICC1 <- icc$results[1,]$est
@@ -110,6 +122,8 @@ simulateICC <- function(nRaters = c(2),
 				tests[i,]$ICC1k <- icc$results[4,]$est
 				tests[i,]$ICC2k <- icc$results[5,]$est
 				tests[i,]$ICC3k <- icc$results[6,]$est
+				tests[i,]$Fleiss_Kappa = kappam.fleiss2(test)
+				tests[i,]$Cohen_Kappa = ck$kappa
 
 				progress()
 			}

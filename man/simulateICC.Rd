@@ -40,6 +40,9 @@ a data.frame with the following columns: \describe{
        \item{ICC1k}{ICC1k as described in Shrout and Fleiss (1979)}
        \item{ICC2k}{ICC2k as described in Shrout and Fleiss (1979)}
        \item{ICC3k}{ICC3k as described in Shrout and Fleiss (1979)}
+       \item{Fleiss_Kappa}{Fleiss' Kappa for m raters as described in Fleiss (1971).}
+       \item{Cohen_Kappa}{Cohen's Kappa as calculated in psych::cohen.kappa. Note that this
+             calculated for all datasets even though it is only appropriate for two raters.}
        }
 }
 \description{

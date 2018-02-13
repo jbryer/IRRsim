@@ -12,4 +12,5 @@
 #' @importFrom parallel detectCores
 #' @importFrom snow makeCluster clusterEvalQ stopCluster
 #' @importFrom doSNOW registerDoSNOW
+#' @importFrom psych cohen.kappa
 NA
