@@ -44,8 +44,8 @@ tests.9levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 9)
 Here is a curious artifact of the relationship (you'll see below that it is quadratic), the percent agreement is uniform (as it should be since we designed the simulation this way), the distribution of ICC1 is positively skewed.
 
 ```{r}
-ggplot(tests.3levels, aes(x = agreement)) + geom_density()
-ggplot(tests.3levels, aes(x = ICC1)) + geom_density()
+ggplot(as.data.frame(tests.3levels), aes(x = agreement)) + geom_density()
+ggplot(as.data.frame(tests.3levels), aes(x = ICC1)) + geom_density()
 ```
 
 The following three figures show ICC1 against percent rater agreement with 3, 5, and 9 score levels, respectively.

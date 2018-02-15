@@ -13,6 +13,9 @@
 #'        some responses are more common than others (e.g. 50\% of students get a 3, 30\% get a 2,
 #'        and 20\% get a 1). This is independent of the percent agreement parameter.
 #' @export
+#' @examples
+#' test <- simulateRatingMatrix(nLevels = 3, k = 2, agree = 0.6, nEvents = 100)
+#' DescTools::ICC(test)
 simulateRatingMatrix <- function(nLevels, k, agree, nEvents = 100,
 								 response.probs = rep(1 / nLevels, nLevels)) {
 	raters <- letters[1:k]

@@ -7,10 +7,9 @@
 #' @keywords package IRR simulation interrater reliability
 #' @import ggplot2
 #' @import reshape2
-#' @importFrom DescTools ICC
+#' @importFrom DescTools ICC CohenKappa
 #' @importFrom foreach foreach
 #' @importFrom parallel detectCores
 #' @importFrom snow makeCluster clusterEvalQ stopCluster
 #' @importFrom doSNOW registerDoSNOW
-#' @importFrom psych cohen.kappa
 NA

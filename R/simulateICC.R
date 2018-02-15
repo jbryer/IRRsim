@@ -10,7 +10,9 @@
 #'        See \code{\link{simulateRatingMatrix}} for more information.
 #' @param parallel whether to simulated the data using multiple cores.
 #' @param numCores number of cores to use if the simulation is run in parallel.
-#' @return a data.frame with the following columns: \describe{
+#' @return a list of length \code{nSamples * length(nRaters) * length(agreements)}.
+#'        Each element of the list represents one simulation with the following
+#'        values: \describe{
 #'        \item{k}{the number of raters used in the simulation.}
 #'        \item{simAgreement}{the calculated percent agreement from the sample.}
 #'        \item{agreement}{the specified percent agreement used for drawing the random sample.}
@@ -23,18 +25,23 @@
 #'        \item{Fleiss_Kappa}{Fleiss' Kappa for m raters as described in Fleiss (1971).}
 #'        \item{Cohen_Kappa}{Cohen's Kappa as calculated in psych::cohen.kappa. Note that this
 #'              calculated for all datasets even though it is only appropriate for two raters.}
+#'        \item{data}{The simulated matrix}
 #'        }
+#' @seealso as.data.frame.IRRsim
 #' @export
+#' @examples
+#' icctest <- simulateICC(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
+#' summary(icctest)
 simulateICC <- function(nRaters = c(2),
 						nLevels = 3,
 						nEvents = 100,
 						nSamples = 100,
 						agreements = seq(0.1, 0.9, by = 0.1),
 						response.probs = rep(1 / nLevels, nLevels),
-						showTextProgress = !showShinyProgress,
 						showShinyProgress = FALSE,
-						parallel = (numCores > 1),
-						numCores = (parallel::detectCores() - 1) ) {
+						showTextProgress = !showShinyProgress,
+						numCores = (parallel::detectCores() - 1),
+						parallel = (numCores > 1) ) {
 
 	totalIterations <- nSamples * length(nRaters) * length(agreements)
 
@@ -52,59 +59,55 @@ simulateICC <- function(nRaters = c(2),
 			i = rep(1:nSamples, length(nRaters) * length(agreements)),
 			k = rep(nRaters, each = length(agreements) * nSamples),
 			simAgreement = rep(rep(agreements, each = nSamples), length(nRaters)),
-			agreement = rep(NA_integer_, totalIterations),
-			ICC1 = rep(NA_integer_, totalIterations),
-			ICC2 = rep(NA_integer_, totalIterations),
-			ICC3 = rep(NA_integer_, totalIterations),
-			ICC1k = rep(NA_integer_, totalIterations),
-			ICC2k = rep(NA_integer_, totalIterations),
-			ICC3k = rep(NA_integer_, totalIterations),
-			Fleiss_Kappa = rep(NA_integer_, totalIterations),
-			Cohen_Kappa = rep(NA_integer_, totalIterations),
 			stringsAsFactors = FALSE
 		)
 
+		simData <- NULL
+
 		if(parallel) {
-			no_cores <- parallel::detectCores() - 1
-			cl <- snow::makeCluster(no_cores)
+			cl <- snow::makeCluster(numCores)
 			doSNOW::registerDoSNOW(cl)
 			snow::clusterEvalQ(cl,suppressPackageStartupMessages(library(IRRsim)))
 			opts <- list(progress = progress)
 
-			tmp <- apply(tests, 1, FUN = function(X) { list(k = X['k'], agree = X['simAgreement'])})
+			tmp <- apply(tests, 1, FUN = function(X) {
+				list(i = X['i'], k = X['k'], agree = X['simAgreement'])
+			})
 
-			tests <- foreach::foreach(params = tmp,
-									  .combine = rbind,
-									  .export = c('nLevels', 'nEvents', 'response.probs'),
-									  .options.snow = opts) %dopar% {
+			simData <- foreach::foreach(params = tmp,
+										.export = c('nLevels', 'nEvents', 'response.probs'),
+										.options.snow = opts) %dopar% {
 				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
-											 nEvents = nEvents,
-											 k = params$k,
-											 agree = params$agree,
-											 response.probs = response.probs)
-				icc <- DescTools::ICC(test)
-				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
-				ck <- psych::cohen.kappa(x = tmp)
+													 nEvents = nEvents,
+													 k = params$k,
+													 agree = params$agree,
+													 response.probs = response.probs)
+			  	icc <- DescTools::ICC(test)
+			  	tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+			  	kf <- kappam.fleiss2(test)
+			  	ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
-				c(k = unname(params$k),
-				  simAgreement = unname(params$agree),
-				  agreement = agreement(test),
-				  ICC1 = icc$results[1,]$est,
-				  ICC2 = icc$results[2,]$est,
-				  ICC3 = icc$results[3,]$est,
-				  ICC1k = icc$results[4,]$est,
-				  ICC2k = icc$results[5,]$est,
-				  ICC3k = icc$results[6,]$est,
-				  Fleiss_Kappa = kappam.fleiss2(test)$value,
-				  Cohen_Kappa = ck$kappa
-				)
+				return(list(index = unname(params$i),
+							nLevels = nLevels,
+							nEvents = nEvents,
+							k = unname(params$k),
+							simAgreement = unname(params$agree),
+							agreement = agreement(test),
+							ICC1 = icc$results[1,]$est,
+							ICC2 = icc$results[2,]$est,
+							ICC3 = icc$results[3,]$est,
+							ICC1k = icc$results[4,]$est,
+							ICC2k = icc$results[5,]$est,
+							ICC3k = icc$results[6,]$est,
+							Fleiss_Kappa = kf$value,
+							Cohen_Kappa = ck,
+							data = test
+				))
 			}
 
 			snow::stopCluster(cl)
-
-			row.names(tests) <- 1:nrow(tests)
-			tests <- as.data.frame(tests)
 		} else {
+			simData <- list()
 			for(i in 1:nrow(tests)) {
 				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
 													 nEvents = nEvents,
@@ -113,33 +116,43 @@ simulateICC <- function(nRaters = c(2),
 													 response.probs = response.probs)
 				icc <- DescTools::ICC(test)
 				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
-				ck <- psych::cohen.kappa(x = tmp)
+				kf <- kappam.fleiss2(test)
+				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
-				tests[i,]$agreement <- IRRsim::agreement(test)
-				tests[i,]$ICC1 <- icc$results[1,]$est
-				tests[i,]$ICC2 <- icc$results[2,]$est
-				tests[i,]$ICC3 <- icc$results[3,]$est
-				tests[i,]$ICC1k <- icc$results[4,]$est
-				tests[i,]$ICC2k <- icc$results[5,]$est
-				tests[i,]$ICC3k <- icc$results[6,]$est
-				tests[i,]$Fleiss_Kappa = kappam.fleiss2(test)
-				tests[i,]$Cohen_Kappa = ck$kappa
+				simData[[i]] <- list(index = i,
+									 nLevels = nLevels,
+									 nEvents = nEvents,
+									 k = tests[i,]$k,
+									 simAgreement = tests[i,]$simAgreement,
+									 agreement = agreement(test),
+									 ICC1 = icc$results[1,]$est,
+									 ICC2 = icc$results[2,]$est,
+									 ICC3 = icc$results[3,]$est,
+									 ICC1k = icc$results[4,]$est,
+									 ICC2k = icc$results[5,]$est,
+									 ICC3k = icc$results[6,]$est,
+									 Fleiss_Kappa = kf$value,
+									 Cohen_Kappa = ck,
+									 data = test
+				)
 
 				progress()
 			}
 		}
 
-		return(tests)
+		return(simData)
 	}
 
 	if(showShinyProgress) {
-		tests <- withProgress(message = 'Simulating data',
+		simData <- withProgress(message = 'Simulating data',
 							  min = 0, max = totalIterations, value = 0, simulate())
 	} else {
-		tests <- simulate()
+		simData <- simulate()
 	}
 
 	if(showTextProgress) { close(pb) }
 
-	return(tests)
+	class(simData) <- c('IRRsim', 'list')
+
+	return(simData)
 }

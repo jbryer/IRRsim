@@ -26,3 +26,7 @@ and 20\% get a 1). This is independent of the percent agreement parameter.}
 \description{
 This function will generate a \code{nEvents} x \code{k} scoring matrix.
 }
+\examples{
+test <- simulateRatingMatrix(nLevels = 3, k = 2, agree = 0.6, nEvents = 100)
+DescTools::ICC(test)
+}

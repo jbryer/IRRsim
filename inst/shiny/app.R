@@ -1,7 +1,7 @@
 library(shiny)
 library(IRRsim)
 
-# Define UI for application that draws a histogram
+########## UI
 ui <- fluidPage(
 
    # Application title
@@ -10,19 +10,32 @@ ui <- fluidPage(
    # Sidebar with a slider input for number of bins
    sidebarLayout(
       sidebarPanel(
-      	sliderInput('nLevels', 'Number of Levels:', min = 2, max = 10, value = 3),
-		sliderInput('nRaters', 'Number of Raters:', min = 2, max = 26, value = 6),
-		selectInput('ICC', 'Inter-class Correlation',
-					choices = c('All', 'ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k')),
-		# sliderInput('agreement', 'Rater Agreement', min = .05, max = 1, value = .6, step = 0.05),
-		numericInput('nEvents', 'Number of Ratings:', value = 100, min = 10),
-		numericInput('nSamples', 'Number of Samples:', value = 100, min = 10, max = 2000)
+      	sliderInput('nLevels', 'Number of Scoring Levels:', min = 2, max = 10, value = 3, round = TRUE),
+		sliderInput('nRaters', 'Number of Raters:', min = 2, max = 26, value = 6, round = TRUE),
+		numericInput('nEvents', 'Number of Ratings per Sample:', value = 100, min = 10),
+		numericInput('nSamples', 'Number of Samples:', value = 100, min = 10, max = 2000),
+		actionButton("simulate", "Simulate Data"),
+		hr(),
+		selectInput('ICC', 'Inter-Rater Reliability Statistic',
+					choices = c('All',
+								'ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k',
+								'Fleiss_Kappa', 'Cohen_Kappa')),
+		selectInput('predictMethod', 'Prediction Method',
+					choices = c('Linear', 'Loess', 'Quadratic'), selected = "Loess"),
+		hr(),
+		p("Response Distribution (Weights)"),
+		uiOutput('responseDistribution')
       ),
 
       # Show a plot of the generated distribution
       mainPanel(
       	tabsetPanel(
-      		tabPanel("Plot", plotOutput("plot")),
+      		tabPanel("Plot", plotOutput("plot", height = "600px")),
+      		tabPanel("Prediction",
+      				 textOutput("predictionSummary"),
+      				 tableOutput("predictionTable"),
+      				 verbatimTextOutput("predictionOutput")
+      				 ),
       		tabPanel("Data", dataTableOutput("data")),
       		tabPanel("About", includeMarkdown('about.md'))
       	)
@@ -30,47 +43,120 @@ ui <- fluidPage(
    )
 )
 
-# Define server logic required to draw a histogram
+########## Server
+predict.agreements <- seq(0.05, 0.95, by = 0.05)
+predict.interval <- "confidence"
+cache <- list()
+
 server <- function(input, output) {
-	getData <- reactive({
+	thedata <- reactiveValues(test = NULL)
+
+	observeEvent({
+		input$nLevels
+		input$nRaters
+		input$nEvents
+		input$nSamples
+	}, {
+		thedata$test <- NULL
+		index <- paste0(input$nRaters, input$nLevels, input$nEvents, input$nSamples)
+		test <- cache[[index]]
+		if(!is.null(test)) {
+			thedata$test <- test
+		}
+	})
+
+	observeEvent(input$simulate, {
+		probs <- numeric()
+		for(i in 1:input$nLevels) {
+			probs[i] <- input[[paste0('prob', i)]]
+		}
 		test <- simulateICC(nRaters = input$nRaters,
 							nLevels = input$nLevels,
 							nEvents = input$nEvents,
 							nSamples = ceiling(input$nSamples / 9),
+							response.probs = probs,
 							showShinyProgress = TRUE
 		)
-		return(test)
+		thedata$test <- test
+		index <- paste0(input$nRaters, input$nLevels, input$nEvents, input$nSamples)
+		cache[[index]] <<- test
 	})
 
-	output$data <- renderDataTable({ round(getData(), digits = 3) },
-								   options = list(pageLength = 50))
+	output$responseDistribution <- renderUI({
+		inputs <- list()
+		for(i in 1:input$nLevels) {
+			inputs[[i]] <- sliderInput(paste0('prob', i),
+									   label = LETTERS[i],
+									   min = 0, max = 100,
+									   value = 100/input$nLevels,
+									   step = 1, round = TRUE)
+		}
+		return(inputs)
+	})
+
+	output$data <- renderDataTable({
+		test <- as.data.frame(thedata$test)
+		if(is.null(test)) { return() }
+		round(test, digits = 3)
+	}, options = list(pageLength = 50))
+
+	output$predictionTable <- renderTable({
+		test <- thedata$test
+		if(is.null(test)) { return() }
+		if(input$ICC == 'All') {
+			return(summary(test,
+						   method = tolower(input$predictMethod),
+						   agreements = seq(0.1, 0.90, by = 0.05)
+						   )$summary)
+		} else {
+			return(summary(test,
+						   stat = input$ICC,
+						   method = tolower(input$predictMethod),
+						   agreements = seq(0.1, 0.90, by = 0.05)
+						   )$summary)
+		}
+	})
+
+	output$predictionSummary <- renderText({
+		test <- thedata$test
+		if(is.null(test)) { return() }
+		return(paste0("The following table provides 95% confidence intervals ",
+					  "within the given percent rater agreements using ",
+					  input$nRaters, " raters of ",
+					  input$nEvents, " scoring events with ",
+					  input$nLevels, " scoring levels."))
+	})
+
+	output$predictionOutput <- renderPrint({
+		test <- thedata$test
+		if(is.null(test)) { return() }
+		if(input$ICC != 'All') {
+			model.out <- summary(test,
+								 stat = input$ICC,
+								 method = tolower(input$predictMethod)
+								 )$model
+			print(summary(model.out))
+		} else {
+			cat("Select IRR stat to display the model summary.")
+		}
+	})
 
 	output$plot <- renderPlot({
-		test <- getData()
+		req(input$predictMethod)
+		test <- thedata$test
+		if(is.null(test)) { return() }
 		if(input$ICC == 'All') {
-			tests.melted <- melt(test, id.vars = c('k', 'simAgreement', 'agreement'))
-			ggplot(tests.melted, aes(x = agreement, y = value)) +
-				geom_point(alpha = 0.3) +
-				geom_smooth(method = 'loess') +
-				scale_color_hue('n Raters') +
-				facet_wrap(~ variable) +
-				xlim(c(0,1)) + #ylim(c(-0.25,1)) +
-				xlab('Percent Agreement') + ylab('ICC') +
-				ggtitle(paste0('ICC with ', input$nLevels, ' scoring levels and ',
-							   input$nRaters, ' raters'))
-
+			p <- plot(test,
+					  method = tolower(input$predictMethod))
 		} else {
-			ggplot(test, aes_string(x = 'agreement', y = input$ICC)) +
-				geom_point(alpha = 0.3) +
-				geom_smooth(method = 'loess') +
-				xlim(c(0,1)) + ylim(c(-0.25,1)) +
-				xlab('Percent Agreement') + ylab(input$ICC) +
-				ggtitle(paste0(input$ICC, ' with ', input$nLevels, ' scoring levels and ',
-							   input$nRaters, ' raters'))
+			p <- plot(test,
+					  stat = input$ICC,
+					  method = tolower(input$predictMethod))
 		}
+		return(p)
 	})
 }
 
-# Run the application
+########## Run the application
 shinyApp(ui = ui, server = server)
 

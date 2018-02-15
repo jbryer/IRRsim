@@ -7,9 +7,9 @@ evaluations.}
 \usage{
 simulateICC(nRaters = c(2), nLevels = 3, nEvents = 100, nSamples = 100,
   agreements = seq(0.1, 0.9, by = 0.1), response.probs = rep(1/nLevels,
-  nLevels), showTextProgress = !showShinyProgress,
-  showShinyProgress = FALSE, parallel = (numCores > 1),
-  numCores = (parallel::detectCores() - 1))
+  nLevels), showShinyProgress = FALSE,
+  showTextProgress = !showShinyProgress, numCores = (parallel::detectCores()
+  - 1), parallel = (numCores > 1))
 }
 \arguments{
 \item{nRaters}{the number of raters}
@@ -25,12 +25,14 @@ simulateICC(nRaters = c(2), nLevels = 3, nEvents = 100, nSamples = 100,
 \item{response.probs}{probability weights for the distribution of scores.
 See \code{\link{simulateRatingMatrix}} for more information.}
 
-\item{parallel}{whether to simulated the data using multiple cores.}
-
 \item{numCores}{number of cores to use if the simulation is run in parallel.}
+
+\item{parallel}{whether to simulated the data using multiple cores.}
 }
 \value{
-a data.frame with the following columns: \describe{
+a list of length \code{nSamples * length(nRaters) * length(agreements)}.
+       Each element of the list represents one simulation with the following
+       values: \describe{
        \item{k}{the number of raters used in the simulation.}
        \item{simAgreement}{the calculated percent agreement from the sample.}
        \item{agreement}{the specified percent agreement used for drawing the random sample.}
@@ -43,9 +45,17 @@ a data.frame with the following columns: \describe{
        \item{Fleiss_Kappa}{Fleiss' Kappa for m raters as described in Fleiss (1971).}
        \item{Cohen_Kappa}{Cohen's Kappa as calculated in psych::cohen.kappa. Note that this
              calculated for all datasets even though it is only appropriate for two raters.}
+       \item{data}{The simulated matrix}
        }
 }
 \description{
 Calultes interclass correlations (ICC) for simulated samples of raters and
 evaluations.
+}
+\examples{
+icctest <- simulateICC(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
+summary(icctest)
+}
+\seealso{
+as.data.frame.IRRsim
 }
