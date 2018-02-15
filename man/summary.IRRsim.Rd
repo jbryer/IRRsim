@@ -5,7 +5,7 @@
 \title{Returns a summary of a IRR simulation.}
 \usage{
 \method{summary}{IRRsim}(object, method = "loess", agreements = seq(0.1,
-  0.9, by = 0.1), stat, predict.interval = "prediction", ...)
+  0.9, by = 0.1), stat, predict.interval = "confidence", ...)
 }
 \arguments{
 \item{method}{the method used to find predicted values. Possible values are

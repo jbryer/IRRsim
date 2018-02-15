@@ -36,10 +36,10 @@ summary.IRRsim <- function(object,
 			prediction.df[,i] <- tmp$summary[,i]
 		}
 	} else {
-		if(!stat %in% names(test)) {
-			stop(paste0(stat, ' is not a valid IRR statistic.'))
-		}
 		test <- as.data.frame(object)
+		if(!stat %in% names(test)) {
+			stop(paste0("'", stat, "' is not a valid IRR statistic."))
+		}
 		if(method == 'loess') {
 			formu <- as.formula(paste0(stat, ' ~ agreement'))
 			model.out <- loess(formu, data = test)
