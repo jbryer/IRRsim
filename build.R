@@ -4,6 +4,7 @@ document()
 build(vignettes = FALSE)
 build_vignettes()
 install()
+test()
 check(cran = TRUE)
 
 pkgdown::build_site()
