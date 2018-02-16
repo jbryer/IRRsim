@@ -95,8 +95,9 @@ evaluations.</p>
 
     <pre class="usage"><span class='fu'>simulateICC</span>(<span class='kw'>nRaters</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>), <span class='kw'>nLevels</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nEvents</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>nSamples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
   <span class='kw'>agreements</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>), <span class='kw'>response.probs</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>/<span class='no'>nLevels</span>,
-  <span class='no'>nLevels</span>), <span class='kw'>showTextProgress</span> <span class='kw'>=</span> !<span class='no'>showShinyProgress</span>,
-  <span class='kw'>showShinyProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='no'>nLevels</span>), <span class='kw'>showShinyProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>showTextProgress</span> <span class='kw'>=</span> !<span class='no'>showShinyProgress</span>, <span class='kw'>numCores</span> <span class='kw'>=</span> (<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>()
+  - <span class='fl'>1</span>), <span class='kw'>parallel</span> <span class='kw'>=</span> (<span class='no'>numCores</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -126,23 +127,66 @@ evaluations.</p>
       <td><p>probability weights for the distribution of scores.
 See <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code> for more information.</p></td>
     </tr>
+    <tr>
+      <th>numCores</th>
+      <td><p>number of cores to use if the simulation is run in parallel.</p></td>
+    </tr>
+    <tr>
+      <th>parallel</th>
+      <td><p>whether to simulated the data using multiple cores.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame with the following columns:
-       * <code>i</code> - index of the simulation (a integer between 1 and <code>nSamples</code>)
-       * <code>k</code> - the number of raters used in the simulation.
-       * <code>simAgreement</code> - the calculated percent agreement from the sample.
-       * <code>agreement</code> - the specified percent agreement used for drawing the random sample.
-       * <code>ICC1</code> - ICC1 as described in Shrout and Fleiss (1979)
-       * <code>ICC2</code> - ICC2 as described in Shrout and Fleiss (1979)
-       * <code>ICC3</code> - ICC3 as described in Shrout and Fleiss (1979)
-       * <code>ICC1k</code> - ICC1k as described in Shrout and Fleiss (1979)
-       * <code>ICC2k</code> - ICC2k as described in Shrout and Fleiss (1979)
-       * <code>ICC3k</code> - ICC3k as described in Shrout and Fleiss (1979)</p>
+    <p>a list of length <code>nSamples * length(nRaters) * length(agreements)</code>.
+       Each element of the list represents one simulation with the following
+       values:</p><dl class='dl-horizontal'>
+       <dt>k</dt><dd><p>the number of raters used in the simulation.</p></dd>
+       <dt>simAgreement</dt><dd><p>the calculated percent agreement from the sample.</p></dd>
+       <dt>agreement</dt><dd><p>the specified percent agreement used for drawing the random sample.</p></dd>
+       <dt>ICC1</dt><dd><p>ICC1 as described in Shrout and Fleiss (1979)</p></dd>
+       <dt>ICC2</dt><dd><p>ICC2 as described in Shrout and Fleiss (1979)</p></dd>
+       <dt>ICC3</dt><dd><p>ICC3 as described in Shrout and Fleiss (1979)</p></dd>
+       <dt>ICC1k</dt><dd><p>ICC1k as described in Shrout and Fleiss (1979)</p></dd>
+       <dt>ICC2k</dt><dd><p>ICC2k as described in Shrout and Fleiss (1979)</p></dd>
+       <dt>ICC3k</dt><dd><p>ICC3k as described in Shrout and Fleiss (1979)</p></dd>
+       <dt>Fleiss_Kappa</dt><dd><p>Fleiss' Kappa for m raters as described in Fleiss (1971).</p></dd>
+       <dt>Cohen_Kappa</dt><dd><p>Cohen's Kappa as calculated in psych::cohen.kappa. Note that this
+             calculated for all datasets even though it is only appropriate for two raters.</p></dd>
+       <dt>data</dt><dd><p>The simulated matrix</p></dd>
+       </dl>
+
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>as.data.frame.IRRsim</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>icctest</span> <span class='kw'>&lt;-</span> <span class='fu'>simulateICC</span>(<span class='kw'>nLevels</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nRaters</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nSamples</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showTextProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>summary</span>(<span class='no'>icctest</span>)</div><div class='output co'>#&gt; Prediction table for 2 raters.
+#&gt;   Agreement        ICC1        ICC2        ICC3      ICC1k      ICC2k
+#&gt; 1       0.1 -0.35808096 -0.35785164 -0.35730917 -1.1710758 -1.1789935
+#&gt; 2       0.2 -0.21609620 -0.21748009 -0.21724811 -0.6105485 -0.6168885
+#&gt; 3       0.3 -0.06998181 -0.07177004 -0.07187130 -0.1740124 -0.1779737
+#&gt; 4       0.4  0.07961610  0.07861519  0.07823714  0.1387145  0.1376035
+#&gt; 5       0.5  0.22635564  0.22644618  0.22686947  0.3712438  0.3711895
+#&gt; 6       0.6  0.37868379  0.37951439  0.38007295  0.5474608  0.5485023
+#&gt; 7       0.7  0.54177922  0.54239766  0.54260263  0.7018989  0.7027495
+#&gt; 8       0.8  0.70011065  0.70040422  0.70044087  0.8267227  0.8271601
+#&gt; 9       0.9  0.85466696  0.85453327  0.85458035  0.9219455  0.9217643
+#&gt;        ICC3k Fleiss_Kappa Cohen_Kappa
+#&gt; 1 -1.1713278  -0.35475676 -0.34610143
+#&gt; 2 -0.6136352  -0.20500293 -0.19910017
+#&gt; 3 -0.1776529  -0.05494521 -0.05106677
+#&gt; 4  0.1367476   0.09535329  0.09797283
+#&gt; 5  0.3715745   0.24529070  0.24720699
+#&gt; 6  0.5492342   0.39498247  0.39673470
+#&gt; 7  0.7031345   0.54510954  0.54622714
+#&gt; 8  0.8272879   0.69630599  0.69685120
+#&gt; 9  0.9217245   0.84853908  0.84857978
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -150,7 +194,11 @@ See <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code> fo
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

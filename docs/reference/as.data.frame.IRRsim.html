@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulate a rating matrix. — simulateRatingMatrix • IRRsim</title>
+<title>Converts the results of <code><a href='simulateICC.html'>simulateICC</a></code> to a <code>data.frame</code> — as.data.frame.IRRsim • IRRsim</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,68 +83,36 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Simulate a rating matrix.</h1>
+    <h1>Converts the results of <code><a href='simulateICC.html'>simulateICC</a></code> to a <code>data.frame</code></h1>
     </div>
 
     
-    <p>This function will generate a <code>nEvents</code> x <code>k</code> scoring matrix.</p>
+    <p>This function will create a data frame with all the IRR metrics combiend.</p>
     
 
-    <pre class="usage"><span class='fu'>simulateRatingMatrix</span>(<span class='no'>nLevels</span>, <span class='no'>k</span>, <span class='no'>agree</span>, <span class='kw'>nEvents</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>response.probs</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>/<span class='no'>nLevels</span>, <span class='no'>nLevels</span>))</pre>
+    <pre class="usage"><span class='co'># S3 method for IRRsim</span>
+<span class='fu'>as.data.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nLevels</th>
-      <td><p>the number of possible outcomes there are for each rating.</p></td>
+      <th>x</th>
+      <td><p>the result of <code><a href='simulateICC.html'>simulateICC</a></code>.</p></td>
     </tr>
     <tr>
-      <th>k</th>
-      <td><p>the number of raters.</p></td>
-    </tr>
-    <tr>
-      <th>agree</th>
-      <td><p>the percent of time the raters agree. Note that the actual
-agreement of the simulated matrix will vary from this value
-(see sample).</p></td>
-    </tr>
-    <tr>
-      <th>nEvents</th>
-      <td><p>the number of rating events within each matrix.</p></td>
-    </tr>
-    <tr>
-      <th>response.probs</th>
-      <td><p>probability weights for the distribution of scores. By default, each
-of the levels has equal probability of being selected. This allows situations where
-some responses are more common than others (e.g. 50% of students get a 3, 30% get a 2,
-and 20% get a 1). This is independent of the percent agreement parameter.</p></td>
+      <th>...</th>
+      <td><p>currently unused.</p></td>
     </tr>
     </table>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>simulateRatingMatrix</span>(<span class='kw'>nLevels</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>agree</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>nEvents</span> <span class='kw'>=</span> <span class='fl'>100</span>)
-<span class='kw pkg'>DescTools</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DescTools/topics/ICC'>ICC</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; 
-#&gt; Intraclass correlation coefficients 
-#&gt;                          type   est F-val df1 df2    p-val lwr.ci upr.ci
-#&gt; Single_raters_absolute   ICC1 0.445  2.60  99 100 1.45e-06     NA     NA
-#&gt; Single_random_raters     ICC2 0.447  2.64  99  99 1.17e-06     NA     NA
-#&gt; Single_fixed_raters      ICC3 0.450  2.64  99  99 1.17e-06     NA     NA
-#&gt; Average_raters_absolute ICC1k 0.616  2.60  99 100 1.45e-06     NA     NA
-#&gt; Average_random_raters   ICC2k 0.618  2.64  99  99 1.17e-06     NA     NA
-#&gt; Average_fixed_raters    ICC3k 0.621  2.64  99  99 1.17e-06     NA     NA
-#&gt; 
-#&gt;  Number of subjects = 100     Number of raters = 2 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

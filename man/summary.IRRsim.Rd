@@ -5,7 +5,7 @@
 \title{Returns a summary of a IRR simulation.}
 \usage{
 \method{summary}{IRRsim}(object, method = "loess", agreements = seq(0.1,
-  0.9, by = 0.1), stat, predict.interval = "confidence", ...)
+  0.9, by = 0.1), stat, k, predict.interval = "confidence", ...)
 }
 \arguments{
 \item{method}{the method used to find predicted values. Possible values are
@@ -14,6 +14,8 @@ loess, linear, and quadratic.}
 \item{agreements}{vector of percent agreements to include in the summary table.}
 
 \item{stat}{the IRR statistic to return summary for, or missing for all metrics.}
+
+\item{k}{which number of raters to print summary of.}
 
 \item{...}{currently unused.}
 

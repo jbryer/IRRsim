@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(IRRsim)
 library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
 set.seed(2112) # For reproducibility
@@ -35,7 +36,6 @@ There are several designs for establishing IRR. We are generally concerned with 
 The `IRRsim` package implements several functions to facilitate simulating various scoring designs. To begin, let's look at the `simulateRatingMatrix` function. This function will generate an `nEvents` by `k` matrix. For each row, two columns (which represent raters) are randomly selected and each cell of those cells will randomly have a value between 1 and `nLevels`. The likelihood of those two cell having the same value is defined by the `agree` parameter.
 
 ```{r testdata}
-library(IRRsim)
 test <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 10)
 test
 ```
@@ -48,7 +48,7 @@ agreement(test)
 
 For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.
 
-```{r simulate, cache = TRUE, message = FALSE, warning = FALSE, results = 'hide'}
+```{r simulate, cache = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
 tests.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3)
 tests.5levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 5)
 tests.9levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 9)
@@ -65,7 +65,7 @@ head(test.3levels.df)
 
 The following three figures show ICC1 against percent rater agreement with 3, 5, and 9 score levels, respectively.
 
-```{r}
+```{r ploticc1}
 plot(tests.3levels, stat = 'ICC1')
 plot(tests.5levels, stat = 'ICC1')
 plot(tests.9levels, stat = 'ICC1')
@@ -73,13 +73,13 @@ plot(tests.9levels, stat = 'ICC1')
 
 The figure below show the relationship between percent rater agreement and interclass correlation for the six types of ICC.
 
-```{r}
+```{r plotall}
 plot(tests.3levels)
 ```
 
 The literature suggests that ICC be used over percent agreement. However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the resulting $R^2$ is greater than .9!
 
-```{r}
+```{r summaryfun}
 tests.3levels.sum <- summary(tests.3levels, stat = 'ICC1', method = 'quadratic')
 summary(tests.3levels.sum$model[[1]]) # k = 6 raters
 summary(tests.3levels.sum$model[[2]]) # k = 9 raters
