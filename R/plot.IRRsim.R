@@ -16,11 +16,11 @@ plot.IRRsim <- function(x,
 						...) {
 	p <- NULL
 	test <- as.data.frame(x)
+	test$k <- as.character(test$k)
 	if(missing(stat)) {
 		tests.melted <- reshape2::melt(test, id.vars = c('nLevels', 'nEvents', 'k', 'simAgreement', 'agreement'))
-		p <- ggplot(tests.melted, aes(x = agreement, y = value)) +
+		p <- ggplot(tests.melted, aes(x = agreement, y = value, color = k)) +
 			geom_point(alpha = point.alpha) +
-			scale_color_hue('n Raters') +
 			facet_wrap(~ variable) +
 			xlim(c(0,1)) +
 			xlab('Percent Rater Agreement') + ylab('ICC') +
@@ -30,12 +30,18 @@ plot.IRRsim <- function(x,
 		if(!stat %in% names(test)) {
 			stop(paste0(stat, ' is not a valid IRR statistic.'))
 		}
-		p <- ggplot(test, aes_string(x = 'agreement', y = stat)) +
+		p <- ggplot(test, aes_string(x = 'agreement', y = stat, color = 'k')) +
 			geom_point(alpha = point.alpha) +
 			xlim(c(0,1)) +
 			xlab('Percent Rater Agreement') + ylab(stat) +
 			ggtitle(paste0(stat, ' with ', test[1,]$nLevels, ' Scoring Levels and ',
 						   test[1,]$k, ' Raters'))
+	}
+
+	if(length(unique(test$k)) > 1) {
+		p <- p + scale_color_hue('n Raters')
+	} else {
+		p <- p + scale_color_grey('') + theme(legend.position="none")
 	}
 
 	if(method == 'loess') {
