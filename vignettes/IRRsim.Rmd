@@ -16,13 +16,26 @@ knitr::opts_chunk$set(
 )
 library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
-library(IRRsim)
 set.seed(2112) # For reproducibility
 ```
 
-This document outlines a simulation to explore the relationship between percent rater agreement and six variations of interclass correlation (ICC). A number of functions are included in the `irr_simulation.R` script. To start, let's look at the `simulateRatingMatrix` function. This function will generate a `nEvents` by `k` matrix. For each row, two columns (which represent raters) are randomly selected and each cell of those cells will randomly have a value between 1 and `nLevels`. The likelihood of those two cell having the same value is defined by the `agree` parameter.
+Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of interclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated ($R^2 > 0.9$) for most designs.
+
+
+
+There are several designs for establishing IRR. We are generally concerned with the ratings of **m** subjects by **k** raters. The simplest design is $m x 2$ where two raters score all **m** subjects. However, it common in education to have $m > 2$ raters where each subject is scored by $m = 2$ resulting in a **sparce** matrix. Shrout and Fleiss (1979) provide guidance on which of the six types of ICC to use depending on your design. The six types of ICC considered here are:
+
+* *ICC1* - Each subject is rated by 2 random raters.
+* *ICC2* - Each subject is rated by $m > 2$ raters.
+* *ICC3* - Each subject is rated by a fixed set of *k* raters.
+* *ICC1k* - 2-way ANOVA version of ICC1.
+* *ICC2k* - 2-way ANOVA version of ICC2.
+* *ICC3k* - 2-way ANOVA version of ICC3.
+
+The `IRRsim` package implements several functions to facilitate simulating various scoring designs. To begin, let's look at the `simulateRatingMatrix` function. This function will generate an `nEvents` by `k` matrix. For each row, two columns (which represent raters) are randomly selected and each cell of those cells will randomly have a value between 1 and `nLevels`. The likelihood of those two cell having the same value is defined by the `agree` parameter.
 
 ```{r testdata}
+library(IRRsim)
 test <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 10)
 test
 ```
@@ -41,65 +54,34 @@ tests.5levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 5)
 tests.9levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 9)
 ```
 
-Here is a curious artifact of the relationship (you'll see below that it is quadratic), the percent agreement is uniform (as it should be since we designed the simulation this way), the distribution of ICC1 is positively skewed.
+The `as.data.frame` function provides the IRR statistics for each of the simulated samples.
 
-```{r}
-ggplot(as.data.frame(tests.3levels), aes(x = agreement)) + geom_density()
-ggplot(as.data.frame(tests.3levels), aes(x = ICC1)) + geom_density()
+```{r dataframe}
+test.3levels.df <- as.data.frame(tests.3levels)
+dim(test.3levels.df)
+head(test.3levels.df)
 ```
+
 
 The following three figures show ICC1 against percent rater agreement with 3, 5, and 9 score levels, respectively.
 
 ```{r}
-ggplot(tests.3levels, aes(x = agreement, y = ICC1, color = factor(k))) + 
-	geom_point(alpha = 0.3) + 
-	geom_smooth(method = 'loess') + 
-	scale_color_hue('n Raters') +
-	xlim(c(0,1)) + ylim(c(-0.25,1)) +
-	xlab('Percent Agreement') + ylab('ICC1') +
-	ggtitle('ICC1 with 3 scoring levels')
-
-ggplot(tests.5levels, aes(x = agreement, y = ICC1, color = factor(k))) + 
-	geom_point(alpha = 0.3) + 
-	geom_smooth(method = 'loess') + 
-	scale_color_hue('n Raters') +
-	xlim(c(0,1)) + ylim(c(-0.25,1)) +
-	xlab('Percent Agreement') + ylab('ICC1') +
-	ggtitle('ICC1 with 5 scoring levels')
-
-ggplot(tests.9levels, aes(x = agreement, y = ICC1, color = factor(k))) + 
-	geom_point(alpha = 0.3) + 
-	geom_smooth(method = 'loess') + 
-	scale_color_hue('n Raters') +
-	xlim(c(0,1)) + ylim(c(-0.25,1)) +
-	xlab('Percent Agreement') + ylab('ICC1') +
-	ggtitle('ICC1 with 9 scoring levels')
-
+plot(tests.3levels, stat = 'ICC1')
+plot(tests.5levels, stat = 'ICC1')
+plot(tests.9levels, stat = 'ICC1')
 ```
 
 The figure below show the relationship between percent rater agreement and interclass correlation for the six types of ICC.
 
 ```{r}
-tmp <- melt(tests.3levels[,c('i','k','agreement','ICC1','ICC2','ICC3','ICC1k','ICC2k','ICC3k')], 
-			id.vars = c('i','k','agreement'))
-ggplot(tmp, aes(x = agreement, y = value, color = factor(k))) + 
-	geom_smooth(method = 'loess') + 
-	facet_wrap(~ variable) +
-	scale_color_hue('n Raters') +
-	xlim(c(0,1)) +
-	xlab('Percent Agreement') + ylab('ICC') +
-	ggtitle('ICC and Percent Rater Agreement (3 scoring levels)')
+plot(tests.3levels)
 ```
 
-The literature suggests that ICC be used over percent agreement (citations?). However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the result $R^2$ is greater than .89!
+The literature suggests that ICC be used over percent agreement. However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the resulting $R^2$ is greater than .9!
 
 ```{r}
-lm.out3 <- lm(ICC1 ~ I(agreement ^ 2), data = tests.3levels)
-summary(lm.out3)
-
-lm.out5 <- lm(ICC1 ~ I(agreement ^ 2), data = tests.5levels)
-summary(lm.out5)
-
-lm.out9 <- lm(ICC1 ~ I(agreement ^ 2), data = tests.9levels)
-summary(lm.out9)
+tests.3levels.sum <- summary(tests.3levels, stat = 'ICC1', method = 'quadratic')
+summary(tests.3levels.sum$model[[1]]) # k = 6 raters
+summary(tests.3levels.sum$model[[2]]) # k = 9 raters
+summary(tests.3levels.sum$model[[3]]) # k = 12 raters
 ```
