@@ -47,34 +47,18 @@ prop.table(table(tmp3))
 
 ##### Uniform response distribution
 tests.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3)
-ggplot(tests.3levels, aes(x = agreement)) + geom_density()
-ggplot(tests.3levels, aes(x = ICC1)) + geom_density()
+tests.3levels.df <- as.data.frame(tests.3levels)
+head(tests.3levels.df)
 
-ggplot(tests.3levels, aes(x = agreement, y = ICC1, color = factor(k))) +
-	geom_point(alpha = 0.3) +
-	geom_smooth(method = 'loess') +
-	scale_color_hue('n Raters') +
-	xlim(c(0,1)) + ylim(c(-0.25,1)) +
-	xlab('Percent Agreement') + ylab('ICC1') +
-	ggtitle('ICC1 with 3 scoring levels')
+sum.all <- summary(tests.3levels)
+sum.all
+sum.icc1 <- summary(tests.3levels, stat = 'ICC1')
+sum.icc1
 
-tests.melted <- melt(tests.3levels, id.vars = c('i', 'k', 'simAgreement', 'agreement'))
-ggplot(tests.melted, aes(x = agreement, y = value, color = factor(k))) +
-	# geom_point(alpha = 0.3) +
-	geom_smooth(method = 'loess') +
-	scale_color_hue('n Raters') +
-	facet_wrap(~ variable) +
-	xlim(c(0,1)) + #ylim(c(-0.25,1)) +
-	xlab('Percent Agreement') + ylab('ICC') +
-	ggtitle('ICC with 3 scoring levels')
+plot(tests.3levels)
+plot(tests.3levels, stat = 'ICC1')
 
 ##### Unequal response distributions
 tests2.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3, response.probs = c(.1, .1, .8))
 
-ggplot(tests2.3levels, aes(x = agreement, y = ICC1, color = factor(k))) +
-	geom_point(alpha = 0.3) +
-	geom_smooth(method = 'loess') +
-	scale_color_hue('n Raters') +
-	xlim(c(0,1)) + ylim(c(-0.25,1)) +
-	xlab('Percent Agreement') + ylab('ICC1') +
-	ggtitle('ICC1 with 3 scoring levels (unequal response distribution)')
+plot(tests2.3levels)

@@ -13,70 +13,95 @@
 #'        loess, linear, and quadratic.
 #' @param agreements vector of percent agreements to include in the summary table.
 #' @param stat the IRR statistic to return summary for, or missing for all metrics.
+#' @param k which number of raters to print summary of.
 #' @param ... currently unused.
 #' @export
 summary.IRRsim <- function(object,
 						   method = 'loess',
 						   agreements = seq(0.10, 0.90, by = 0.1),
 						   stat,
+						   k,
 						   predict.interval = "confidence",
 						   ...) {
 	prediction.df <- NULL
 	model.out <- NULL
-	if(missing(stat)) {
+
+	test <- as.data.frame(object)
+	raters <- unique(test$k)
+	if(missing(k) & length(raters) > 1) {
+		k <- list()
 		model.out <- list()
-		prediction.df <- data.frame(Agreement = agreements)
-		for(i in c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k',
-				   'Fleiss_Kappa', 'Cohen_Kappa')) {
+		prediction.df <- list()
+		for(j in 1:length(raters)) {
 			tmp <- summary.IRRsim(object,
 								  method = method,
 								  agreements = agreements,
-								  stat = i)
-			model.out[[i]] <- tmp$model
-			prediction.df[,i] <- tmp$summary[,i]
+								  stat = stat,
+								  k = raters[j])
+			k[[j]] <- raters[j]
+			model.out[[j]] <- tmp$model
+			prediction.df[[j]] <- tmp$summary
 		}
 	} else {
-		test <- as.data.frame(object)
-		if(!stat %in% names(test)) {
-			stop(paste0("'", stat, "' is not a valid IRR statistic."))
-		}
-		if(method == 'loess') {
-			formu <- as.formula(paste0(stat, ' ~ agreement'))
-			model.out <- loess(formu, data = test)
-			predict.out <- predict(model.out, newdata = agreements,
-								   se = TRUE, interval = predict.interval)
-			prediction.df <- data.frame(Agreement = agreements,
-										IRR = predict.out$fit,
-										Low = predict.out$fit - 1.96 * predict.out$se.fit,
-										High = predict.out$fit + 1.96 * predict.out$se.fit,
-										stringsAsFactors = FALSE)
-		} else if(method == 'quadratic') {
-			model.out <- lm(as.formula(paste0(stat, ' ~ I(agreement^2) + agreement')),
-							data = test)
-			prediction.out <- predict(model.out,
-									  newdata = data.frame(agreement = agreements),
-									  interval = predict.interval)
-			prediction.df <- data.frame(Agreement = agreements,
-										IRR = prediction.out[,'fit'],
-										Low = prediction.out[,'lwr'],
-										High = prediction.out[,'upr'])
+		k <- raters[1]
+		test <- test[test$k == k,]
 
-		} else if(method == 'linear') {
-			model.out <- lm(as.formula(paste0(stat, ' ~ agreement')), data = test)
-			prediction.out <- predict(model.out,
-									  newdata = data.frame(agreement = agreements),
-									  interval = predict.interval)
-			prediction.df <- data.frame(Agreement = agreements,
-										IRR = prediction.out[,'fit'],
-										Low = prediction.out[,'lwr'],
-										High = prediction.out[,'upr'])
+		if(missing(stat)) {
+			model.out <- list()
+			prediction.df <- data.frame(Agreement = agreements)
+			for(i in c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k',
+					   'Fleiss_Kappa', 'Cohen_Kappa')) {
+				tmp <- summary.IRRsim(object,
+									  method = method,
+									  agreements = agreements,
+									  stat = i,
+									  k = k)
+				model.out[[i]] <- tmp$model
+				prediction.df[,i] <- tmp$summary[,i]
+			}
 		} else {
-			stop(paste0('Unsupported method specified: ', method))
+			if(!stat %in% names(test)) {
+				stop(paste0("'", stat, "' is not a valid IRR statistic."))
+			}
+			if(method == 'loess') {
+				formu <- as.formula(paste0(stat, ' ~ agreement'))
+				model.out <- loess(formu, data = test)
+				predict.out <- predict(model.out, newdata = agreements,
+									   se = TRUE, interval = predict.interval)
+				prediction.df <- data.frame(Agreement = agreements,
+											IRR = predict.out$fit,
+											Low = predict.out$fit - 1.96 * predict.out$se.fit,
+											High = predict.out$fit + 1.96 * predict.out$se.fit,
+											stringsAsFactors = FALSE)
+			} else if(method == 'quadratic') {
+				model.out <- lm(as.formula(paste0(stat, ' ~ I(agreement^2) + agreement')),
+								data = test)
+				prediction.out <- predict(model.out,
+										  newdata = data.frame(agreement = agreements),
+										  interval = predict.interval)
+				prediction.df <- data.frame(Agreement = agreements,
+											IRR = prediction.out[,'fit'],
+											Low = prediction.out[,'lwr'],
+											High = prediction.out[,'upr'])
+
+			} else if(method == 'linear') {
+				model.out <- lm(as.formula(paste0(stat, ' ~ agreement')), data = test)
+				prediction.out <- predict(model.out,
+										  newdata = data.frame(agreement = agreements),
+										  interval = predict.interval)
+				prediction.df <- data.frame(Agreement = agreements,
+											IRR = prediction.out[,'fit'],
+											Low = prediction.out[,'lwr'],
+											High = prediction.out[,'upr'])
+			} else {
+				stop(paste0('Unsupported method specified: ', method))
+			}
+			names(prediction.df)[2:4] <- c(stat, paste0(stat, '.Low'),
+										   paste0(stat, '.High'))
 		}
-		names(prediction.df)[2:4] <- c(stat, paste0(stat, '.Low'),
-									   paste0(stat, '.High'))
 	}
-	result <- list(model = model.out, summary = prediction.df)
+
+	result <- list(k = k, model = model.out, summary = prediction.df)
 	class(result) <- c('IRRsimSummary', 'list')
 	return(result)
 }
@@ -92,5 +117,15 @@ summary.IRRsim <- function(object,
 #' @param ... currently unused.
 #' @export
 print.IRRsimSummary <- function(x, ...) {
-	print(x$summary)
+	if(length(x$k) > 1) {
+		for(i in 1:length(x$k)) {
+			cat(paste0("Prediction table for ", x$k[[i]], " raters.\n"))
+			print(x$summary[[i]])
+			cat("\n")
+		}
+	} else {
+		cat(paste0("Prediction table for ", x$k, " raters.\n"))
+		print(x$summary)
+		cat("\n")
+	}
 }
