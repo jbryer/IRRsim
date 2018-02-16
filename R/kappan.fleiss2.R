@@ -29,8 +29,7 @@ kappam.fleiss2 <- function (ratings, exact = FALSE, detail = FALSE) {
 	if (!exact) {
 		method <- "Fleiss' Kappa for m Raters"
 		chanceP <- sum(apply(ttab, 2, sum)^2)/(ns * nr)^2
-	}
-	else {
+	} else {
 		method <- "Fleiss' Kappa for m Raters (exact value)"
 		for (i in 1:nr) {
 			rcol <- factor(ratings[, i], levels = lev)
@@ -48,7 +47,7 @@ kappam.fleiss2 <- function (ratings, exact = FALSE, detail = FALSE) {
 		qj <- 1 - pj
 		varkappa <- (2/(sum(pj * qj)^2 * (ns * nr * (nr - 1)))) *
 			(sum(pj * qj)^2 - sum(pj * qj * (qj - pj)))
-		SEkappa <- sqrt(varkappa)
+		SEkappa <- sqrt(abs(varkappa)) # JMB: Added abs
 		u <- value/SEkappa
 		p.value <- 2 * (1 - pnorm(abs(u)))
 		if (detail) {
