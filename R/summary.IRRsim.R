@@ -43,7 +43,9 @@ summary.IRRsim <- function(object,
 			prediction.df[[j]] <- tmp$summary
 		}
 	} else {
-		k <- raters[1]
+		if(missing(k)) {
+			k <- raters[1]
+		}
 		test <- test[test$k == k,]
 
 		if(missing(stat)) {
