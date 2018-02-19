@@ -87,6 +87,7 @@ simulateICC <- function(nRaters = c(2),
 			  	kf <- kappam.fleiss2(test)
 			  	ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
+			  	# NOTE: When adding IRR stats here, be sure to add them to as.data.frame.IRRsim too!
 				return(list(index = unname(params$i),
 							nLevels = nLevels,
 							nEvents = nEvents,
@@ -99,7 +100,7 @@ simulateICC <- function(nRaters = c(2),
 							ICC1k = icc$results[4,]$est,
 							ICC2k = icc$results[5,]$est,
 							ICC3k = icc$results[6,]$est,
-							Fleiss_Kappa = kf$value,
+							# Fleiss_Kappa = kf$value,
 							Cohen_Kappa = ck,
 							data = test
 				))
@@ -119,6 +120,7 @@ simulateICC <- function(nRaters = c(2),
 				kf <- kappam.fleiss2(test)
 				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
+				# NOTE: When adding IRR stats here, be sure to add them to as.data.frame.IRRsim too!
 				simData[[i]] <- list(index = i,
 									 nLevels = nLevels,
 									 nEvents = nEvents,
@@ -131,7 +133,7 @@ simulateICC <- function(nRaters = c(2),
 									 ICC1k = icc$results[4,]$est,
 									 ICC2k = icc$results[5,]$est,
 									 ICC3k = icc$results[6,]$est,
-									 Fleiss_Kappa = kf$value,
+									 # Fleiss_Kappa = kf$value,
 									 Cohen_Kappa = ck,
 									 data = test
 				)

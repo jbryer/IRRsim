@@ -51,8 +51,9 @@ summary.IRRsim <- function(object,
 		if(missing(stat)) {
 			model.out <- list()
 			prediction.df <- data.frame(Agreement = agreements)
-			for(i in c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k',
-					   'Fleiss_Kappa', 'Cohen_Kappa')) {
+			df <- as.data.frame(object)
+			irr.stats <- names(df)[6:ncol(df)]
+			for(i in irr.stats) {
 				tmp <- summary.IRRsim(object,
 									  method = method,
 									  agreements = agreements,

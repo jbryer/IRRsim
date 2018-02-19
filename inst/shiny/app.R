@@ -16,10 +16,7 @@ ui <- fluidPage(
 		numericInput('nSamples', 'Number of Samples:', value = 100, min = 10, max = 2000),
 		actionButton("simulate", "Simulate Data"),
 		hr(),
-		selectInput('ICC', 'Inter-Rater Reliability Statistic',
-					choices = c('All',
-								'ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k',
-								'Fleiss_Kappa', 'Cohen_Kappa')),
+		uiOutput('irrSelect'),
 		selectInput('predictMethod', 'Prediction Method',
 					choices = c('Linear', 'Loess', 'Quadratic'), selected = "Loess"),
 		hr(),
@@ -99,6 +96,13 @@ server <- function(input, output) {
 		if(is.null(test)) { return() }
 		round(test, digits = 3)
 	}, options = list(pageLength = 50))
+
+	output$irrSelect <- renderUI({
+		test <- as.data.frame(thedata$test)
+		if(is.null(test)) { return() }
+		selectInput('ICC', 'Inter-Rater Reliability Statistic',
+					choices = c('All', names(test)[6:ncol(test)]))
+	})
 
 	output$predictionTable <- renderTable({
 		test <- thedata$test
