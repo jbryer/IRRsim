@@ -2,6 +2,7 @@
 
 S3method(as.data.frame,IRRsim)
 S3method(plot,IRRsim)
+S3method(print,IRRsim)
 S3method(print,IRRsimSummary)
 S3method(summary,IRRsim)
 export(IRRsim_demo)
