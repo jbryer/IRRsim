@@ -1,10 +1,10 @@
 ---
-title: "Relationship between Interclass Correlation (ICC) and Percent Agreement"
+title: "Relationship between intraclass Correlation (ICC) and Percent Agreement"
 author: "Jason Bryer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Relationship between Interclass Correlation (ICC) and Percent Agreement}
+  %\VignetteIndexEntry{Relationship between intraclass Correlation (ICC) and Percent Agreement}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 set.seed(2112) # For reproducibility
 ```
 
-Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of interclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated ($R^2 > 0.9$) for most designs.
+Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated ($R^2 > 0.9$) for most designs.
 
 
 
@@ -71,7 +71,7 @@ plot(tests.5levels, stat = 'ICC1')
 plot(tests.9levels, stat = 'ICC1')
 ```
 
-The figure below show the relationship between percent rater agreement and interclass correlation for the six types of ICC.
+The figure below show the relationship between percent rater agreement and intraclass correlation for the six types of ICC.
 
 ```{r plotall}
 plot(tests.3levels)

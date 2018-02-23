@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relationship between Interclass Correlation (ICC) and Percent Agreement • IRRsim</title>
+<title>Relationship between intraclass Correlation (ICC) and Percent Agreement • IRRsim</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -60,16 +60,16 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Relationship between Interclass Correlation (ICC) and Percent Agreement</h1>
+      <h1>Relationship between intraclass Correlation (ICC) and Percent Agreement</h1>
                         <h4 class="author">Jason Bryer</h4>
             
-            <h4 class="date">2018-02-16</h4>
+            <h4 class="date">2018-02-23</h4>
           </div>
 
     
     
 <div class="contents">
-<p>Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen’s Kappa, and several types of interclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo &amp; Li, 2016; McGraw &amp; Wong, 1996; Shrout &amp; Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated (<span class="math inline">\(R^2 &gt; 0.9\)</span>) for most designs.</p>
+<p>Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen’s Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo &amp; Li, 2016; McGraw &amp; Wong, 1996; Shrout &amp; Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated (<span class="math inline">\(R^2 &gt; 0.9\)</span>) for most designs.</p>
 <p>There are several designs for establishing IRR. We are generally concerned with the ratings of <strong>m</strong> subjects by <strong>k</strong> raters. The simplest design is <span class="math inline">\(m x 2\)</span> where two raters score all <strong>m</strong> subjects. However, it common in education to have <span class="math inline">\(m &gt; 2\)</span> raters where each subject is scored by <span class="math inline">\(m = 2\)</span> resulting in a <strong>sparce</strong> matrix. Shrout and Fleiss (1979) provide guidance on which of the six types of ICC to use depending on your design. The six types of ICC considered here are:</p>
 <ul>
 <li>
@@ -109,22 +109,22 @@ tests.9levels &lt;-<span class="st"> </span><span class="kw"><a href="../referen
 <p>The <code>as.data.frame</code> function provides the IRR statistics for each of the simulated samples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test.3levels.df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tests.3levels)
 <span class="kw">dim</span>(test.3levels.df)
-<span class="co">#&gt; [1] 2700   13</span>
+<span class="co">#&gt; [1] 2700   12</span>
 <span class="kw">head</span>(test.3levels.df)
 <span class="co">#&gt;   nLevels nEvents k simAgreement agreement        ICC1        ICC2</span>
-<span class="co">#&gt; 1       3     100 6          0.1      0.08 -0.11716202 -0.12025381</span>
-<span class="co">#&gt; 2       3     100 6          0.1      0.09 -0.13343047 -0.13416363</span>
-<span class="co">#&gt; 3       3     100 6          0.1      0.16 -0.06651159 -0.07024311</span>
-<span class="co">#&gt; 4       3     100 6          0.1      0.07 -0.09580389 -0.09755575</span>
-<span class="co">#&gt; 5       3     100 6          0.1      0.10 -0.08816850 -0.08574789</span>
-<span class="co">#&gt; 6       3     100 6          0.1      0.10 -0.10110157 -0.10137109</span>
-<span class="co">#&gt;          ICC3      ICC1k      ICC2k      ICC3k Fleiss_Kappa Cohen_Kappa</span>
-<span class="co">#&gt; 1 -0.11945495 -1.6972218 -1.8095481 -1.7796989   -0.1716302  -0.3774517</span>
-<span class="co">#&gt; 2 -0.13392461 -2.4052533 -2.4454013 -2.4322149   -0.1710797  -0.3680096</span>
-<span class="co">#&gt; 3 -0.06982469 -0.5979088 -0.6496127 -0.6436676   -0.1660233  -0.2589928</span>
-<span class="co">#&gt; 4 -0.09723432 -1.1033489 -1.1427376 -1.1354101   -0.1723903  -0.3913824</span>
-<span class="co">#&gt; 5 -0.08612410 -0.9460858 -0.9006176 -0.9075575   -0.1700968  -0.3471037</span>
-<span class="co">#&gt; 6 -0.10131788 -1.2267322 -1.2333635 -1.2320514   -0.1703804  -0.3556258</span></code></pre></div>
+<span class="co">#&gt; 1       3     100 6          0.1      0.11 -0.10727820 -0.11019280</span>
+<span class="co">#&gt; 2       3     100 6          0.1      0.07 -0.09846000 -0.10158102</span>
+<span class="co">#&gt; 3       3     100 6          0.1      0.12 -0.05946062 -0.06306218</span>
+<span class="co">#&gt; 4       3     100 6          0.1      0.07 -0.10825415 -0.10772920</span>
+<span class="co">#&gt; 5       3     100 6          0.1      0.07 -0.11158157 -0.11280540</span>
+<span class="co">#&gt; 6       3     100 6          0.1      0.13 -0.06190261 -0.06190837</span>
+<span class="co">#&gt;          ICC3      ICC1k      ICC2k      ICC3k Cohen_Kappa</span>
+<span class="co">#&gt; 1 -0.10954598 -1.3883881 -1.4723915 -1.4532818  -0.3347331</span>
+<span class="co">#&gt; 2 -0.10097675 -1.1636004 -1.2385539 -1.2236732  -0.3924240</span>
+<span class="co">#&gt; 3 -0.06271203 -0.5077064 -0.5526202 -0.5481502  -0.3225128</span>
+<span class="co">#&gt; 4 -0.10784461 -1.4159221 -1.4010395 -1.4042970  -0.3899268</span>
+<span class="co">#&gt; 5 -0.11251851 -1.5143663 -1.5524640 -1.5434376  -0.3851653</span>
+<span class="co">#&gt; 6 -0.06190781 -0.5379039 -0.5379765 -0.5379694  -0.3098464</span></code></pre></div>
 <p>The following three figures show ICC1 against percent rater agreement with 3, 5, and 9 score levels, respectively.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(tests.3levels, <span class="dt">stat =</span> <span class="st">'ICC1'</span>)</code></pre></div>
 <p><img src="IRRsim_files/figure-html/ploticc1-1.png" width="672"></p>
@@ -132,7 +132,7 @@ tests.9levels &lt;-<span class="st"> </span><span class="kw"><a href="../referen
 <p><img src="IRRsim_files/figure-html/ploticc1-2.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(tests.9levels, <span class="dt">stat =</span> <span class="st">'ICC1'</span>)</code></pre></div>
 <p><img src="IRRsim_files/figure-html/ploticc1-3.png" width="672"></p>
-<p>The figure below show the relationship between percent rater agreement and interclass correlation for the six types of ICC.</p>
+<p>The figure below show the relationship between percent rater agreement and intraclass correlation for the six types of ICC.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(tests.3levels)</code></pre></div>
 <p><img src="IRRsim_files/figure-html/plotall-1.png" width="672"></p>
 <p>The literature suggests that ICC be used over percent agreement. However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the resulting <span class="math inline">\(R^2\)</span> is greater than .9!</p>
@@ -145,19 +145,19 @@ tests.9levels &lt;-<span class="st"> </span><span class="kw"><a href="../referen
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
-<span class="co">#&gt; -0.159083 -0.025538  0.000173  0.028641  0.188562 </span>
+<span class="co">#&gt; -0.138963 -0.024599  0.000255  0.023584  0.177872 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
 <span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -0.062160   0.005428  -11.45   &lt;2e-16 ***</span>
-<span class="co">#&gt; I(agreement^2)  1.144411   0.024145   47.40   &lt;2e-16 ***</span>
-<span class="co">#&gt; agreement      -0.260290   0.024853  -10.47   &lt;2e-16 ***</span>
+<span class="co">#&gt; (Intercept)    -0.062736   0.005254 -11.942   &lt;2e-16 ***</span>
+<span class="co">#&gt; I(agreement^2)  1.104572   0.023776  46.458   &lt;2e-16 ***</span>
+<span class="co">#&gt; agreement      -0.231651   0.024266  -9.546   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.04438 on 897 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.9679, Adjusted R-squared:  0.9679 </span>
-<span class="co">#&gt; F-statistic: 1.354e+04 on 2 and 897 DF,  p-value: &lt; 2.2e-16</span>
+<span class="co">#&gt; Residual standard error: 0.0426 on 897 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9684, Adjusted R-squared:  0.9683 </span>
+<span class="co">#&gt; F-statistic: 1.374e+04 on 2 and 897 DF,  p-value: &lt; 2.2e-16</span>
 <span class="kw">summary</span>(tests.3levels.sum<span class="op">$</span>model[[<span class="dv">2</span>]]) <span class="co"># k = 9 raters</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -166,19 +166,19 @@ tests.9levels &lt;-<span class="st"> </span><span class="kw"><a href="../referen
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
-<span class="co">#&gt; -0.169353 -0.025989  0.000799  0.024438  0.254371 </span>
+<span class="co">#&gt; -0.150970 -0.026690  0.001841  0.023108  0.248758 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -0.0009702  0.0056476  -0.172    0.864    </span>
-<span class="co">#&gt; I(agreement^2)  1.1899443  0.0251324  47.347   &lt;2e-16 ***</span>
-<span class="co">#&gt; agreement      -0.4692322  0.0258750 -18.135   &lt;2e-16 ***</span>
+<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)    -0.002046   0.005554  -0.368    0.713    </span>
+<span class="co">#&gt; I(agreement^2)  1.165323   0.024650  47.275   &lt;2e-16 ***</span>
+<span class="co">#&gt; agreement      -0.457918   0.025370 -18.050   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.04637 on 897 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.9512, Adjusted R-squared:  0.9511 </span>
-<span class="co">#&gt; F-statistic:  8736 on 2 and 897 DF,  p-value: &lt; 2.2e-16</span>
+<span class="co">#&gt; Residual standard error: 0.04472 on 897 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9518, Adjusted R-squared:  0.9517 </span>
+<span class="co">#&gt; F-statistic:  8861 on 2 and 897 DF,  p-value: &lt; 2.2e-16</span>
 <span class="kw">summary</span>(tests.3levels.sum<span class="op">$</span>model[[<span class="dv">3</span>]]) <span class="co"># k = 12 raters</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -187,19 +187,19 @@ tests.9levels &lt;-<span class="st"> </span><span class="kw"><a href="../referen
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
-<span class="co">#&gt; -0.135887 -0.028728  0.003717  0.024922  0.305594 </span>
+<span class="co">#&gt; -0.159152 -0.026720  0.003028  0.024621  0.271278 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)     0.030130   0.005727   5.261 1.79e-07 ***</span>
-<span class="co">#&gt; I(agreement^2)  1.179770   0.025638  46.017  &lt; 2e-16 ***</span>
-<span class="co">#&gt; agreement      -0.572673   0.026326 -21.753  &lt; 2e-16 ***</span>
+<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)     0.02459    0.00574   4.284 2.04e-05 ***</span>
+<span class="co">#&gt; I(agreement^2)  1.14063    0.02549  44.747  &lt; 2e-16 ***</span>
+<span class="co">#&gt; agreement      -0.53271    0.02625 -20.293  &lt; 2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.04628 on 897 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.9343, Adjusted R-squared:  0.9341 </span>
-<span class="co">#&gt; F-statistic:  6375 on 2 and 897 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
+<span class="co">#&gt; Residual standard error: 0.04632 on 897 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9343, Adjusted R-squared:  0.9342 </span>
+<span class="co">#&gt; F-statistic:  6380 on 2 and 897 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
 </div>
   </div>
 

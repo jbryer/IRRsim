@@ -1,4 +1,4 @@
-#' Calultes interclass correlations (ICC) for simulated samples of raters and
+#' Calultes intraclass correlations (ICC) for simulated samples of raters and
 #' evaluations.
 #'
 #' @param nRaters the number of raters

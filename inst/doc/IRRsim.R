@@ -15,7 +15,7 @@ test
 ## ----agreementTest-------------------------------------------------------
 agreement(test)
 
-## ----simulate, cache = TRUE, message = FALSE, warning = FALSE, results = 'hide'----
+## ----simulate, cache = FALSE, message = FALSE, warning = FALSE, results = 'hide'----
 tests.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3)
 tests.5levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 5)
 tests.9levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 9)

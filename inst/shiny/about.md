@@ -4,7 +4,7 @@
 
 This shiny app is included in the `IRRsim` R package. You can get more information a Github repository for the package: https://github.com/jbryer/IRRsim
 
-The interclass correlations (ICC) are caluclated using the `ICC` function in the  [`DescTools`](https://cran.r-project.org/web/packages/DescTools/index.html) package. For more information about ICC, see [Shrout and Fleiss](https://cran.r-project.org/web/packages/DescTools/index.html) (1979).
+The intraclass correlations (ICC) are caluclated using the `ICC` function in the  [`DescTools`](https://cran.r-project.org/web/packages/DescTools/index.html) package. For more information about ICC, see [Shrout and Fleiss](https://cran.r-project.org/web/packages/DescTools/index.html) (1979).
 
 #### Options
 
