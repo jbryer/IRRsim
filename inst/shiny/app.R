@@ -1,6 +1,8 @@
 library(shiny)
 library(IRRsim)
 
+# TODO: Add number of raters who score a test
+
 ########## UI
 ui <- fluidPage(
 
@@ -12,7 +14,7 @@ ui <- fluidPage(
       sidebarPanel(
       	sliderInput('nLevels', 'Number of Scoring Levels:', min = 2, max = 10, value = 3, round = TRUE),
 		sliderInput('nRaters', 'Number of Raters:', min = 2, max = 26, value = 6, round = TRUE),
-		numericInput('nEvents', 'Number of Ratings per Sample:', value = 100, min = 10),
+		numericInput('nEvents', 'Number of Tests per Sample:', value = 100, min = 10),
 		numericInput('nSamples', 'Number of Samples:', value = 100, min = 10, max = 2000),
 		actionButton("simulate", "Simulate Data"),
 		hr(),
