@@ -13,3 +13,4 @@
 #' @importFrom snow makeCluster clusterEvalQ stopCluster
 #' @importFrom doSNOW registerDoSNOW
 NA
+

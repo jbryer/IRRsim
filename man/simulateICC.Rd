@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulateICC.R
 \name{simulateICC}
 \alias{simulateICC}
-\title{Calultes intraclass correlations (ICC) for simulated samples of raters and
+\title{Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.}
 \usage{
 simulateICC(nRaters = c(2), nLevels = 3, nEvents = 100, nSamples = 100,
@@ -49,7 +49,7 @@ a list of length \code{nSamples * length(nRaters) * length(agreements)}.
        }
 }
 \description{
-Calultes intraclass correlations (ICC) for simulated samples of raters and
+Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.
 }
 \examples{
