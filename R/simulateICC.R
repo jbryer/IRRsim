@@ -1,4 +1,4 @@
-#' Calultes intraclass correlations (ICC) for simulated samples of raters and
+#' Calculates intraclass correlations (ICC) for simulated samples of raters and
 #' evaluations.
 #'
 #' @param nRaters the number of raters
@@ -82,18 +82,24 @@ simulateICC <- function(nRaters = c(2),
 													 k = params$k,
 													 agree = params$agree,
 													 response.probs = response.probs)
+				test2 <- as.integer(test)
+				skew <- DescTools::Skew(test2, na.rm = TRUE)
+				kurtosis <- DescTools::Kurt(test2, na.rm = TRUE)
 			  	icc <- DescTools::ICC(test)
 			  	tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
 			  	kf <- kappam.fleiss2(test)
 			  	ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
-			  	# NOTE: When adding IRR stats here, be sure to add them to as.data.frame.IRRsim too!
+			  	# NOTE: When adding IRR stats here, be sure to add them to
+			  	# as.data.frame.IRRsim too!
 				return(list(index = unname(params$i),
 							nLevels = nLevels,
 							nEvents = nEvents,
 							k = unname(params$k),
 							simAgreement = unname(params$agree),
 							agreement = agreement(test),
+							skewness = skew,
+							kurtosis = kurt,
 							ICC1 = icc$results[1,]$est,
 							ICC2 = icc$results[2,]$est,
 							ICC3 = icc$results[3,]$est,
@@ -115,18 +121,24 @@ simulateICC <- function(nRaters = c(2),
 													 k = tests[i,]$k,
 													 agree = tests[i,]$simAgreement,
 													 response.probs = response.probs)
+				test2 <- as.integer(test)
+				skew <- DescTools::Skew(test2, na.rm = TRUE)
+				kurtosis <- DescTools::Kurt(test2, na.rm = TRUE)
 				icc <- DescTools::ICC(test)
 				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
 				kf <- kappam.fleiss2(test)
 				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
-				# NOTE: When adding IRR stats here, be sure to add them to as.data.frame.IRRsim too!
+				# NOTE: When adding IRR stats here, be sure to add them to
+				# as.data.frame.IRRsim too!
 				simData[[i]] <- list(index = i,
 									 nLevels = nLevels,
 									 nEvents = nEvents,
 									 k = tests[i,]$k,
 									 simAgreement = tests[i,]$simAgreement,
 									 agreement = agreement(test),
+									 skewness = skew,
+									 kurtosis = kurt,
 									 ICC1 = icc$results[1,]$est,
 									 ICC2 = icc$results[2,]$est,
 									 ICC3 = icc$results[3,]$est,
