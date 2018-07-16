@@ -4,3 +4,6 @@
 .Ruserdata
 vignettes/IRRsim_cache
 Articles/
+inst/slides/IRRsim-Presentation_cache
+inst/slides/IRRsim-Presentation_files
+IRRsimulations.rda

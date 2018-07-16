@@ -36,6 +36,9 @@ a list of length \code{nSamples * length(nRaters) * length(agreements)}.
        \item{k}{the number of raters used in the simulation.}
        \item{simAgreement}{the calculated percent agreement from the sample.}
        \item{agreement}{the specified percent agreement used for drawing the random sample.}
+       \item{skewness}{skewness of all responses.}
+       \item{kurtosis}{Kurtosis for all responses.}
+       \item{MaxResponseDiff}{the difference between the most and least freqeuent responses.}
        \item{ICC1}{ICC1 as described in Shrout and Fleiss (1979)}
        \item{ICC2}{ICC2 as described in Shrout and Fleiss (1979)}
        \item{ICC3}{ICC3 as described in Shrout and Fleiss (1979)}
