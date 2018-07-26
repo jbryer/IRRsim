@@ -2,8 +2,9 @@ library(shiny)
 library(IRRsim)
 
 # TODO: Add number of raters who score a test
+Cicchetti <- c(0.4, 0.6, 0.75)
 
-########## UI
+########## UI ##################################################################
 ui <- fluidPage(
 
    # Application title
@@ -18,6 +19,7 @@ ui <- fluidPage(
 		numericInput('nSamples', 'Number of Samples:', value = 100, min = 10, max = 2000),
 		actionButton("simulate", "Simulate Data"),
 		hr(),
+		checkboxInput('includeCicchetti', 'Include Cicchetti Guidelines'),
 		uiOutput('irrSelect'),
 		selectInput('predictMethod', 'Prediction Method',
 					choices = c('Linear', 'Loess', 'Quadratic'), selected = "Loess"),
@@ -42,7 +44,7 @@ ui <- fluidPage(
    )
 )
 
-########## Server
+########## Server ##############################################################
 predict.agreements <- seq(0.05, 0.95, by = 0.05)
 predict.interval <- "confidence"
 cache <- list()
@@ -103,7 +105,7 @@ server <- function(input, output) {
 		test <- as.data.frame(thedata$test)
 		if(is.null(test)) { return() }
 		selectInput('ICC', 'Inter-Rater Reliability Statistic',
-					choices = c('All', names(test)[6:ncol(test)]))
+					choices = c('All', names(test)[9:ncol(test)]))
 	})
 
 	output$predictionTable <- renderTable({
@@ -154,15 +156,42 @@ server <- function(input, output) {
 		if(input$ICC == 'All') {
 			p <- plot(test,
 					  method = tolower(input$predictMethod))
+			if(input$includeCicchetti) {
+				p <- p + geom_hline(yintercept = c(0.4, 0.6, 0.75))
+			}
 		} else {
 			p <- plot(test,
 					  stat = input$ICC,
 					  method = tolower(input$predictMethod))
+
+			if(input$includeCicchetti) {
+				model.out <- summary(test,
+									 stat = input$ICC,
+									 method = tolower(input$predictMethod)
+				)$model
+				newdata = data.frame(agreement = seq(0.01, 1, 0.01))
+				predictions <- predict(model.out, newdata = newdata)
+				tab <- data.frame(ICC = Cicchetti,
+								  Agreement = sapply(Cicchetti, FUN = function(x) {
+								  	min(which(predictions >= x)) / 100 }))
+				for(i in length(Cicchetti)) {
+					p <- p +
+						geom_segment(data = tab, color = 'black', x = -Inf,
+									 aes(y = ICC, yend = ICC, xend = Agreement)) +
+						geom_segment(data = tab, color = 'black', y = -Inf,
+									 aes(x = Agreement, xend = Agreement, yend = ICC)) +
+						geom_text(data = tab, aes(x = 0, y = ICC, label = ICC),
+								  color = 'black', vjust = -0.5, size = 3) +
+						geom_text(data = tab, aes(x = Agreement, y = 0,
+												  label = paste0(round(Agreement*100), '%')),
+								  color = 'black', size = 3, hjust = -0.1)
+				}
+			}
 		}
 		return(p)
 	})
 }
 
-########## Run the application
+########## Run the application #################################################
 shinyApp(ui = ui, server = server)
 
