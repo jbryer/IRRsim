@@ -1,8 +1,12 @@
 library(IRRsim)
+library(magrittr)
+
+Cicchetti <- c(0.4, 0.6, 0.75) # Cicchetti's (1994) guidelines
 
 # How Cohen's kappa is calculated with m > 2 raters. Note that Cohen's kappa is only appropriate
 # for two raters.
-test <- simulateRatingMatrix(nLevels = 3, k = 2, agree = 0.6, nEvents = 100)
+test <- simulateRatingMatrix(nLevels = 3, k = 4, agree = 0.6, nEvents = 100)
+head(test)
 tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
 DescTools::CohenKappa(tmp[,1], tmp[,2])
 # How the ICC stats are calculated
@@ -12,6 +16,7 @@ DescTools::ICC(test)
 ##### Simple test (from the examples)
 icctest <- simulateICC(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
 icctest
+head(as.data.frame(icctest))
 
 ##### Test with 6 raters with 3 response levels
 # Simulate in parallel
@@ -29,12 +34,28 @@ icc1.summary
 summary(icc1.summary$model)
 plot(test1, stat = 'ICC1')
 
+# Cicchetti's guidelines
+newdata = data.frame(agreement = seq(0.01, 1, 0.01))
+predictions <- predict(icc1.summary$model, newdata = newdata)
+tab <- data.frame(ICC = Cicchetti,
+		   Agreement = sapply(Cicchetti, FUN = function(x) { min(which(predictions >= x)) / 100 }))
+plot(test1, stat = 'ICC1', method = 'quadratic') +
+	geom_segment(data = tab, color = 'black', x = -Inf,
+				 aes(y = ICC, yend = ICC, xend = Agreement)) +
+	geom_segment(data = tab, color = 'black', y = -Inf,
+				 aes(x = Agreement, xend = Agreement, yend = ICC)) +
+	geom_text(data = tab, aes(x = 0, y = ICC, label = ICC),
+			  color = 'black', vjust = -0.5, size = 3) +
+	geom_text(data = tab, aes(x = Agreement, y = min(predictions),
+							  label = paste0(round(Agreement*100), '%')),
+			  color = 'black', size = 3, hjust = -0.1)
+
 
 # Get the distribution of scores
 tmp <- sapply(test1, FUN = function(x) { as.integer(x$data) })
 prop.table(table(tmp))
 
-test3 <- simulateICC(response.pro0bs = c(.1, .3, .6))
+test3 <- simulateICC(response.probs = c(.1, .3, .6))
 tmp3 <- sapply(test3, FUN = function(x) { as.integer(x$data) })
 prop.table(table(tmp3))
 
@@ -46,6 +67,10 @@ test1.3levels.df <- as.data.frame(test1.3levels)
 # Check the actual distribution
 tmp <- unlist(sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }))
 prop.table(table(tmp))
+
+sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }) %>%
+	unlist %>% table %>% prop.table
+
 
 plot(test1.3levels, stat = 'ICC1')
 
@@ -96,5 +121,18 @@ ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist, linetype = factor(k))) +
 	# geom_point(alpha = 0.1) +
 	geom_hline(yintercept = c(0.4, 0.6, 0.75), alpha = 0.5) +
-	geom_vline(xintercept = c(0.7), alpha = 0.5) +
-	geom_smooth(method = 'loess', se = FALSE)
+	# geom_vline(xintercept = c(0.7), alpha = 0.5) +
+	geom_smooth(method = 'loess', se = FALSE) +
+	scale_linetype('n Raters') +
+	xlab('Percent Agreement') +
+	ggtitle('ICC1 vs Percent Agreement')
+
+
+ggplot(test.3levels.df, aes(x = agreement, y = ICC1k, color = ResponseDist, linetype = factor(k))) +
+	# geom_point(alpha = 0.1) +
+	geom_hline(yintercept = c(0.4, 0.6, 0.75), alpha = 0.5) +
+	# geom_vline(xintercept = c(0.7), alpha = 0.5) +
+	geom_smooth(method = 'loess', se = FALSE) +
+	scale_linetype('n Raters') +
+	xlab('Percent Agreement') +
+	ggtitle('ICC1k vs Percent Agreement')
