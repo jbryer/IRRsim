@@ -9,7 +9,7 @@ simulateICC(nRaters = c(2), nLevels = 3, nEvents = 100, nSamples = 100,
   agreements = seq(0.1, 0.9, by = 0.1), response.probs = rep(1/nLevels,
   nLevels), showShinyProgress = FALSE,
   showTextProgress = !showShinyProgress, numCores = (parallel::detectCores()
-  - 1), parallel = (numCores > 1))
+  - 1), parallel = (numCores > 1), ...)
 }
 \arguments{
 \item{nRaters}{the number of raters}
@@ -28,6 +28,8 @@ See \code{\link{simulateRatingMatrix}} for more information.}
 \item{numCores}{number of cores to use if the simulation is run in parallel.}
 
 \item{parallel}{whether to simulated the data using multiple cores.}
+
+\item{...}{other parameters.}
 }
 \value{
 a list of length \code{nSamples * length(nRaters) * length(agreements)}.

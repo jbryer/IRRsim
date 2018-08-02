@@ -10,6 +10,7 @@
 #'        See \code{\link{simulateRatingMatrix}} for more information.
 #' @param parallel whether to simulated the data using multiple cores.
 #' @param numCores number of cores to use if the simulation is run in parallel.
+#' @param ... other parameters.
 #' @return a list of length \code{nSamples * length(nRaters) * length(agreements)}.
 #'        Each element of the list represents one simulation with the following
 #'        values: \describe{
@@ -44,8 +45,8 @@ simulateICC <- function(nRaters = c(2),
 						showShinyProgress = FALSE,
 						showTextProgress = !showShinyProgress,
 						numCores = (parallel::detectCores() - 1),
-						parallel = (numCores > 1) ) {
-
+						parallel = (numCores > 1),
+						...) {
 	totalIterations <- nSamples * length(nRaters) * length(agreements)
 
 	if(showTextProgress) {
@@ -86,13 +87,24 @@ simulateICC <- function(nRaters = c(2),
 													 agree = params$agree,
 													 response.probs = response.probs)
 				test2 <- as.integer(test)
+				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+
+				# Using DescTools package
 				skew <- DescTools::Skew(test2, na.rm = TRUE)
 				kurtosis <- DescTools::Kurt(test2, na.rm = TRUE)
+				icc <- DescTools::ICC(test)
+				icc.col <- 'est'
+				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
+
+				# Using psych package
+				# skew <- psych::skew(test2, na.rm = TRUE)
+				# kurtosis <- psych::kurtosi(test2, na.rm = TRUE)
+				# icc <- psych::ICC(test)
+				# icc.col <- 'ICC'
+				# ck <- psych::cohen.kappa(tmp)$kappa
+
 				MaxResponseDiff <- abs(max(diff(prop.table(table(test2)))))
-			  	icc <- DescTools::ICC(test)
-			  	tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
 			  	kf <- kappam.fleiss2(test)
-			  	ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
 
 			  	# NOTE: When adding IRR stats here, be sure to add them to
 			  	# as.data.frame.IRRsim too!
@@ -105,12 +117,12 @@ simulateICC <- function(nRaters = c(2),
 							skewness = skew,
 							kurtosis = kurtosis,
 							MaxResponseDiff = MaxResponseDiff,
-							ICC1 = icc$results[1,]$est,
-							ICC2 = icc$results[2,]$est,
-							ICC3 = icc$results[3,]$est,
-							ICC1k = icc$results[4,]$est,
-							ICC2k = icc$results[5,]$est,
-							ICC3k = icc$results[6,]$est,
+							ICC1 = icc$results['Single_raters_absolute',icc.col],
+							ICC2 = icc$results['Single_random_raters',icc.col],
+							ICC3 = icc$results['Single_fixed_raters',icc.col],
+							ICC1k = icc$results['Average_raters_absolute',icc.col],
+							ICC2k = icc$results['Average_random_raters',icc.col],
+							ICC3k = icc$results['Average_fixed_raters',icc.col],
 							# Fleiss_Kappa = kf$value,
 							Cohen_Kappa = ck,
 							data = test
@@ -127,13 +139,24 @@ simulateICC <- function(nRaters = c(2),
 													 agree = tests[i,]$simAgreement,
 													 response.probs = response.probs)
 				test2 <- as.integer(test)
+				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+
+				# Using DescTools package
 				skew <- DescTools::Skew(test2, na.rm = TRUE)
 				kurtosis <- DescTools::Kurt(test2, na.rm = TRUE)
-				MaxResponseDiff <- abs(max(diff(prop.table(table(test2)))))
 				icc <- DescTools::ICC(test)
-				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
-				kf <- kappam.fleiss2(test)
+				icc.col <- 'est'
 				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
+
+				# Using psych package
+				# skew <- psych::skew(test2, na.rm = TRUE)
+				# kurtosis <- psych::kurtosi(test2, na.rm = TRUE)
+				# icc <- psych::ICC(test)
+				# icc.col <- 'ICC'
+				# ck <- psych::cohen.kappa(tmp)$kappa
+
+				MaxResponseDiff <- abs(max(diff(prop.table(table(test2)))))
+				kf <- kappam.fleiss2(test)
 
 				# NOTE: When adding IRR stats here, be sure to add them to
 				# as.data.frame.IRRsim too!
@@ -146,12 +169,12 @@ simulateICC <- function(nRaters = c(2),
 									 skewness = skew,
 									 kurtosis = kurtosis,
 									 MaxResponseDiff = MaxResponseDiff,
-									 ICC1 = icc$results[1,]$est,
-									 ICC2 = icc$results[2,]$est,
-									 ICC3 = icc$results[3,]$est,
-									 ICC1k = icc$results[4,]$est,
-									 ICC2k = icc$results[5,]$est,
-									 ICC3k = icc$results[6,]$est,
+									 ICC1 = icc$results['Single_raters_absolute',icc.col],
+									 ICC2 = icc$results['Single_random_raters',icc.col],
+									 ICC3 = icc$results['Single_fixed_raters',icc.col],
+									 ICC1k = icc$results['Average_raters_absolute',icc.col],
+									 ICC2k = icc$results['Average_random_raters',icc.col],
+									 ICC3k = icc$results['Average_fixed_raters',icc.col],
 									 # Fleiss_Kappa = kf$value,
 									 Cohen_Kappa = ck,
 									 data = test

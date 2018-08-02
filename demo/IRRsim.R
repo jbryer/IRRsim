@@ -1,16 +1,18 @@
 library(IRRsim)
 library(magrittr)
 
-Cicchetti <- c(0.4, 0.6, 0.75) # Cicchetti's (1994) guidelines
+# Guidelines for interpreting IRR
+data(IRRguidelines)
+
+set.seed(2112)
 
 # How Cohen's kappa is calculated with m > 2 raters. Note that Cohen's kappa is only appropriate
 # for two raters.
-test <- simulateRatingMatrix(nLevels = 3, k = 4, agree = 0.6, nEvents = 100)
-head(test)
-tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
-DescTools::CohenKappa(tmp[,1], tmp[,2])
+test <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 100)
+print(head(test), na.print = '')
+psych::cohen.kappa(test)$av.kapp
 # How the ICC stats are calculated
-DescTools::ICC(test)
+psych::ICC(test)
 
 
 ##### Simple test (from the examples)
@@ -37,8 +39,9 @@ plot(test1, stat = 'ICC1')
 # Cicchetti's guidelines
 newdata = data.frame(agreement = seq(0.01, 1, 0.01))
 predictions <- predict(icc1.summary$model, newdata = newdata)
-tab <- data.frame(ICC = Cicchetti,
-		   Agreement = sapply(Cicchetti, FUN = function(x) { min(which(predictions >= x)) / 100 }))
+tab <- data.frame(ICC = IRRguidelines[['Cicchetti']],
+				  Agreement = sapply(IRRguidelines[['Cicchetti']],
+				  				   FUN = function(x) { min(which(predictions >= x)) / 100 }))
 plot(test1, stat = 'ICC1', method = 'quadratic') +
 	geom_segment(data = tab, color = 'black', x = -Inf,
 				 aes(y = ICC, yend = ICC, xend = Agreement)) +

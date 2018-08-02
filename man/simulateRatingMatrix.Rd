@@ -28,5 +28,5 @@ This function will generate a \code{nEvents} x \code{k} scoring matrix.
 }
 \examples{
 test <- simulateRatingMatrix(nLevels = 3, k = 2, agree = 0.6, nEvents = 100)
-DescTools::ICC(test)
+psych::ICC(test)
 }

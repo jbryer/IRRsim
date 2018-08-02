@@ -13,6 +13,7 @@ plot.IRRsim <- function(x,
 						method = 'loess',
 						stat,
 						point.alpha = 0.3,
+						title = TRUE,
 						...) {
 	p <- NULL
 	test <- as.data.frame(x)
@@ -25,9 +26,12 @@ plot.IRRsim <- function(x,
 			geom_point(alpha = point.alpha) +
 			facet_wrap(~ variable) +
 			xlim(c(0,1)) +
-			xlab('Percent Rater Agreement') + ylab('ICC') +
-			ggtitle(paste0('Inter-Rater Reliability with ', test[1,]$nLevels,
-						   ' Scoring Levels and ', test[1,]$k, ' Raters'))
+			xlab('Percent Rater Agreement') + ylab('ICC')
+		if(title) {
+			p <- p + ggtitle(paste0('Inter-Rater Reliability with ', test[1,]$nLevels,
+						   ' Scoring Levels and ',
+						   paste0(unique(test$k), collapse = ', '), ' Raters'))
+		}
 	} else {
 		if(!stat %in% names(test)) {
 			stop(paste0(stat, ' is not a valid IRR statistic.'))
@@ -35,9 +39,12 @@ plot.IRRsim <- function(x,
 		p <- ggplot(test, aes_string(x = 'agreement', y = stat, color = 'k')) +
 			geom_point(alpha = point.alpha) +
 			xlim(c(0,1)) +
-			xlab('Percent Rater Agreement') + ylab(stat) +
-			ggtitle(paste0(stat, ' with ', test[1,]$nLevels, ' Scoring Levels and ',
+			xlab('Percent Rater Agreement') + ylab(stat)
+		if(title) {
+			p <- p + ggtitle(paste0(stat, ' with ', paste0(unique(test$k), collapse = ', '),
+						   ' Scoring Levels and ',
 						   test[1,]$k, ' Raters'))
+		}
 	}
 
 	if(length(unique(test$k)) > 1) {

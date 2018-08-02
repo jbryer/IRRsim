@@ -15,7 +15,7 @@
 #' @export
 #' @examples
 #' test <- simulateRatingMatrix(nLevels = 3, k = 2, agree = 0.6, nEvents = 100)
-#' DescTools::ICC(test)
+#' psych::ICC(test)
 simulateRatingMatrix <- function(nLevels, k, agree, nEvents = 100,
 								 response.probs = rep(1 / nLevels, nLevels)) {
 	raters <- letters[1:k]
