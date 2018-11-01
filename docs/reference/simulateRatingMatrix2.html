@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • IRRsim</title>
+<title>Simulate a rating matrix with two ratings per event. — simulateRatingMatrix2 • IRRsim</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,15 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Simulate a rating matrix with two ratings per event. — simulateRatingMatrix2" />
+
+<meta property="og:description" content="This is a alternative implementation of the simulateRatingMatrix
+function for when each event is has two ratings from k available raters.
+For each event, one rater is randomly selected and given a rating from the
+distribution defined by the response.probs parameter. A second randomly
+selected rater will have the same rating with a probability defined by the
+ agree parameter." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +54,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -97,17 +105,64 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Simulate a rating matrix with two ratings per event.</h1>
+    <small class="dont-index">Source: <a href='http://github.com/jbryer/IRRsim/blob/master/R/simulateRatingMatrix.R'><code>R/simulateRatingMatrix.R</code></a></small>
+    <div class="hidden name"><code>simulateRatingMatrix2.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="IRRsim.html">Relationship Between Intraclass Correlation (ICC) and Percent Agreement</a></li>
-      </ul>
+    <div class="ref-description">
+    
+    <p>This is a alternative implementation of the <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code>
+function for when each event is has two ratings from k available raters.
+For each event, one rater is randomly selected and given a rating from the
+distribution defined by the <code>response.probs</code> parameter. A second randomly
+selected rater will have the same rating with a probability defined by the
+ <code>agree</code> parameter.</p>
+    
     </div>
+
+    <pre class="usage"><span class='fu'>simulateRatingMatrix2</span>(<span class='no'>nLevels</span>, <span class='no'>k</span>, <span class='no'>agree</span>, <span class='kw'>nEvents</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>response.probs</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>/<span class='no'>nLevels</span>, <span class='no'>nLevels</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>nLevels</th>
+      <td><p>the number of possible outcomes there are for each rating.</p></td>
+    </tr>
+    <tr>
+      <th>k</th>
+      <td><p>the total number of available raters.</p></td>
+    </tr>
+    <tr>
+      <th>agree</th>
+      <td><p>the percent of time the raters agree. Note that the actual
+agreement of the simulated matrix will vary from this value
+(see sample).</p></td>
+    </tr>
+    <tr>
+      <th>nEvents</th>
+      <td><p>the number of rating events within each matrix.</p></td>
+    </tr>
+    <tr>
+      <th>response.probs</th>
+      <td><p>probability weights for the distribution of scores. By
+default, each of the levels has equal probability of being selected.
+This allows situations where some responses are more common than
+others (e.g. 50% of students get a 3, 30% get a 2, and 20% get a 1).
+This is independent of the percent agreement parameter.</p></td>
+    </tr>
+    </table>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 

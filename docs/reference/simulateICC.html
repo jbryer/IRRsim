@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calultes intraclass correlations (ICC) for simulated samples of raters and
+<title>Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations. — simulateICC • IRRsim</title>
 
 <!-- jquery -->
@@ -19,13 +19,27 @@ evaluations. — simulateICC • IRRsim</title>
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Calculates intraclass correlations (ICC) for simulated samples of raters and
+evaluations. — simulateICC" />
+
+<meta property="og:description" content="Calculates intraclass correlations (ICC) for simulated samples of raters and
+evaluations." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -48,8 +62,12 @@ evaluations. — simulateICC • IRRsim</title>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">IRRsim</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">IRRsim</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -59,7 +77,7 @@ evaluations. — simulateICC • IRRsim</title>
   </a>
 </li>
 <li>
-  <a href="../articles/IRRsim.html">Get Started</a>
+  <a href="../articles/IRRsim.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -74,6 +92,7 @@ evaluations. — simulateICC • IRRsim</title>
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -81,30 +100,39 @@ evaluations. — simulateICC • IRRsim</title>
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calultes intraclass correlations (ICC) for simulated samples of raters and
+    <h1>Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.</h1>
+    <small class="dont-index">Source: <a href='http://github.com/jbryer/IRRsim/blob/master/R/simulateICC.R'><code>R/simulateICC.R</code></a></small>
+    <div class="hidden name"><code>simulateICC.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Calultes intraclass correlations (ICC) for simulated samples of raters and
+    <p>Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>simulateICC</span>(<span class='kw'>nRaters</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>), <span class='kw'>nLevels</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nEvents</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>nSamples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>agreements</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>), <span class='kw'>response.probs</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>/<span class='no'>nLevels</span>,
-  <span class='no'>nLevels</span>), <span class='kw'>showShinyProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>showTextProgress</span> <span class='kw'>=</span> !<span class='no'>showShinyProgress</span>, <span class='kw'>numCores</span> <span class='kw'>=</span> (<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>()
-  - <span class='fl'>1</span>), <span class='kw'>parallel</span> <span class='kw'>=</span> (<span class='no'>numCores</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>))</pre>
+    <pre class="usage"><span class='fu'>simulateICC</span>(<span class='kw'>nRaters</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>), <span class='kw'>nRatersPerEvent</span> <span class='kw'>=</span> <span class='no'>nRaters</span>, <span class='kw'>nLevels</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>nEvents</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>nSamples</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>agreements</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='kw'>by</span> <span class='kw'>=</span>
+  <span class='fl'>0.1</span>), <span class='kw'>response.probs</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>/<span class='no'>nLevels</span>, <span class='no'>nLevels</span>),
+  <span class='kw'>showShinyProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showTextProgress</span> <span class='kw'>=</span> !<span class='no'>showShinyProgress</span>,
+  <span class='kw'>numCores</span> <span class='kw'>=</span> (<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>() - <span class='fl'>1</span>), <span class='kw'>parallel</span> <span class='kw'>=</span> (<span class='no'>numCores</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>),
+  <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>nRaters</th>
-      <td><p>the number of raters</p></td>
+      <td><p>the number of available raters</p></td>
+    </tr>
+    <tr>
+      <th>nRatersPerEvent</th>
+      <td><p>the number of ratings for each per scoring event.</p></td>
     </tr>
     <tr>
       <th>nLevels</th>
@@ -135,6 +163,10 @@ See <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code> fo
       <th>parallel</th>
       <td><p>whether to simulated the data using multiple cores.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other parameters.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -145,6 +177,9 @@ See <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code> fo
        <dt>k</dt><dd><p>the number of raters used in the simulation.</p></dd>
        <dt>simAgreement</dt><dd><p>the calculated percent agreement from the sample.</p></dd>
        <dt>agreement</dt><dd><p>the specified percent agreement used for drawing the random sample.</p></dd>
+       <dt>skewness</dt><dd><p>skewness of all responses.</p></dd>
+       <dt>kurtosis</dt><dd><p>Kurtosis for all responses.</p></dd>
+       <dt>MaxResponseDiff</dt><dd><p>the difference between the most and least freqeuent responses.</p></dd>
        <dt>ICC1</dt><dd><p>ICC1 as described in Shrout and Fleiss (1979)</p></dd>
        <dt>ICC2</dt><dd><p>ICC2 as described in Shrout and Fleiss (1979)</p></dd>
        <dt>ICC3</dt><dd><p>ICC3 as described in Shrout and Fleiss (1979)</p></dd>
@@ -160,33 +195,12 @@ See <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code> fo
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>as.data.frame.IRRsim</p>
+    <div class='dont-index'><p>as.data.frame.IRRsim</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>icctest</span> <span class='kw'>&lt;-</span> <span class='fu'>simulateICC</span>(<span class='kw'>nLevels</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nRaters</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nSamples</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showTextProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>summary</span>(<span class='no'>icctest</span>)</div><div class='output co'>#&gt; Prediction table for 2 raters.
-#&gt;   Agreement        ICC1        ICC2        ICC3      ICC1k      ICC2k
-#&gt; 1       0.1 -0.35808096 -0.35785164 -0.35730917 -1.1710758 -1.1789935
-#&gt; 2       0.2 -0.21609620 -0.21748009 -0.21724811 -0.6105485 -0.6168885
-#&gt; 3       0.3 -0.06998181 -0.07177004 -0.07187130 -0.1740124 -0.1779737
-#&gt; 4       0.4  0.07961610  0.07861519  0.07823714  0.1387145  0.1376035
-#&gt; 5       0.5  0.22635564  0.22644618  0.22686947  0.3712438  0.3711895
-#&gt; 6       0.6  0.37868379  0.37951439  0.38007295  0.5474608  0.5485023
-#&gt; 7       0.7  0.54177922  0.54239766  0.54260263  0.7018989  0.7027495
-#&gt; 8       0.8  0.70011065  0.70040422  0.70044087  0.8267227  0.8271601
-#&gt; 9       0.9  0.85466696  0.85453327  0.85458035  0.9219455  0.9217643
-#&gt;        ICC3k Cohen_Kappa
-#&gt; 1 -1.1713278 -0.34610143
-#&gt; 2 -0.6136352 -0.19910017
-#&gt; 3 -0.1776529 -0.05106677
-#&gt; 4  0.1367476  0.09797283
-#&gt; 5  0.3715745  0.24720699
-#&gt; 6  0.5492342  0.39673470
-#&gt; 7  0.7031345  0.54622714
-#&gt; 8  0.8272879  0.69685120
-#&gt; 9  0.9217245  0.84857978
-#&gt; </div></pre>
+<span class='fu'>summary</span>(<span class='no'>icctest</span>)</div><div class='output co'>#&gt; <span class='error'>Error in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,     drop.square = drop.square, normalize = normalize, statistics = control$statistics,     surface = control$surface, cell = control$cell, iterations = iterations,     iterTrace = control$iterTrace, trace.hat = control$trace.hat): invalid 'x'</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -215,5 +229,8 @@ See <code><a href='simulateRatingMatrix.html'>simulateRatingMatrix</a></code> fo
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

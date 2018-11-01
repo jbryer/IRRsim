@@ -5,7 +5,7 @@
 \title{Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.}
 \usage{
-simulateICC(nRaters = c(2), nRatersPerEvent = nRaters, nLevels = 3,
+simulateICC(nRaters = c(2), nRatersPerEvent = nRaters, nLevels = 4,
   nEvents = 100, nSamples = 100, agreements = seq(0.1, 0.9, by =
   0.1), response.probs = rep(1/nLevels, nLevels),
   showShinyProgress = FALSE, showTextProgress = !showShinyProgress,

@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">IRRsim</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">IRRsim</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -58,7 +71,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/IRRsim.html">Get Started</a>
+  <a href="../articles/IRRsim.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -73,6 +86,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -80,101 +94,115 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;1.0.0</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="agreement.html">agreement</a></code> </p>
-          </td>
-          <td><p>Calculate percent agreement.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as.data.frame.IRRsim.html">as.data.frame</a></code> </p>
-          </td>
-          <td><p>Converts the results of <code><a href='reference/simulateICC.html'>simulateICC</a></code> to a <code>data.frame</code></p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="IRRsim_demo.html">IRRsim_demo</a></code> </p>
-          </td>
-          <td><p>Run the Inter-Rater Reliability shiny app.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="IRRsim-package.html">IRRsim-package</a></code> </p>
-          </td>
-          <td><p>Simulate Inter-Rater Reliability Statistics</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="kappam.fleiss2.html">kappam.fleiss2</a></code> </p>
-          </td>
-          <td><p>Fleiss' Kappa for m raters</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.IRRsim.html">plot</a></code> </p>
-          </td>
-          <td><p>Plot the results of an IRR simulation.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.IRRsim.html">print</a></code> </p>
-          </td>
-          <td><p>Prints the results from simulateICC.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.IRRsimSummary.html">print</a></code> </p>
-          </td>
-          <td><p>Print the result of summary.IRRsim</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="simulateICC.html">simulateICC</a></code> </p>
-          </td>
-          <td><p>Calultes intraclass correlations (ICC) for simulated samples of raters and
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="IRRguidelines.html">IRRguidelines</a></code> </p>
+        </td>
+        <td><p>Guidelines for interpreting inter-rater reliability statistics.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="IRRsim-package.html">IRRsim-package</a></code> </p>
+        </td>
+        <td><p>Simulate Inter-Rater Reliability Statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="IRRsimData.html">IRRsimData</a></code> </p>
+        </td>
+        <td><p>Simulated data used to create tables of expected IRR metrics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="IRRsim_demo.html">IRRsim_demo()</a></code> </p>
+        </td>
+        <td><p>Run the Inter-Rater Reliability shiny app.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="agreement.html">agreement()</a></code> </p>
+        </td>
+        <td><p>Calculate percent agreement.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as.data.frame.IRRsim.html">as.data.frame(<i>&lt;IRRsim&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Converts the results of <code>simulateICC</code> to a <code>data.frame</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="kappam.fleiss2.html">kappam.fleiss2()</a></code> </p>
+        </td>
+        <td><p>Fleiss' Kappa for m raters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot.IRRsim.html">plot(<i>&lt;IRRsim&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot the results of an IRR simulation.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.IRRsim.html">print(<i>&lt;IRRsim&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Prints the results from simulateICC.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.IRRsimSummary.html">print(<i>&lt;IRRsimSummary&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print the result of summary.IRRsim</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simulateICC.html">simulateICC()</a></code> </p>
+        </td>
+        <td><p>Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="simulateRatingMatrix.html">simulateRatingMatrix</a></code> </p>
-          </td>
-          <td><p>Simulate a rating matrix.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="summary.IRRsim.html">summary</a></code> </p>
-          </td>
-          <td><p>Returns a summary of a IRR simulation.</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simulateRatingMatrix.html">simulateRatingMatrix()</a></code> </p>
+        </td>
+        <td><p>Simulate a rating matrix.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simulateRatingMatrix2.html">simulateRatingMatrix2()</a></code> </p>
+        </td>
+        <td><p>Simulate a rating matrix with two ratings per event.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary.IRRsim.html">summary(<i>&lt;IRRsim&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Returns a summary of a IRR simulation.</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -197,5 +225,8 @@ evaluations.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
