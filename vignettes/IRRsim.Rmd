@@ -1,87 +1,240 @@
 ---
-title: "Relationship between intraclass Correlation (ICC) and Percent Agreement"
-author: "Jason Bryer"
+title: "Relationship Between Intraclass Correlation (ICC) and Percent Agreement"
+author:
+- name: Jason Bryer
+  affiliation: Excelsior College
+- name: Guher Gorgun
+  affiliation: University at Albany
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+fig_width: 6.5
+fig_height: 4.0
+abstract: Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated (R² > 0.9) for most designs.
 vignette: >
-  %\VignetteIndexEntry{Relationship between intraclass Correlation (ICC) and Percent Agreement}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Relationship between Intraclass Correlation (ICC) and Percent Rater Agreement}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  echo = TRUE
 )
+options(scipen=1, digits=2)
 library(IRRsim)
 library(ggplot2)
-knitr::opts_chunk$set(echo = TRUE)
 set.seed(2112) # For reproducibility
+output.type <- 'html' # html or latex
+
+linebreak <- switch(output.type,
+					html = "<br>",
+					latex = "\n"
+)
 ```
 
-Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated ($R^2 > 0.9$) for most designs.
+
+When raters are involved in scoring procedures, inter-rater reliability (IRR) measures are used to establish the reliability of measures. Commonly used IRR measures include percent rater agreement, intraclass correlation coefficients (ICC), and Cohen’s Kappa. Several researchers recommend using ICC and Cohen’s Kappa over Percent Agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, there are misconceptions and inconsistencies when it comes to proper application, interpretation, and reporting of these measures (Kottner et al., 2011; & Trevethan, 2017). Moreover, researchers tend to recommend different thresholds for poor, moderate, and good level of reliability (see Table 2). These inconsistencies, and the paucity of detailed reports of test methods and results, perpetuate the misconceptions in the application and interpretation of IRR measures.
+
+Current recommendations regarding the thresholds of reliability estimates suggest considering purposes and consequences of tests, and the magnitude of error allowed in test interpretation and decision making (Trevethan, 2017; AERA, NCME, & APA, 2014; Kottner at al., 2011). Furthermore, Kottner et al. (2011) also recommend reporting multiple reliability estimates. A low ICC might be due to lack of variability between subjects so by reporting different reliability coefficients (e.g. percent agreement) readers can get a more complete understanding of the degree of reliability.
+
+Table 1. *Descriptions and formulas of IRR measures*
+
+| IRR Statistic     | Description           | Formula                           |
+|:------------------|:----------------------|:---------------------------------:|
+| Percent Agreement | Absolute agreement    | $\frac{number\ of\ observations\ agreed\ upon}{total\ number\ of\ observations}$ |
+| ICC(1,1)          | One-way random effects, absolute agreement, single measurements | $\frac{MS_R = MS_W}{MS_R + (k - 1)MS_W}$ |
+| ICC(2,1)          | Two-way random effects, absolute agreement, single measures | $\frac{MS_R - MS_W}{MS_R + (k - 1)MS_E + \frac{k}{n}(MS_C - MS_E)}$ |
+| ICC(3,1)          | Two-way random mixed effects, consistency, single measures. | $\frac{MS_R - MS_E}{MS_R + (k-1)MS_E}$ |
+| ICC(1,*k*)        | One-way random effects, absolute agreement, average measures. | $\frac{MS_R - MS_W}{MS_R}$ |
+| ICC(2,*k*)        | Two-way random effects, absolute agreement, average measures. | $\frac{MS_R - MS_E}{MS_R | \frac{MS_C - MS_E}{n}}$ |
+| ICC(3,*k*)        | Two-way mixed effects, consistency, average measures. | $\frac{MS_R - MS_E}{MS_R}$ |
+| Cohen's Kappa (κ) | Absolute agreement    | $\frac{P_o - P_e}{1 - P_e}$ |
+
+*Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for risudal sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.
 
 
+Table 2. *Guidelines for IRR estimates*
 
-There are several designs for establishing IRR. We are generally concerned with the ratings of **m** subjects by **k** raters. The simplest design is $m x 2$ where two raters score all **m** subjects. However, it common in education to have $m > 2$ raters where each subject is scored by $m = 2$ resulting in a **sparce** matrix. Shrout and Fleiss (1979) provide guidance on which of the six types of ICC to use depending on your design. The six types of ICC considered here are:
+```{r IRRguidelines, echo=FALSE, results='asis'}
+data("IRRguidelines")
+guidelines.table <- data.frame(row.names = names(IRRguidelines),
+							  Reference = rep('', length(IRRguidelines)),
+							  IRRMetric = rep('', length(IRRguidelines)),
+							  Guidelines = rep('', length(IRRguidelines)),
+							  stringsAsFactors = FALSE)
+for(i in row.names(guidelines.table)) {
+	guidelines.table[i,]$Reference <- IRRguidelines[[i]]$reference
+	guidelines.table[i,]$IRRMetric <- paste0(IRRguidelines[[i]]$metrics, collapse = ', ')
+	guidelines.table[i,]$Guidelines <- paste0('< ', IRRguidelines[[i]]$breaks[2], ' ', names(IRRguidelines[[i]]$breaks)[1])
+	for(j in seq(2, length(IRRguidelines[[i]]$breaks) - 1)) {
+		guidelines.table[i,]$Guidelines <- paste0(
+			guidelines.table[i,]$Guidelines, linebreak, 
+			IRRguidelines[[i]]$breaks[j], ' - ', IRRguidelines[[i]]$breaks[j+1], ' ', names(IRRguidelines[[i]]$breaks)[j])
+	}
+	guidelines.table[i,]$Guidelines <- paste0(
+		guidelines.table[i,]$Guidelines, linebreak, '> ',
+		IRRguidelines[[i]]$breaks[length(IRRguidelines[[i]]$breaks)], ' ',
+		names(IRRguidelines[[i]]$breaks)[length(IRRguidelines[[i]]$breaks)])
+}
+
+knitr::kable(guidelines.table)
+```
+
+# Research Questions
+
+Given the different types of ICC and guidelines for interpretation, this paper is guided by the following research questions:
+
+1. What is the relationship between ICC and PRA?
+2. Are the published guidelines for interpreting ICC appropriate for all rating designs?
+
+# Method
+
+There are several designs for establishing IRR. We are generally concerned with the ratings of **m** subjects by **k** raters. The simplest design is $m x 2$ where two raters score all **m** subjects. However, it is common in education to have $k > 2$ raters where each subject is scored by $k_m = 2$ resulting in a **sparce** matrix. Shrout and Fleiss (1979) provide guidance on which of the six types of ICC to use depending on your design. The six types of ICC considered here are:
 
 * *ICC1* - Each subject is rated by 2 random raters.
-* *ICC2* - Each subject is rated by $m > 2$ raters.
+* *ICC2* - Each subject is rated by $k_m > 2$ raters.
 * *ICC3* - Each subject is rated by a fixed set of *k* raters.
 * *ICC1k* - 2-way ANOVA version of ICC1.
 * *ICC2k* - 2-way ANOVA version of ICC2.
 * *ICC3k* - 2-way ANOVA version of ICC3.
 
-The `IRRsim` package implements several functions to facilitate simulating various scoring designs. To begin, let's look at the `simulateRatingMatrix` function. This function will generate an `nEvents` by `k` matrix. For each row, two columns (which represent raters) are randomly selected and each cell of those cells will randomly have a value between 1 and `nLevels`. The likelihood of those two cell having the same value is defined by the `agree` parameter.
+The `IRRsim` package implements several functions to facilitate simulating various scoring designs. To begin, let's look at the `simulateRatingMatrix` function. This function will generate an m x k matrix. The algorithm works as follows:
 
-```{r testdata}
-test <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 10)
-test
+1. For each row one rater is selected at random.
+2. For that rater, a score is randomly selected from the distribution defined by the `response.probs` paramter. By default, values are selected from a uniform distribution.
+3. A random number between zero and one is generated. If that number is less than or equal to the desired agreement as defined by the `agree` parameter, the score for the remaining raters is set equal to the score from step two. Otherwise, scores are randomly selected for the remaining raters using the distribution defined by the `response.probs` parameter.
+4. If $k_m < k$, then $k - k_m$ raters from each row are selected and their scores are deleted (specifically, set to `NA`).
+
+The following example demonstrates creating a 10 x 6 scoring matrix with four scoring levels and a desired percent rater agreement of 60%.
+
+```{r testdata1}
+set.seed(2112)
+test1 <- simulateRatingMatrix(nLevels = 4, 
+							  k = 6, 
+							  k_per_event = 6, 
+							  agree = 0.6, 
+							  nEvents = 10)
+test1
 ```
 
-The `agreement` function will calculate the percent rater agreement for the matrix. 
+In many educational contexts, $k_m = 2$. The following example simulates the same scoring matrix but retains only two scores per scoring event.
+
+```{r testdata}
+set.seed(2112)
+test2 <- simulateRatingMatrix(nLevels = 4, 
+							  k = 6, 
+							  k_per_event = 2,
+							  agree = 0.6, 
+							  nEvents = 10)
+test2
+```
+
+The `agreement` function calculates the percent rater agreement for an indiviual scoring matrix. 
 
 ```{r agreementTest}
-agreement(test)
+agreement(test1)
+agreement(test2)
+```
+
+To examine the relationship between percent rater agreement and other inter-rater reliability statistics, we will simulate many scoring matrices with percent-rater agreements spanning the full range of values from 0% to 100%. The `simulateICC` utilizes the `simulateRatingMatrix` for generating many scoring matrices for varying percent rater agreements.
+
+```{r simulateICCexample}
+test3 <- simulateICC(nLevels = 4,
+					 nRaters = 6,
+					 nEvents = 100,
+					 nSamples = 10,
+					 parallel = FALSE)
+plot(test3)
 ```
 
 For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.
 
-```{r simulate, cache = FALSE, message = FALSE, warning = FALSE, results = 'hide'}
-tests.3levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 3)
-tests.5levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 5)
-tests.9levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 9)
+```{r simulate, cache = TRUE, message = FALSE, warning = FALSE, results = 'hide'}
+tests.4levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 4)
 ```
 
 The `as.data.frame` function provides the IRR statistics for each of the simulated samples.
 
 ```{r dataframe}
-test.3levels.df <- as.data.frame(tests.3levels)
-dim(test.3levels.df)
-head(test.3levels.df)
+test.4levels.df <- as.data.frame(tests.4levels)
+dim(test.4levels.df)
+head(test.4levels.df)
 ```
 
 
-The following three figures show ICC1 against percent rater agreement with 3, 5, and 9 score levels, respectively.
+The following three figures show ICC1 against percent rater agreement.
 
-```{r ploticc1}
-plot(tests.3levels, stat = 'ICC1')
-plot(tests.5levels, stat = 'ICC1')
-plot(tests.9levels, stat = 'ICC1')
+```{r ploticc1, fig.width=6.5, fig.height=4}
+plot(tests.4levels, stat = 'ICC1')
 ```
 
 The figure below show the relationship between percent rater agreement and intraclass correlation for the six types of ICC.
 
-```{r plotall}
-plot(tests.3levels)
+```{r plotall, fig.width=6.5, fig.height=4}
+plot(tests.4levels)
 ```
 
 The literature suggests that ICC be used over percent agreement. However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the resulting $R^2$ is greater than .9!
 
 ```{r summaryfun}
-tests.3levels.sum <- summary(tests.3levels, stat = 'ICC1', method = 'quadratic')
-summary(tests.3levels.sum$model[[1]]) # k = 6 raters
-summary(tests.3levels.sum$model[[2]]) # k = 9 raters
-summary(tests.3levels.sum$model[[3]]) # k = 12 raters
+tests.4levels.sum <- summary(tests.4levels, stat = 'ICC1', method = 'quadratic')
+summary(tests.4levels.sum$model[[1]]) # k = 6 raters
+summary(tests.4levels.sum$model[[2]]) # k = 9 raters
+summary(tests.4levels.sum$model[[3]]) # k = 12 raters
+```
+
+# Discussion
+
+Methodologists have consistently argued that ICC is preferred over PRA for reporting inter-
+rater reliability (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). Although some recommendations for interpreting ICC have been given (Table 2), the form of ICC (Table 1) those recommendations apply to has not specified by the authors. Furthermore, the nature of the design, especially with regard to the number of possible raters, has substantial impact on the magnitude of ICC (Figure 2). For example, all other things kept equal, increasing the design from 2 to 12 raters changes the required PRA from 61% to 91% to achieve Cicchitti’s (2001) “fair” threshold. And with eight or more raters, “good” or “excellent” reliability are not even possible under this design.
+
+We concur with Kottner et al (2011) and Koo and Li (2016) recommendation that the design features along with multiple IRR statistics be reported by researchers. Given the ease of interpretability of PRA, this may be a desirable metric during the rating process. To assist researchers on interpreting ICC in relation to PRA, we have developed an R Shiny application (Figure 3). This application allows researchers to specify their rating design and explore the relationship between various IRR metrics and PRA, superimpose multiple recommendations (Table 2), and predict ICC values from PRA.
+
+# References
+
+Altman, D. G. (1990). *Practical statistics for medical research.* London: Chapman & Hall/CRC press.
+
+American Educational Research Association, American Psychological Association, & National Council on Measurement in Education, & Joint Committee on Standards for Educational and Psychological Testing. (2014). *Standards for educational and psychological testing.* Washington, DC: AERA.
+
+Brage, M. E., Rockett, M., Vraney, R., Anderson, R., & Toledano, A. (1998). Ankle fracture classification: A comparison of reliability of three x-ray views versus two. *Foot & Ankle International, 19*(8), 555-562.
+
+Cicchetti, D. V. (2001). Methodological Commentary. The precision of reliability and validity estimates re-visited: Distinguishing between clinical and statistical significance of sample size requirements. *Journal of Clinical and Experimental Neuropsychology, 23*(5), 695- 700.
+
+Cicchetti, D. V., & Sparrow, S. A. (1981). Developing criteria for establishing interrater reliability of specific items: Applications to assessment of adaptive behavior. *American Journal of Mental Deficiency, 86*(2), 127-137.
+
+Fleiss, J. L. (1981). *Statistical methods for rates and proportions.* New York: John Wiley & Sons.
+
+Fleiss, J. L. (1986). The design and analysis of clinical experiments. New York: Wiley. Hallgren, K. A. (2012). Computing inter-rater reliability for observational data: An overview and tutorial. *Tutorials in Quantitative Methods for Psychology, 8*(1), 23-34.
+
+Koo, T. K., & Li, M. Y. (2016). A guideline of selecting and reporting intraclass correlation coefficients for reliability research. *Journal of Chiropractic Medicine, 15*(2), 155-163.
+
+Kottner, J., Audigé, L., Brorson, S., Donner, A., Gajewski, B. J., Hróbjartsson, A., ... & Streiner, D. L. (2011). Guidelines for reporting reliability and agreement studies (GRRAS) were proposed. *International Journal of Nursing Studies, 48*(6), 661-671.
+
+Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics, 33*(1), 159-174.
+
+Martin, J. S., Marsh, J. L., Bonar, S. K., DeCoster, T. A., Found, E. M., & Brandser, E. A. (1997). Assessment of the AO/ASIF fracture classification for the distal tibia. *Journal of Orthopaedic Trauma, 11*(7), 477-483.
+
+McGraw, K. O., & Wong, S. P. (1996). Forming inferences about some intraclass correlation coefficients. *Psychological Methods, 1*(1), 30-46.
+
+Portney, L. G., & Watkins, M. P. (2009). *Foundations of clinical research: applications to practice.* Upper Saddle River: Pearson/Prentice Hall.
+
+Shrout, P. E. (1998). Measurement reliability and agreement in psychiatry. *Statistical Methods in Medical Research, 7*(3), 301-317.
+
+Shrout, P. E., & Fleiss, J. L. (1979). Intraclass correlations: Uses in assessing rater reliability. *Psychological Bulletin, 86*(2), 420-428.
+
+Svanholm, H., Starklint, H., Gundersen, H. J. G., Fabricius, J., Barlebo, H., & Olsen, S. (1989). Reproducibility of histomorphologic diagnoses with special reference to the kappa statistic. *Apmis, 97*(7-12), 689-698.
+
+Trevethan, R. (2017). Intraclass correlation coefficients: Clearing the air, extending some cautions, and making some requests. *Health Services and Outcomes Research Methodology, 17*(2), 127-143.
+
+Zegers, M., de Bruijne, M.C., Wagner, C., Groenewegen, P.P., van der Wal, G., de Vet, H.C. (2010). The inter-rater agreement of retrospective assessments of adverse events does not improve with two reviewers per patient record. *Journal of Clinical Epidemiology, 63*(1), 94–102.
+
+
+```{css}
+p {
+	font-style: normal;
+}
 ```

@@ -1,7 +1,8 @@
 #' Calculates intraclass correlations (ICC) for simulated samples of raters and
 #' evaluations.
 #'
-#' @param nRaters the number of raters
+#' @param nRaters the number of available raters
+#' @param nRatersPerEvent the number of ratings for each per scoring event.
 #' @param nLevels the number of possible outcomes there are for each rating.
 #' @param nSamples the number of sample matrices to estimate at each agreement level.
 #' @param nEvents the number of rating events within each matrix.
@@ -37,7 +38,8 @@
 #' icctest <- simulateICC(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
 #' summary(icctest)
 simulateICC <- function(nRaters = c(2),
-						nLevels = 3,
+						nRatersPerEvent = nRaters,
+						nLevels = 4,
 						nEvents = 100,
 						nSamples = 100,
 						agreements = seq(0.1, 0.9, by = 0.1),
@@ -62,6 +64,7 @@ simulateICC <- function(nRaters = c(2),
 		tests <- data.frame(
 			i = rep(1:nSamples, length(nRaters) * length(agreements)),
 			k = rep(nRaters, each = length(agreements) * nSamples),
+			k_per_event = rep(nRatersPerEvent, each = length(agreements) * nSamples),
 			simAgreement = rep(rep(agreements, each = nSamples), length(nRaters)),
 			stringsAsFactors = FALSE
 		)
@@ -75,7 +78,10 @@ simulateICC <- function(nRaters = c(2),
 			opts <- list(progress = progress)
 
 			tmp <- apply(tests, 1, FUN = function(X) {
-				list(i = X['i'], k = X['k'], agree = X['simAgreement'])
+				list(i = X['i'],
+					 k = X['k'],
+					 k_per_event = X['k_per_event'],
+					 agree = X['simAgreement'])
 			})
 
 			simData <- foreach::foreach(params = tmp,
@@ -84,17 +90,21 @@ simulateICC <- function(nRaters = c(2),
 				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
 													 nEvents = nEvents,
 													 k = params$k,
+													 k_per_event = params$k_per_event,
 													 agree = params$agree,
 													 response.probs = response.probs)
 				test2 <- as.integer(test)
-				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
 
 				# Using DescTools package
 				skew <- DescTools::Skew(test2, na.rm = TRUE)
 				kurtosis <- DescTools::Kurt(test2, na.rm = TRUE)
 				icc <- DescTools::ICC(test)
 				icc.col <- 'est'
-				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
+				ck <- NA
+				if(params$k == 2 | params$k_per_event == 2) {
+					tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+					ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
+				}
 
 				# Using psych package
 				# skew <- psych::skew(test2, na.rm = TRUE)
@@ -108,10 +118,11 @@ simulateICC <- function(nRaters = c(2),
 
 			  	# NOTE: When adding IRR stats here, be sure to add them to
 			  	# as.data.frame.IRRsim too!
-				return(list(index = unname(params$i),
+				result <- list(index = unname(params$i),
 							nLevels = nLevels,
 							nEvents = nEvents,
 							k = unname(params$k),
+							k_per_event = unname(params$k_per_event),
 							simAgreement = unname(params$agree),
 							agreement = agreement(test),
 							skewness = skew,
@@ -122,11 +133,15 @@ simulateICC <- function(nRaters = c(2),
 							ICC3 = icc$results['Single_fixed_raters',icc.col],
 							ICC1k = icc$results['Average_raters_absolute',icc.col],
 							ICC2k = icc$results['Average_random_raters',icc.col],
-							ICC3k = icc$results['Average_fixed_raters',icc.col],
-							# Fleiss_Kappa = kf$value,
-							Cohen_Kappa = ck,
-							data = test
-				))
+							ICC3k = icc$results['Average_fixed_raters',icc.col]
+							# Fleiss_Kappa = kf$value
+				)
+				if(!is.na(ck)) {
+					result$Cohen_Kappa <- ck
+				}
+				result$data <- test
+
+				return(result)
 			}
 
 			snow::stopCluster(cl)
@@ -136,17 +151,21 @@ simulateICC <- function(nRaters = c(2),
 				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
 													 nEvents = nEvents,
 													 k = tests[i,]$k,
+													 k_per_event = tests[i,]$k,
 													 agree = tests[i,]$simAgreement,
 													 response.probs = response.probs)
 				test2 <- as.integer(test)
-				tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
 
 				# Using DescTools package
 				skew <- DescTools::Skew(test2, na.rm = TRUE)
 				kurtosis <- DescTools::Kurt(test2, na.rm = TRUE)
 				icc <- DescTools::ICC(test)
 				icc.col <- 'est'
-				ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
+				ck <- NA
+				if(tests[i,]$k == 2 | tests[i,]$k_per_event == 2) {
+					tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+					ck <- DescTools::CohenKappa(tmp[,1], tmp[,2])
+				}
 
 				# Using psych package
 				# skew <- psych::skew(test2, na.rm = TRUE)
@@ -164,6 +183,7 @@ simulateICC <- function(nRaters = c(2),
 									 nLevels = nLevels,
 									 nEvents = nEvents,
 									 k = tests[i,]$k,
+									 k_per_event = tests[i,]$k_per_event,
 									 simAgreement = tests[i,]$simAgreement,
 									 agreement = agreement(test),
 									 skewness = skew,
@@ -174,12 +194,13 @@ simulateICC <- function(nRaters = c(2),
 									 ICC3 = icc$results['Single_fixed_raters',icc.col],
 									 ICC1k = icc$results['Average_raters_absolute',icc.col],
 									 ICC2k = icc$results['Average_random_raters',icc.col],
-									 ICC3k = icc$results['Average_fixed_raters',icc.col],
-									 # Fleiss_Kappa = kf$value,
-									 Cohen_Kappa = ck,
-									 data = test
+									 ICC3k = icc$results['Average_fixed_raters',icc.col]
+									 # Fleiss_Kappa = kf$value
 				)
-
+				if(!is.na(ck)) {
+					simData[[i]]$Cohen_Kappa <- ck
+				}
+				simData[[i]]$data <- test
 				progress()
 			}
 		}

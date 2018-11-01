@@ -8,12 +8,22 @@ set.seed(2112)
 
 # How Cohen's kappa is calculated with m > 2 raters. Note that Cohen's kappa is only appropriate
 # for two raters.
-test <- simulateRatingMatrix(nLevels = 3, k = 6, agree = 0.6, nEvents = 100)
+test <- simulateRatingMatrix(nLevels = 4, k = 6, k_per_event = 2, agree = 0.6, nEvents = 100)
 print(head(test), na.print = '')
-psych::cohen.kappa(test)$av.kapp
+agreement(test)
+tmp <- t(apply(test, 1, FUN = function(X) { X[!is.na(X)] }))
+DescTools::CohenKappa(tmp[,1], tmp[,2])
 # How the ICC stats are calculated
-psych::ICC(test)
+DescTools::ICC(test)
 
+nLevels <- 4
+k <- 10
+agree <- .7
+nEvents <- 100
+thedata <- simulateRatingMatrix(nLevels, k, k_per_event = 3, agree)
+head(thedata)
+irr::agree(thedata)
+agreement(thedata)
 
 ##### Simple test (from the examples)
 icctest <- simulateICC(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)

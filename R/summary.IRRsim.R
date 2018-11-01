@@ -104,7 +104,7 @@ summary.IRRsim <- function(object,
 		}
 	}
 
-	result <- list(k = k, model = model.out, summary = prediction.df)
+	result <- list(k = k, model = model.out, summary = prediction.df, data = test)
 	class(result) <- c('IRRsimSummary', 'list')
 	return(result)
 }

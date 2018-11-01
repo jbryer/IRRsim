@@ -20,7 +20,7 @@ plot.IRRsim <- function(x,
 	test$k <- as.character(test$k)
 	if(missing(stat)) {
 		tests.melted <- reshape2::melt(test, id.vars = c('nLevels', 'nEvents',
-				'k', 'simAgreement', 'agreement',
+				'k', 'k_per_event', 'simAgreement', 'agreement',
 				'skewness', 'kurtosis', 'MaxResponseDiff'))
 		p <- ggplot(tests.melted, aes(x = agreement, y = value, color = k)) +
 			geom_point(alpha = point.alpha) +
@@ -28,9 +28,12 @@ plot.IRRsim <- function(x,
 			xlim(c(0,1)) +
 			xlab('Percent Rater Agreement') + ylab('ICC')
 		if(title) {
+			km <- test$k_per_event
 			p <- p + ggtitle(paste0('Inter-Rater Reliability with ', test[1,]$nLevels,
 						   ' Scoring Levels and ',
-						   paste0(unique(test$k), collapse = ', '), ' Raters'))
+						   test$k_per_event, ' out of ',
+						   paste0(unique(test$k), collapse = ', '),
+									' Raters per Scoring Event'))
 		}
 	} else {
 		if(!stat %in% names(test)) {
@@ -39,11 +42,14 @@ plot.IRRsim <- function(x,
 		p <- ggplot(test, aes_string(x = 'agreement', y = stat, color = 'k')) +
 			geom_point(alpha = point.alpha) +
 			xlim(c(0,1)) +
+			ylim(c(-0.1,1)) +
 			xlab('Percent Rater Agreement') + ylab(stat)
 		if(title) {
-			p <- p + ggtitle(paste0(stat, ' with ', paste0(unique(test$k), collapse = ', '),
-						   ' Scoring Levels and ',
-						   test[1,]$k, ' Raters'))
+			p <- p + ggtitle(paste0(stat, ' with ',
+							 paste0(unique(test$nLevels), collapse = ', '),
+						     ' Scoring Levels and ',
+						     test[1,]$k_per_event, ' out of ',
+						     test[1,]$k, ' Raters per Scoring Event'))
 		}
 	}
 
