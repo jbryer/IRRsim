@@ -1,8 +1,8 @@
-#' Converts the results of \code{\link{simulateICC}} to a \code{data.frame}
+#' Converts the results of \code{\link{simulateIRR}} to a \code{data.frame}
 #'
 #' This function will create a data frame with all the IRR metrics combiend.
 #'
-#' @param x the result of \code{\link{simulateICC}}.
+#' @param x the result of \code{\link{simulateIRR}}.
 #' @param ... currently unused.
 #' @export
 as.data.frame.IRRsim <- function(x, ...) {

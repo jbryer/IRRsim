@@ -105,7 +105,7 @@ server <- function(input, output) {
 		for(i in 1:input$nLevels) {
 			probs[i] <- input[[paste0('prob', i)]]
 		}
-		test <- simulateICC(nRaters = input$nRaters,
+		test <- simulateIRR(nRaters = input$nRaters,
 							nRatersPerEvent = input$nRatersPerEvent,
 							nLevels = input$nLevels,
 							nEvents = input$nEvents,
@@ -219,7 +219,7 @@ server <- function(input, output) {
 													 max(model.out$data$agreement),
 													 0.01))
 				predictions <- predict(model.out$model, newdata = newdata)
-				guideline <- IRRguidelines[[input$includeGuidelines]]$breaks
+				guideline <- IRRguidelines[[input$includeGuidelines]]$breaks[-1]
 				tab <- data.frame(ICC = guideline,
 								  Agreement = sapply(guideline, FUN = function(x) {
 								  	min(newdata$agreement[predictions >= x]) }))

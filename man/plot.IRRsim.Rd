@@ -8,7 +8,7 @@
   title = TRUE, ...)
 }
 \arguments{
-\item{x}{the result of \code{\link{simulateICC}}.}
+\item{x}{the result of \code{\link{simulateIRR}}.}
 
 \item{method}{the method used to find predicted values. Possible values are
 loess, linear, and quadratic.}

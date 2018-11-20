@@ -22,7 +22,12 @@ editor_options:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  echo = TRUE
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE, 
+  fig.width=6.5, 
+  fig.height=4
 )
 options(scipen=1, digits=2)
 library(IRRsim)
@@ -45,13 +50,13 @@ Table 1. *Descriptions and formulas of IRR measures*
 
 | IRR Statistic     | Description           | Formula                           |
 |:------------------|:----------------------|:---------------------------------:|
-| Percent Agreement | Absolute agreement    | $\frac{number\ of\ observations\ agreed\ upon}{total\ number\ of\ observations}$ |
-| ICC(1,1)          | One-way random effects, absolute agreement, single measurements | $\frac{MS_R = MS_W}{MS_R + (k - 1)MS_W}$ |
-| ICC(2,1)          | Two-way random effects, absolute agreement, single measures | $\frac{MS_R - MS_W}{MS_R + (k - 1)MS_E + \frac{k}{n}(MS_C - MS_E)}$ |
-| ICC(3,1)          | Two-way random mixed effects, consistency, single measures. | $\frac{MS_R - MS_E}{MS_R + (k-1)MS_E}$ |
-| ICC(1,*k*)        | One-way random effects, absolute agreement, average measures. | $\frac{MS_R - MS_W}{MS_R}$ |
-| ICC(2,*k*)        | Two-way random effects, absolute agreement, average measures. | $\frac{MS_R - MS_E}{MS_R | \frac{MS_C - MS_E}{n}}$ |
-| ICC(3,*k*)        | Two-way mixed effects, consistency, average measures. | $\frac{MS_R - MS_E}{MS_R}$ |
+| Percent Agreement | One-way random effects; Absolute agreement    | $\frac{number\ of\ observations\ agreed\ upon}{total\ number\ of\ observations}$ |
+| ICC(1,1)          | One-way random effects; absolute agreement; single measurements | $\frac{MS_R - MS_W}{MS_R + (k - 1)MS_W}$ |
+| ICC(2,1)          | Two-way random effects; absolute agreement; single measures | $\frac{MS_R - MS_W}{MS_R + (k - 1)MS_E + \frac{k}{n}(MS_C - MS_E)}$ |
+| ICC(3,1)          | Two-way random mixed effects; consistency; single measures. | $\frac{MS_R - MS_E}{MS_R + (k-1)MS_E}$ |
+| ICC(1,*k*)        | One-way random effects; absolute agreement; average measures. | $\frac{MS_R - MS_W}{MS_R}$ |
+| ICC(2,*k*)        | Two-way random effects; absolute agreement; average measures. | $\frac{MS_R - MS_E}{MS_R | \frac{MS_C - MS_E}{n}}$ |
+| ICC(3,*k*)        | Two-way mixed effects; consistency; average measures. | $\frac{MS_R - MS_E}{MS_R}$ |
 | Cohen's Kappa (κ) | Absolute agreement    | $\frac{P_o - P_e}{1 - P_e}$ |
 
 *Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for risudal sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.
@@ -68,7 +73,9 @@ guidelines.table <- data.frame(row.names = names(IRRguidelines),
 							  stringsAsFactors = FALSE)
 for(i in row.names(guidelines.table)) {
 	guidelines.table[i,]$Reference <- IRRguidelines[[i]]$reference
-	guidelines.table[i,]$IRRMetric <- paste0(IRRguidelines[[i]]$metrics, collapse = ', ')
+	guidelines.table[i,]$IRRMetric <- ifelse(any(is.na(IRRguidelines[[i]]$metrics)), 
+			  '', paste0(IRRguidelines[[i]]$metrics, collapse = ', ')
+	)
 	guidelines.table[i,]$Guidelines <- paste0('< ', IRRguidelines[[i]]$breaks[2], ' ', names(IRRguidelines[[i]]$breaks)[1])
 	for(j in seq(2, length(IRRguidelines[[i]]$breaks) - 1)) {
 		guidelines.table[i,]$Guidelines <- paste0(
@@ -140,21 +147,22 @@ agreement(test1)
 agreement(test2)
 ```
 
-To examine the relationship between percent rater agreement and other inter-rater reliability statistics, we will simulate many scoring matrices with percent-rater agreements spanning the full range of values from 0% to 100%. The `simulateICC` utilizes the `simulateRatingMatrix` for generating many scoring matrices for varying percent rater agreements.
+To examine the relationship between percent rater agreement and other inter-rater reliability statistics, we will simulate many scoring matrices with percent-rater agreements spanning the full range of values from 0% to 100%. The `simulateIRR` utilizes the `simulateRatingMatrix` for generating many scoring matrices for varying percent rater agreements.
 
-```{r simulateICCexample}
-test3 <- simulateICC(nLevels = 4,
+```{r simulateIRRexample, cache=TRUE, message=FALSE}
+test3 <- simulateIRR(nLevels = 4,
 					 nRaters = 6,
 					 nEvents = 100,
 					 nSamples = 10,
-					 parallel = FALSE)
+					 parallel = FALSE,
+					 showTextProgress = FALSE)
 plot(test3)
 ```
 
 For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.
 
 ```{r simulate, cache = TRUE, message = FALSE, warning = FALSE, results = 'hide'}
-tests.4levels <- simulateICC(nRaters = c(6, 9, 12), nLevels = 4)
+tests.4levels <- simulateIRR(nRaters = c(6, 9, 12), nLevels = 4)
 ```
 
 The `as.data.frame` function provides the IRR statistics for each of the simulated samples.
@@ -174,7 +182,7 @@ plot(tests.4levels, stat = 'ICC1')
 
 The figure below show the relationship between percent rater agreement and intraclass correlation for the six types of ICC.
 
-```{r plotall, fig.width=6.5, fig.height=4}
+```{r plotall}
 plot(tests.4levels)
 ```
 
@@ -233,8 +241,14 @@ Trevethan, R. (2017). Intraclass correlation coefficients: Clearing the air, ext
 Zegers, M., de Bruijne, M.C., Wagner, C., Groenewegen, P.P., van der Wal, G., de Vet, H.C. (2010). The inter-rater agreement of retrospective assessments of adverse events does not improve with two reviewers per patient record. *Journal of Clinical Epidemiology, 63*(1), 94–102.
 
 
-```{css}
+```{r, echo=FALSE, results='asis'}
+if(output.type == 'html') {
+	cat('
+<style type="text/css">
 p {
 	font-style: normal;
+}
+</style>
+	')	
 }
 ```

@@ -48,7 +48,7 @@ for(i in nLevels) {
 					 names(probability.weights)[j], ' distribution'))
 		for(k in nRaters) {
 			for(k_per_event in seq(2, k)) {
-				tmp <- simulateICC(nRaters = k,
+				tmp <- simulateIRR(nRaters = k,
 							   nRatersPerEvent = k_per_event,
 							   nLevels = i,
 							   response.probs = probability.weights[[j]],

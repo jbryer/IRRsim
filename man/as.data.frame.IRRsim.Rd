@@ -2,12 +2,12 @@
 % Please edit documentation in R/as.data.frame.IRRsim.R
 \name{as.data.frame.IRRsim}
 \alias{as.data.frame.IRRsim}
-\title{Converts the results of \code{\link{simulateICC}} to a \code{data.frame}}
+\title{Converts the results of \code{\link{simulateIRR}} to a \code{data.frame}}
 \usage{
 \method{as.data.frame}{IRRsim}(x, ...)
 }
 \arguments{
-\item{x}{the result of \code{\link{simulateICC}}.}
+\item{x}{the result of \code{\link{simulateIRR}}.}
 
 \item{...}{currently unused.}
 }

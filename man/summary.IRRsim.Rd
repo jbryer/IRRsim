@@ -20,7 +20,7 @@ loess, linear, and quadratic.}
 
 \item{...}{currently unused.}
 
-\item{x}{the result of \code{\link{simulateICC}}.}
+\item{x}{the result of \code{\link{simulateIRR}}.}
 }
 \description{
 This function will provide predicted IRR statistics for various percent

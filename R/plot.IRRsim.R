@@ -2,7 +2,7 @@
 #'
 #' Returns a \code{ggplot2} expression.
 #'
-#' @param x the result of \code{\link{simulateICC}}.
+#' @param x the result of \code{\link{simulateIRR}}.
 #' @param method the method used to find predicted values. Possible values are
 #'        loess, linear, and quadratic.
 #' @param stat the IRR statistic to return summary for, or "all" for all metrics.

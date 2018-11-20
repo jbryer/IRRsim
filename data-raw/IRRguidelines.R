@@ -13,11 +13,11 @@ IRRguidelines <- list(
 		reference = 'Fleiss (1981, 1986); Brage et al. (1998); Martin et al. (1997); Svanholm et al. (1989)'),
 	'Altman' = list(
 		breaks = c('Poor'=0,'Fair'=0.2,'Moderate'=0.4,'Good'=0.6,'Very good'=0.8),
-		metrics = c(''),
+		metrics = NA,
 		reference = 'Altman (1990)'),
 	'Shrout' = list(
 		breaks = c('Virtually none'=0,'Slight'=0.1,'Fair'=0.4,'Moderate'=0.6,'Substantial'=0.8),
-		metrics = c(''),
+		metrics = NA,
 		reference = 'Shrout (1998)'),
 	'Landis and Koch' = list(
 		breaks = c('Poor'=0,'Fair'=0.2,'Moderate'=0.4,'Substantial'=0.6,'Almost perfect'=0.8),

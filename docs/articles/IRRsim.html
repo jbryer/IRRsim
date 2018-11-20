@@ -72,7 +72,7 @@
             <address class="author_afil">
       Excelsior College<br><h4 class="author">Guher Gorgun</h4>
             <address class="author_afil">
-      University at Albany<br><h4 class="date">2018-11-01</h4>
+      University at Albany<br><h4 class="date">2018-11-20</h4>
       
       <small class="dont-index">Source: <a href="http://github.com/jbryer/IRRsim/blob/master/vignettes/IRRsim.Rmd"><code>vignettes/IRRsim.Rmd</code></a></small>
       <div class="hidden name"><code>IRRsim.Rmd</code></div>
@@ -104,37 +104,37 @@
 <tbody>
 <tr class="odd">
 <td align="left">Percent Agreement</td>
-<td align="left">Absolute agreement</td>
+<td align="left">One-way random effects; Absolute agreement</td>
 <td align="center"><span class="math inline">\(\frac{number\ of\ observations\ agreed\ upon}{total\ number\ of\ observations}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">ICC(1,1)</td>
-<td align="left">One-way random effects, absolute agreement, single measurements</td>
-<td align="center"><span class="math inline">\(\frac{MS_R = MS_W}{MS_R + (k - 1)MS_W}\)</span></td>
+<td align="left">One-way random effects; absolute agreement; single measurements</td>
+<td align="center"><span class="math inline">\(\frac{MS_R - MS_W}{MS_R + (k - 1)MS_W}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">ICC(2,1)</td>
-<td align="left">Two-way random effects, absolute agreement, single measures</td>
+<td align="left">Two-way random effects; absolute agreement; single measures</td>
 <td align="center"><span class="math inline">\(\frac{MS_R - MS_W}{MS_R + (k - 1)MS_E + \frac{k}{n}(MS_C - MS_E)}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">ICC(3,1)</td>
-<td align="left">Two-way random mixed effects, consistency, single measures.</td>
+<td align="left">Two-way random mixed effects; consistency; single measures.</td>
 <td align="center"><span class="math inline">\(\frac{MS_R - MS_E}{MS_R + (k-1)MS_E}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">ICC(1,<em>k</em>)</td>
-<td align="left">One-way random effects, absolute agreement, average measures.</td>
+<td align="left">One-way random effects; absolute agreement; average measures.</td>
 <td align="center"><span class="math inline">\(\frac{MS_R - MS_W}{MS_R}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">ICC(2,<em>k</em>)</td>
-<td align="left">Two-way random effects, absolute agreement, average measures.</td>
+<td align="left">Two-way random effects; absolute agreement; average measures.</td>
 <td align="center"><span class="math inline">\(\frac{MS_R - MS_E}{MS_R | \frac{MS_C - MS_E}{n}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">ICC(3,<em>k</em>)</td>
-<td align="left">Two-way mixed effects, consistency, average measures.</td>
+<td align="left">Two-way mixed effects; consistency; average measures.</td>
 <td align="center"><span class="math inline">\(\frac{MS_R - MS_E}{MS_R}\)</span></td>
 </tr>
 <tr class="even">
@@ -281,218 +281,36 @@ test2
 <span class="co">#&gt; [1] 0.5</span>
 <span class="kw"><a href="../reference/agreement.html">agreement</a></span>(test2)
 <span class="co">#&gt; [1] 0.7</span></code></pre></div>
-<p>To examine the relationship between percent rater agreement and other inter-rater reliability statistics, we will simulate many scoring matrices with percent-rater agreements spanning the full range of values from 0% to 100%. The <code>simulateICC</code> utilizes the <code>simulateRatingMatrix</code> for generating many scoring matrices for varying percent rater agreements.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulateICC.html">simulateICC</a></span>(<span class="dt">nLevels =</span> <span class="dv">4</span>,
+<p>To examine the relationship between percent rater agreement and other inter-rater reliability statistics, we will simulate many scoring matrices with percent-rater agreements spanning the full range of values from 0% to 100%. The <code>simulateIRR</code> utilizes the <code>simulateRatingMatrix</code> for generating many scoring matrices for varying percent rater agreements.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulateIRR.html">simulateIRR</a></span>(<span class="dt">nLevels =</span> <span class="dv">4</span>,
                      <span class="dt">nRaters =</span> <span class="dv">6</span>,
                      <span class="dt">nEvents =</span> <span class="dv">100</span>,
                      <span class="dt">nSamples =</span> <span class="dv">10</span>,
-                     <span class="dt">parallel =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; </span>
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|</span><span class="st">                                                                 </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=</span><span class="st">                                                                </span><span class="er">|</span><span class="st">   </span><span class="dv">1</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=</span><span class="st">                                                                </span><span class="er">|</span><span class="st">   </span><span class="dv">2</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==</span><span class="st">                                                               </span><span class="er">|</span><span class="st">   </span><span class="dv">3</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===</span><span class="st">                                                              </span><span class="er">|</span><span class="st">   </span><span class="dv">4</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|====</span><span class="st">                                                             </span><span class="er">|</span><span class="st">   </span><span class="dv">6</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|====</span><span class="st">                                                             </span><span class="er">|</span><span class="st">   </span><span class="dv">7</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=====</span><span class="st">                                                            </span><span class="er">|</span><span class="st">   </span><span class="dv">8</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======</span><span class="st">                                                           </span><span class="er">|</span><span class="st">   </span><span class="dv">9</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======</span><span class="st">                                                           </span><span class="er">|</span><span class="st">  </span><span class="dv">10</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=======</span><span class="st">                                                          </span><span class="er">|</span><span class="st">  </span><span class="dv">11</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|========</span><span class="st">                                                         </span><span class="er">|</span><span class="st">  </span><span class="dv">12</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=========</span><span class="st">                                                        </span><span class="er">|</span><span class="st">  </span><span class="dv">13</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=========</span><span class="st">                                                        </span><span class="er">|</span><span class="st">  </span><span class="dv">14</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==========</span><span class="st">                                                       </span><span class="er">|</span><span class="st">  </span><span class="dv">16</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===========</span><span class="st">                                                      </span><span class="er">|</span><span class="st">  </span><span class="dv">17</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|============</span><span class="st">                                                     </span><span class="er">|</span><span class="st">  </span><span class="dv">18</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|============</span><span class="st">                                                     </span><span class="er">|</span><span class="st">  </span><span class="dv">19</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=============</span><span class="st">                                                    </span><span class="er">|</span><span class="st">  </span><span class="dv">20</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============</span><span class="st">                                                   </span><span class="er">|</span><span class="st">  </span><span class="dv">21</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============</span><span class="st">                                                   </span><span class="er">|</span><span class="st">  </span><span class="dv">22</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===============</span><span class="st">                                                  </span><span class="er">|</span><span class="st">  </span><span class="dv">23</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================</span><span class="st">                                                 </span><span class="er">|</span><span class="st">  </span><span class="dv">24</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=================</span><span class="st">                                                </span><span class="er">|</span><span class="st">  </span><span class="dv">26</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=================</span><span class="st">                                                </span><span class="er">|</span><span class="st">  </span><span class="dv">27</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==================</span><span class="st">                                               </span><span class="er">|</span><span class="st">  </span><span class="dv">28</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===================</span><span class="st">                                              </span><span class="er">|</span><span class="st">  </span><span class="dv">29</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|====================</span><span class="st">                                             </span><span class="er">|</span><span class="st">  </span><span class="dv">30</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|====================</span><span class="st">                                             </span><span class="er">|</span><span class="st">  </span><span class="dv">31</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=====================</span><span class="st">                                            </span><span class="er">|</span><span class="st">  </span><span class="dv">32</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======================</span><span class="st">                                           </span><span class="er">|</span><span class="st">  </span><span class="dv">33</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======================</span><span class="st">                                           </span><span class="er">|</span><span class="st">  </span><span class="dv">34</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=======================</span><span class="st">                                          </span><span class="er">|</span><span class="st">  </span><span class="dv">36</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|========================</span><span class="st">                                         </span><span class="er">|</span><span class="st">  </span><span class="dv">37</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=========================</span><span class="st">                                        </span><span class="er">|</span><span class="st">  </span><span class="dv">38</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=========================</span><span class="st">                                        </span><span class="er">|</span><span class="st">  </span><span class="dv">39</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==========================</span><span class="st">                                       </span><span class="er">|</span><span class="st">  </span><span class="dv">40</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===========================</span><span class="st">                                      </span><span class="er">|</span><span class="st">  </span><span class="dv">41</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===========================</span><span class="st">                                      </span><span class="er">|</span><span class="st">  </span><span class="dv">42</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|============================</span><span class="st">                                     </span><span class="er">|</span><span class="st">  </span><span class="dv">43</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=============================</span><span class="st">                                    </span><span class="er">|</span><span class="st">  </span><span class="dv">44</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============================</span><span class="st">                                   </span><span class="er">|</span><span class="st">  </span><span class="dv">46</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============================</span><span class="st">                                   </span><span class="er">|</span><span class="st">  </span><span class="dv">47</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===============================</span><span class="st">                                  </span><span class="er">|</span><span class="st">  </span><span class="dv">48</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================================</span><span class="st">                                 </span><span class="er">|</span><span class="st">  </span><span class="dv">49</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================================</span><span class="st">                                 </span><span class="er">|</span><span class="st">  </span><span class="dv">50</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=================================</span><span class="st">                                </span><span class="er">|</span><span class="st">  </span><span class="dv">51</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==================================</span><span class="st">                               </span><span class="er">|</span><span class="st">  </span><span class="dv">52</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===================================</span><span class="st">                              </span><span class="er">|</span><span class="st">  </span><span class="dv">53</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===================================</span><span class="st">                              </span><span class="er">|</span><span class="st">  </span><span class="dv">54</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|====================================</span><span class="st">                             </span><span class="er">|</span><span class="st">  </span><span class="dv">56</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=====================================</span><span class="st">                            </span><span class="er">|</span><span class="st">  </span><span class="dv">57</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======================================</span><span class="st">                           </span><span class="er">|</span><span class="st">  </span><span class="dv">58</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======================================</span><span class="st">                           </span><span class="er">|</span><span class="st">  </span><span class="dv">59</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=======================================</span><span class="st">                          </span><span class="er">|</span><span class="st">  </span><span class="dv">60</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|========================================</span><span class="st">                         </span><span class="er">|</span><span class="st">  </span><span class="dv">61</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|========================================</span><span class="st">                         </span><span class="er">|</span><span class="st">  </span><span class="dv">62</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=========================================</span><span class="st">                        </span><span class="er">|</span><span class="st">  </span><span class="dv">63</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==========================================</span><span class="st">                       </span><span class="er">|</span><span class="st">  </span><span class="dv">64</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===========================================</span><span class="st">                      </span><span class="er">|</span><span class="st">  </span><span class="dv">66</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===========================================</span><span class="st">                      </span><span class="er">|</span><span class="st">  </span><span class="dv">67</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|============================================</span><span class="st">                     </span><span class="er">|</span><span class="st">  </span><span class="dv">68</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=============================================</span><span class="st">                    </span><span class="er">|</span><span class="st">  </span><span class="dv">69</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============================================</span><span class="st">                   </span><span class="er">|</span><span class="st">  </span><span class="dv">70</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============================================</span><span class="st">                   </span><span class="er">|</span><span class="st">  </span><span class="dv">71</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===============================================</span><span class="st">                  </span><span class="er">|</span><span class="st">  </span><span class="dv">72</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================================================</span><span class="st">                 </span><span class="er">|</span><span class="st">  </span><span class="dv">73</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================================================</span><span class="st">                 </span><span class="er">|</span><span class="st">  </span><span class="dv">74</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=================================================</span><span class="st">                </span><span class="er">|</span><span class="st">  </span><span class="dv">76</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==================================================</span><span class="st">               </span><span class="er">|</span><span class="st">  </span><span class="dv">77</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===================================================</span><span class="st">              </span><span class="er">|</span><span class="st">  </span><span class="dv">78</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===================================================</span><span class="st">              </span><span class="er">|</span><span class="st">  </span><span class="dv">79</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|====================================================</span><span class="st">             </span><span class="er">|</span><span class="st">  </span><span class="dv">80</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=====================================================</span><span class="st">            </span><span class="er">|</span><span class="st">  </span><span class="dv">81</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=====================================================</span><span class="st">            </span><span class="er">|</span><span class="st">  </span><span class="dv">82</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|======================================================</span><span class="st">           </span><span class="er">|</span><span class="st">  </span><span class="dv">83</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=======================================================</span><span class="st">          </span><span class="er">|</span><span class="st">  </span><span class="dv">84</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|========================================================</span><span class="st">         </span><span class="er">|</span><span class="st">  </span><span class="dv">86</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|========================================================</span><span class="st">         </span><span class="er">|</span><span class="st">  </span><span class="dv">87</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=========================================================</span><span class="st">        </span><span class="er">|</span><span class="st">  </span><span class="dv">88</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==========================================================</span><span class="st">       </span><span class="er">|</span><span class="st">  </span><span class="dv">89</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==========================================================</span><span class="st">       </span><span class="er">|</span><span class="st">  </span><span class="dv">90</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===========================================================</span><span class="st">      </span><span class="er">|</span><span class="st">  </span><span class="dv">91</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|============================================================</span><span class="st">     </span><span class="er">|</span><span class="st">  </span><span class="dv">92</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=============================================================</span><span class="st">    </span><span class="er">|</span><span class="st">  </span><span class="dv">93</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=============================================================</span><span class="st">    </span><span class="er">|</span><span class="st">  </span><span class="dv">94</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|==============================================================</span><span class="st">   </span><span class="er">|</span><span class="st">  </span><span class="dv">96</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|===============================================================</span><span class="st">  </span><span class="er">|</span><span class="st">  </span><span class="dv">97</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================================================================</span><span class="st"> </span><span class="er">|</span><span class="st">  </span><span class="dv">98</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|================================================================</span><span class="st"> </span><span class="er">|</span><span class="st">  </span><span class="dv">99</span>%
-  <span class="op">|</span><span class="st">                                                                       </span>
-<span class="st">  </span><span class="er">|=================================================================|</span><span class="st"> </span><span class="dv">100</span>%
+                     <span class="dt">parallel =</span> <span class="ot">FALSE</span>,
+                     <span class="dt">showTextProgress =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(test3)</code></pre></div>
-<p><img src="IRRsim_files/figure-html/simulateICCexample-1.png" width="700"></p>
+<p><img src="IRRsim_files/figure-html/simulateIRRexample-1.png" width="624"></p>
 <p>For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tests.4levels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulateICC.html">simulateICC</a></span>(<span class="dt">nRaters =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>), <span class="dt">nLevels =</span> <span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tests.4levels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulateIRR.html">simulateIRR</a></span>(<span class="dt">nRaters =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>), <span class="dt">nLevels =</span> <span class="dv">4</span>)</code></pre></div>
 <p>The <code>as.data.frame</code> function provides the IRR statistics for each of the simulated samples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test.4levels.df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tests.4levels)
 <span class="kw">dim</span>(test.4levels.df)
 <span class="co">#&gt; [1] 2700   15</span>
 <span class="kw">head</span>(test.4levels.df)
 <span class="co">#&gt;   nLevels nEvents k k_per_event simAgreement agreement skewness kurtosis</span>
-<span class="co">#&gt; 1       4     100 6           6          0.1      0.08  -0.0442     -1.4</span>
-<span class="co">#&gt; 2       4     100 6           6          0.1      0.11  -0.0059     -1.4</span>
-<span class="co">#&gt; 3       4     100 6           6          0.1      0.09   0.0898     -1.3</span>
-<span class="co">#&gt; 4       4     100 6           6          0.1      0.09  -0.0121     -1.3</span>
-<span class="co">#&gt; 5       4     100 6           6          0.1      0.10   0.0552     -1.3</span>
-<span class="co">#&gt; 6       4     100 6           6          0.1      0.10   0.0207     -1.3</span>
+<span class="co">#&gt; 1       4     100 6           6          0.1      0.13    0.027     -1.3</span>
+<span class="co">#&gt; 2       4     100 6           6          0.1      0.10   -0.061     -1.3</span>
+<span class="co">#&gt; 3       4     100 6           6          0.1      0.08   -0.031     -1.3</span>
+<span class="co">#&gt; 4       4     100 6           6          0.1      0.16    0.149     -1.3</span>
+<span class="co">#&gt; 5       4     100 6           6          0.1      0.13   -0.051     -1.4</span>
+<span class="co">#&gt; 6       4     100 6           6          0.1      0.09   -0.048     -1.3</span>
 <span class="co">#&gt;   MaxResponseDiff  ICC1  ICC2  ICC3 ICC1k ICC2k ICC3k</span>
-<span class="co">#&gt; 1           0.055 0.025 0.026 0.026  0.14  0.14  0.14</span>
-<span class="co">#&gt; 2           0.025 0.060 0.060 0.059  0.28  0.28  0.27</span>
-<span class="co">#&gt; 3           0.018 0.069 0.069 0.070  0.31  0.31  0.31</span>
-<span class="co">#&gt; 4           0.012 0.100 0.099 0.099  0.40  0.40  0.40</span>
-<span class="co">#&gt; 5           0.030 0.044 0.044 0.044  0.22  0.22  0.22</span>
-<span class="co">#&gt; 6           0.033 0.118 0.119 0.119  0.45  0.45  0.45</span></code></pre></div>
+<span class="co">#&gt; 1          0.0033 0.154 0.154 0.154  0.52  0.52  0.52</span>
+<span class="co">#&gt; 2          0.0233 0.105 0.105 0.105  0.41  0.41  0.41</span>
+<span class="co">#&gt; 3          0.0350 0.116 0.116 0.115  0.44  0.44  0.44</span>
+<span class="co">#&gt; 4          0.0133 0.158 0.158 0.158  0.53  0.53  0.53</span>
+<span class="co">#&gt; 5          0.0250 0.143 0.144 0.146  0.50  0.50  0.51</span>
+<span class="co">#&gt; 6          0.0433 0.083 0.083 0.083  0.35  0.35  0.35</span></code></pre></div>
 <p>The following three figures show ICC1 against percent rater agreement.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(tests.4levels, <span class="dt">stat =</span> <span class="st">'ICC1'</span>)</code></pre></div>
 <p><img src="IRRsim_files/figure-html/ploticc1-1.png" width="624"></p>
@@ -509,19 +327,19 @@ test2
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
-<span class="co">#&gt; -0.12157 -0.02049  0.00107  0.01944  0.08777 </span>
+<span class="co">#&gt; -0.11112 -0.01969  0.00136  0.01933  0.10116 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
 <span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)     -0.0023     0.0040   -0.57     0.57    </span>
-<span class="co">#&gt; I(agreement^2)   0.0144     0.0178    0.81     0.42    </span>
-<span class="co">#&gt; agreement        0.9895     0.0183   54.00   &lt;2e-16 ***</span>
+<span class="co">#&gt; (Intercept)    -0.01228    0.00386   -3.18   0.0015 ** </span>
+<span class="co">#&gt; I(agreement^2) -0.03952    0.01718   -2.30   0.0216 *  </span>
+<span class="co">#&gt; agreement       1.04735    0.01770   59.16   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.032 on 897 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.985,  Adjusted R-squared:  0.985 </span>
-<span class="co">#&gt; F-statistic: 2.93e+04 on 2 and 897 DF,  p-value: &lt;2e-16</span>
+<span class="co">#&gt; Residual standard error: 0.031 on 897 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.987,  Adjusted R-squared:  0.987 </span>
+<span class="co">#&gt; F-statistic: 3.32e+04 on 2 and 897 DF,  p-value: &lt;2e-16</span>
 <span class="kw">summary</span>(tests.4levels.sum<span class="op">$</span>model[[<span class="dv">2</span>]]) <span class="co"># k = 9 raters</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -530,19 +348,19 @@ test2
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
-<span class="co">#&gt; -0.10166 -0.01747  0.00234  0.01825  0.09018 </span>
+<span class="co">#&gt; -0.13546 -0.01556  0.00128  0.01800  0.08954 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -0.00585    0.00358   -1.64    0.102    </span>
-<span class="co">#&gt; I(agreement^2) -0.03040    0.01623   -1.87    0.061 .  </span>
-<span class="co">#&gt; agreement       1.02941    0.01658   62.07   &lt;2e-16 ***</span>
+<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)    -0.000671   0.003492   -0.19     0.85    </span>
+<span class="co">#&gt; I(agreement^2) -0.004000   0.015771   -0.25     0.80    </span>
+<span class="co">#&gt; agreement       1.002916   0.016118   62.23   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.03 on 897 degrees of freedom</span>
+<span class="co">#&gt; Residual standard error: 0.029 on 897 degrees of freedom</span>
 <span class="co">#&gt; Multiple R-squared:  0.988,  Adjusted R-squared:  0.988 </span>
-<span class="co">#&gt; F-statistic: 3.57e+04 on 2 and 897 DF,  p-value: &lt;2e-16</span>
+<span class="co">#&gt; F-statistic: 3.75e+04 on 2 and 897 DF,  p-value: &lt;2e-16</span>
 <span class="kw">summary</span>(tests.4levels.sum<span class="op">$</span>model[[<span class="dv">3</span>]]) <span class="co"># k = 12 raters</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -551,19 +369,19 @@ test2
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
-<span class="co">#&gt; -0.11428 -0.01653  0.00088  0.01715  0.08904 </span>
+<span class="co">#&gt; -0.12469 -0.01636  0.00019  0.01615  0.08017 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)     0.00563    0.00332    1.70     0.09 .  </span>
-<span class="co">#&gt; I(agreement^2)  0.01833    0.01488    1.23     0.22    </span>
-<span class="co">#&gt; agreement       0.97516    0.01527   63.86   &lt;2e-16 ***</span>
+<span class="co">#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)    -0.003143   0.003356   -0.94     0.35    </span>
+<span class="co">#&gt; I(agreement^2)  0.000466   0.014855    0.03     0.97    </span>
+<span class="co">#&gt; agreement       1.003838   0.015316   65.54   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residual standard error: 0.027 on 897 degrees of freedom</span>
 <span class="co">#&gt; Multiple R-squared:  0.989,  Adjusted R-squared:  0.989 </span>
-<span class="co">#&gt; F-statistic: 4.23e+04 on 2 and 897 DF,  p-value: &lt;2e-16</span></code></pre></div>
+<span class="co">#&gt; F-statistic: 4.19e+04 on 2 and 897 DF,  p-value: &lt;2e-16</span></code></pre></div>
 </div>
 <div id="discussion" class="section level1">
 <h1 class="hasAnchor">
@@ -592,9 +410,6 @@ test2
 <p>Svanholm, H., Starklint, H., Gundersen, H. J. G., Fabricius, J., Barlebo, H., &amp; Olsen, S. (1989). Reproducibility of histomorphologic diagnoses with special reference to the kappa statistic. <em>Apmis, 97</em>(7-12), 689-698.</p>
 <p>Trevethan, R. (2017). Intraclass correlation coefficients: Clearing the air, extending some cautions, and making some requests. <em>Health Services and Outcomes Research Methodology, 17</em>(2), 127-143.</p>
 <p>Zegers, M., de Bruijne, M.C., Wagner, C., Groenewegen, P.P., van der Wal, G., de Vet, H.C. (2010). The inter-rater agreement of retrospective assessments of adverse events does not improve with two reviewers per patient record. <em>Journal of Clinical Epidemiology, 63</em>(1), 94–102.</p>
-<div class="sourceCode"><pre class="sourceCode css"><code class="sourceCode css">p <span class="kw">{</span>
-    <span class="kw">font-style:</span> <span class="dt">normal</span><span class="kw">;</span>
-<span class="kw">}</span></code></pre></div>
 <style type="text/css">
 p {
     font-style: normal;

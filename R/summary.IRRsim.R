@@ -8,7 +8,7 @@
 #' table contains the predicted values. If a specific IRR statistic is specified,
 #' the summary table contains the predicted value along with the interval.#'
 #'
-#' @param x the result of \code{\link{simulateICC}}.
+#' @param x the result of \code{\link{simulateIRR}}.
 #' @param method the method used to find predicted values. Possible values are
 #'        loess, linear, and quadratic.
 #' @param agreements vector of percent agreements to include in the summary table.

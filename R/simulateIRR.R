@@ -35,9 +35,9 @@
 #' @seealso as.data.frame.IRRsim
 #' @export
 #' @examples
-#' icctest <- simulateICC(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
+#' icctest <- simulateIRR(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
 #' summary(icctest)
-simulateICC <- function(nRaters = c(2),
+simulateIRR <- function(nRaters = c(2),
 						nRatersPerEvent = nRaters,
 						nLevels = 4,
 						nEvents = 100,

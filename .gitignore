@@ -1,3 +1,5 @@
+Meta
+doc
 .Rproj.user
 .Rhistory
 .RData
@@ -7,3 +9,5 @@ Articles/
 inst/slides/IRRsim-Presentation_cache
 inst/slides/IRRsim-Presentation_files
 IRRsimulations.rda
+NCME1.png
+NCME2.png

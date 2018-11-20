@@ -1,6 +1,6 @@
-#' Prints the results from simulateICC.
+#' Prints the results from simulateIRR.
 #'
-#' @param x the results of \code{\link{simulateICC}}.
+#' @param x the results of \code{\link{simulateIRR}}.
 #' @param ... currently unused.
 #' @export
 print.IRRsim <- function(x, ...) {
