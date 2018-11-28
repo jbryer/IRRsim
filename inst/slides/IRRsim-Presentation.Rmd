@@ -20,8 +20,6 @@ knitr::opts_chunk$set(echo = TRUE,
 
 library(magrittr)
 library(IRRsim)
-library(memisc)
-library(xtable)
 library(knitr)
 
 set.seed(2112)
@@ -139,7 +137,7 @@ Guidelines for interpreting ICC is largely provided from the medical literature.
 
 The guidelines for interpreting ICC may not be appropriate for all forms of ICC. As will be shown, the magnitude of the ICC vary greatly for the same percent agreement.
 
-## The IRRsim R Pakcage
+## The IRRsim R Package
 
 The `IRRsim` package provides functions to simulate various scoring situations.
 
@@ -169,7 +167,7 @@ For each scoring event (i.e. row within a scoring matrix):
 1. One of *k* raters is randomly selected.
 2. A score, *y*, is randomly selected from the response distribution (uniform distribution by default)
 3. A random number, *x*, between 0 and 1 is generated. 
-	* If *x* is less than the specified desired perecent agreement, the remaining values in the row are set to *y*.
+	* If *x* is less than the specified desired percent agreement, the remaining values in the row are set to *y*.
 	* Otherwise, scores for the remaining raters are randomly selected from the response distribution.
 4. Repeat steps 1 through 3 for the remaining scoring events.
 5. If $k_n < k$, then $k - k_n$ scores per row are set to `NA` (missing).
@@ -364,7 +362,7 @@ knitr::kable(t(df.summary), digits = 2)
 
 ## Shiny Application
 
-An interactive Shiny web application was developed to faciliate the simulation of scoring matrices for any particular scoring design.
+An interactive Shiny web application was developed to facilitate the simulation of scoring matrices for any particular scoring design.
 
 ```{r, eval = FALSE}
 IRRsim_demo()
@@ -378,7 +376,7 @@ IRRsim_demo()
 
 ## Discussion
 
-* ICC and percent agreement are highly correlated with percent agreement accountly for approximately 90% of the variance in ICC.
+* ICC and percent agreement are highly correlated with percent agreement account for approximately 90% of the variance in ICC.
 * Skewness in the response distribution does not appear to impact ICC. This may not be desirable. As one score increases in likelihood (say, response C in four possible scores), agreement by chance of the raters should also increase. ICC, which is suppose to account for agreement-by-chance, does not for this situation.
 * When $k_n = 2$, there is a penalty in ICC as *k* increases.
 * The published guidelines for interpreting ICC may not be appropriate for one-way designs (i.e. ICC1 and ICC1k). For many common scoring designs (e.g. $k_n = 2$, $k > 20$) in education, achieving "excellent" inter-rater reliability is not possible.
