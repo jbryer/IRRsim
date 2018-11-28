@@ -10,7 +10,7 @@ Documentation is available at http://irrsim.bryer.org
 
 The development version of `IRRsim` can be downloaded from Github using the `devtools` package:
 
-```
+```r
 devtools::install_github('jbryer/IRRsim')
 ```
 
@@ -18,7 +18,7 @@ devtools::install_github('jbryer/IRRsim')
 
 Many of features of this package can be explored using the included shiny applications. The `IRRsim_shiny()` function will run the application.
 
-```
+```r
 IRRsim::IRRsim_shiny()
 ```
 
