@@ -1,5 +1,5 @@
 ---
-title: "Relationship Between Intraclass Correlation and Percent Rater Agreement"
+title: "Relationship Between ICC and Percent Agreement"
 author: Jason Bryer & Guher Gorgun
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
@@ -7,12 +7,23 @@ output:
     self_contained: true
     widescreen: true
     smaller: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+					  warning = FALSE, 
+					  message = FALSE, 
+					  fig.width = 10,
+					  fig.height = 6)
+
 library(magrittr)
 library(IRRsim)
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(memisc)
+library(xtable)
+library(knitr)
+
 set.seed(2112)
 
 linebreak <- "<br/>"
@@ -37,13 +48,13 @@ Fleiss' Kappa
 
 * Extension of Cohen's kappa for more than two raters. It also takes into account agreement by chance.
 
-## 
+## Components of Measuring IRR
 
-The three models are:
+Models:
 
 * **One-way random** effects: each subject is measured by a different set of k randomly selected raters.
-* **Two-way random**: k raters are randomly selected, then, each subject is measured by the same set of k raters.
-* **Two-way mixed**: k fixed raters are defined. Each subject is measured by the k raters.
+* **Two-way random** effects: k raters are randomly selected, then, each subject is measured by the same set of k raters.
+* **Two-way mixed** effects: k fixed raters are defined. Each subject is measured by the k raters.
 
 Number of measurements:
 
@@ -78,11 +89,13 @@ Consistency or absolute agreement:
 <font size = "3">
 ```{r IRRguidelines, echo=FALSE, results='asis'}
 data("IRRguidelines")
-for(i in IRRguidelines[1:8]) {
+for(i in IRRguidelines[1:7]) {
 	cat(paste0("", i$reference, ' (<b>', ifelse(any(is.na(i$metrics)), 'Not specified', paste0(i$metrics, collapse=', ')), "</b>)\n"))
 	cat(paste0("<li>&lt; ", i$breaks[2], ' ', names(i$breaks)[1]), '</li>\n')
-	for(j in seq(2, length(i$breaks) - 1)) {
-		cat(paste0("<li>", i$breaks[j], ' - ', i$breaks[j+1], ' ', names(i$breaks)[j]), '</li>\n')
+	if(length(i$breaks) > 2) {
+		for(j in seq(2, length(i$breaks) - 1)) {
+			cat(paste0("<li>", i$breaks[j], ' - ', i$breaks[j+1], ' ', names(i$breaks)[j]), '</li>\n')
+		}
 	}
 	cat(paste0("<li> &gt;", i$breaks[length(i$breaks)], ' ', names(i$breaks[length(i$breaks)]), '</li>\n'))
 	cat('\n\n')
@@ -91,6 +104,40 @@ for(i in IRRguidelines[1:8]) {
 
 </font>
 
+## Guidelines for Interpreting IRR
+
+```{r IRRguidelinesPlot, echo=FALSE, fig.height=4.5, fig.width=10}
+guidelines <- data.frame()
+for(i in IRRguidelines) {
+	guidelines <- rbind(guidelines, data.frame(
+		Reference = i$reference,
+		Description = names(i$breaks),
+		Metric = ifelse(any(is.na(i$metrics)), 'Not specified', i$metrics[1]),
+		Value = unname(i$breaks),
+		stringsAsFactors = FALSE
+	))
+}
+guidelines$Reference <- gsub('; ', '\n', guidelines$Reference)
+guidelines[guidelines$Description == 'Reasonable for clinical measurement',]$Description <- 'Reasonable for\nclinical measurement'
+ggplot(guidelines, aes(x = Reference, y = Value, label = Description)) + 
+	geom_point(shape = 17) + 
+	geom_text(vjust = -1.5, size = 3.5) +
+	geom_text(data=guidelines[guidelines$Value > 0,],
+							  aes(label = Value), hjust = -0.4, size = 3) +
+	facet_wrap(~ Metric, nrow = 1, scales = "free_x") +
+	ylim(c(0, 1)) +
+	ylab("IRR Value") +
+	# ggtitle('Guidelines for Interpreting IRR') +
+	theme(axis.text.x = element_text(size = 7))
+```
+
+## Guidelines for Education
+
+In education, ICC1 is *often* the most appropriate intra-class correlation (ICC) metric to use given each subject is measured by two randomly selected raters (one-way), single measures are used, and absolute agreement is desired.
+
+Guidelines for interpreting ICC is largely provided from the medical literature. When discussing to ICC1, Koo and Li (2016) state that "practically, this model is rarely used in clinical reliability analysis because majority of the reliability studies typically involve the same set of raters to measure all subjects" (pp. 156-157).
+
+The guidelines for interpreting ICC may not be appropriate for all forms of ICC. As will be shown, the magnitude of the ICC vary greatly for the same percent agreement.
 
 ## The IRRsim R Pakcage
 
@@ -103,6 +150,30 @@ devtools::install_github('jbryer/IRRsim')
 ```{r, message=FALSE, warning=FALSE}
 library(IRRsim)
 ```
+
+Key functions:
+
+* `simulateRatingMatrix` - Simulate a single rating matrix.
+* `simulateIRR` - Simulates many scoring matrices with varying percent rater agreements. S3 methods implemented for objects returned by `simulateIRR`:
+	* `summary`
+	* `plot`
+	* `as.data.frame`
+* `IRRsim_demo` - Run interactive Shiny application.
+
+## `simulateRatingMatrix`
+
+Simulate a single rating matrix. 
+
+For each scoring event (i.e. row within a scoring matrix):
+
+1. One of *k* raters is randomly selected.
+2. A score, *y*, is randomly selected from the response distribution (uniform distribution by default)
+3. A random number, *x*, between 0 and 1 is generated. 
+	* If *x* is less than the specified desired perecent agreement, the remaining values in the row are set to *y*.
+	* Otherwise, scores for the remaining raters are randomly selected from the response distribution.
+4. Repeat steps 1 through 3 for the remaining scoring events.
+5. If $k_n < k$, then $k - k_n$ scores per row are set to `NA` (missing).
+
 
 ## Simulating Scoring Matrices { .columns-2 }
 
@@ -124,8 +195,9 @@ test2
 agreement(test2)
 ```
 
+## `simulateIRR`
 
-## Simulating Data
+Simulates many scoring matrices with varying percent rater agreements. For each scoring matrix, IRR statistics are calculated. This functions returns an object of type `IRRsim` which has S3 methods defined for `plot`, `summary`, and `as.data.frame`.
 
 For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.
 
@@ -135,20 +207,20 @@ tests.5levels <- simulateIRR(nRaters = c(6, 9, 12), nRatersPerEvent = 2, nLevels
 tests.9levels <- simulateIRR(nRaters = c(6, 9, 12), nRatersPerEvent = 2, nLevels = 9)
 ```
 
-## 
+## {.centered}
 
 ```{r ploticc3, echo = FALSE, fig.width = 10, fig.height = 6}
 plot(tests.3levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
 ```
 
 
-## 
+## {.centered}
 
 ```{r ploticc5, echo = FALSE, fig.width = 10, fig.height = 6}
 plot(tests.5levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
 ```
 
-## 
+## {.centered}
 
 ```{r ploticc9, echo = FALSE, fig.width = 10, fig.height = 6}
 plot(tests.9levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
@@ -160,6 +232,8 @@ plot(tests.9levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
 tests.3levels.sum <- summary(tests.3levels, stat = 'ICC1', method = 'quadratic')
 summary(tests.3levels.sum$model[[1]]) # k = 6 raters
 ```
+
+**`r round(summary(tests.3levels.sum$model[[1]])$r.squared * 100)`% of the variance in ICC1 is accounted for by percent agreement!**
 
 ## Simulating Different Response Distributions
 
@@ -225,11 +299,12 @@ sapply(test3.3levels, FUN = function(x) { as.integer(x$data) }) %>%
 
 </div>
 
-##
+## {.centered}
 
 ```{r ploticcresponsedist, echo = FALSE, fig.width = 10, fig.height = 6}
 guide <- data.frame(
-	labels = names(IRRguidelines[['Cicchetti']]$breaks[-1]),
+	labels = paste0(names(IRRguidelines[['Cicchetti']]$breaks[-1]), ' (',
+					unname(IRRguidelines[['Cicchetti']]$breaks[-1]), ')'),
 	y = unname(IRRguidelines[['Cicchetti']]$breaks[-1]),
 	stringsAsFactors = FALSE
 )
@@ -248,24 +323,15 @@ ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 
 ```{r, echo=FALSE}
 data("IRRsimData")
+levels(IRRsimData$nLevels) <- c('Two', 'Three', 'Four', 'Five')
+IRRsimData$nLevels <- as.character(IRRsimData$nLevels)
+levels(IRRsimData$k) <- c('Two', 'Four', 'Eight', 'Sixteen')
+IRRsimData$k <- as.character(IRRsimData$k)
 ```
 
-Simulated `r prettyNum(nrow(IRRsimData), big.mark = ',')` scorning matrices with between `r min(IRRsimData$k)` and `r max(IRRsimData$k)` raters and four response distributions (i.e. uniform, lightly skewed, moderately skewed, and highly skewed).
+Simulated `r prettyNum(nrow(IRRsimData), big.mark = ',')` scoring matrices (each 100 x *k*) with *k* between 2 and 16 raters and four response distributions (i.e. uniform, lightly skewed, moderately skewed, and highly skewed).
 
 ```{r}
-icc1.out <- lm(ICC1 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-			   data = IRRsimData)
-```
-
-## 
-
-```{r}
-summary(icc1.out)
-```
-
-## 
-
-```{r, echo=FALSE, results='asis'}
 icc1.out <- lm(ICC1 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
 			   data = IRRsimData)
 icc2.out <- lm(ICC2 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
@@ -278,6 +344,12 @@ icc2k.out <- lm(ICC2k ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDi
 				data = IRRsimData)
 icc3k.out <- lm(ICC3k ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
 				data = IRRsimData)
+```
+
+
+## 
+
+```{r, echo=FALSE, results='asis'}
 df.summary <- rbind(
 	c('r-squared' = summary(icc1.out)$r.squared, icc1.out$coefficients),
 	c('r-squared' = summary(icc2.out)$r.squared, icc2.out$coefficients),
@@ -290,10 +362,29 @@ row.names(df.summary) <- c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k')
 knitr::kable(t(df.summary), digits = 2)
 ```
 
-## Shiny Application 
+## Shiny Application
+
+An interactive Shiny web application was developed to faciliate the simulation of scoring matrices for any particular scoring design.
 
 ```{r, eval = FALSE}
 IRRsim_demo()
 ```
 
+<div class='centered'>
+
 ![](IRRsimShinyApp.png)
+
+</div>
+
+## Discussion
+
+* ICC and percent agreement are highly correlated with percent agreement accountly for approximately 90% of the variance in ICC.
+* Skewness in the response distribution does not appear to impact ICC. This may not be desirable. As one score increases in likelihood (say, response C in four possible scores), agreement by chance of the raters should also increase. ICC, which is suppose to account for agreement-by-chance, does not for this situation.
+* When $k_n = 2$, there is a penalty in ICC as *k* increases.
+* The published guidelines for interpreting ICC may not be appropriate for one-way designs (i.e. ICC1 and ICC1k). For many common scoring designs (e.g. $k_n = 2$, $k > 20$) in education, achieving "excellent" inter-rater reliability is not possible.
+* The Shiny web application is a tool to help researchers interpret their ICC results in relation to the percent agreement achieved.
+
+### Recommendations
+
+* Researchers should report their full scoring design including $k$, $k_n$, and number of scoring levels.
+* Report/utilize percent agreement. This metric is much more understandable. 

@@ -34,7 +34,7 @@ ui <- fluidPage(
 		selectInput('predictMethod', 'Prediction Method',
 					choices = c('Linear', 'Loess', 'Quadratic'), selected = "Quadratic"),
 		hr(),
-		p("Response Distribution (Weights)"),
+		p('Response Distribution (Weights)'),
 		uiOutput('responseDistribution')
       ),
 

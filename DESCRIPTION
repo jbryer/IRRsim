@@ -12,7 +12,7 @@ LazyData: true
 ByteCompile: true
 RoxygenNote: 6.1.0
 Depends: psych, DescTools, ggplot2, reshape2, shiny, parallel, foreach, doParallel, doSNOW
-Suggests: irr, knitr, rmarkdown, testthat, magrittr
+Suggests: irr, knitr, rmarkdown, testthat, magrittr, xtable
 VignetteBuilder: knitr
 URL: http://irrsim.bryer.org, http://github.com/jbryer/IRRsim
 BugReports: https://github.com/jbryer/IRRsim/issues

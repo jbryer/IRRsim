@@ -1,106 +1,35 @@
 library(devtools)
 
+# Documentation
 document()
-build(vignettes = FALSE)
 build_vignettes()
-install()
-test()
-check(cran = TRUE)
-
 pkgdown::build_site()
 
-# Basic usage
+# Install / Build package
+install()
+build(vignettes = FALSE)
 
-library(IRRsim)
-
+# Generate the data files used in the Vignette
+source('data-raw/IRRguidelines.R') # Generate the IRRguidelines data file
+source('data-raw/IRRsimulations.R') # WARNING! Will take a long time to run
 data("IRRsimData")
 data("IRRguidelines")
+
+# Testing/getting ready for CRAN submission
+test()
+check(cran = TRUE)
+# submit_cran()
+
+################################################################################
+# Basic usage
+library(IRRsim)
 
 vignette(package = 'IRRsim') # Make sure the vignette is listed
 vignette('IRRsim') # Open the vignette
 
 IRRsim_demo() # Run the shiny app
 
-# See demo/IRRsim.R for examples.
-
-################################################################################
-# Generate the data files used in the Vignette
-source('data-raw/IRRguidelines.R')
-
-
-# Set run_parallel = TRUE to ensure subsequent runs generate the same data.
-run_parallel <- FALSE
-set.seed(2112)
-# nRaters = 2:12  # Number of raters
-nRaters <- c(2, 4, 8, 16)
-nLevels <- 2:5  # The number of scoring levels
-IRRsimulations <- list()
-for(i in nLevels) {
-	probability.weights <- list(
-		'Uniform' = rep(1/i, i),
-		'Lightly' = c(rep(.55 / (i - 1), i - 1), .55),
-		'Moderately' = c(rep(.4 / (i - 1), i - 1), .6),
-		'Highly' = c(rep(.2 / (i - 1), i - 1), .8)
-	)
-
-	for(j in seq_len(length(probability.weights))) {
-		print(paste0('Simulating ', i, ' levels with ',
-					 names(probability.weights)[j], ' distribution'))
-		for(k in nRaters) {
-			for(k_per_event in seq(2, k)) {
-				tmp <- simulateIRR(nRaters = k,
-							   nRatersPerEvent = k_per_event,
-							   nLevels = i,
-							   response.probs = probability.weights[[j]],
-							   parallel = run_parallel,
-							   showTextProgress = FALSE)
-				tmp2 <- unlist(sapply(tmp, FUN = function(x) { as.integer(x$data) }))
-				IRRsimulations[[length(IRRsimulations) + 1]] <- list(
-					raw = tmp,
-					nLevels = i,
-					nRaters = k,
-					nRatersPerEvent = k_per_event,
-					response.probs.name = names(probability.weights)[j],
-					response.probs = probability.weights[[j]],
-					response.dist = prop.table(table(tmp2))
-				)
-			}
-		}
-	}
-}
-save(IRRsimulations, file = 'data-raw/IRRsimulations.rda')
-
-# Create a data.frame combining the results of the simulations
-load('data-raw/IRRsimulations.rda')
-IRRsimData <- data.frame()
-for(i in seq_len(length(IRRsimulations))) {
-	tmp <- as.data.frame(IRRsimulations[[i]]$raw)
-	# tmp$ResponseDist <- IRRsimulations[[i]]$response.probs.name
-	IRRsimData <- rbind(IRRsimData, tmp)
-}
-IRRsimData$nLevels <- factor(IRRsimData$nLevels, ordered = TRUE)
-IRRsimData$PercentRated <- IRRsimData$k_per_event / IRRsimData$k
-IRRsimData$k <- factor(IRRsimData$k, ordered = TRUE)
-IRRsimData$k_per_event <- factor(IRRsimData$k_per_event, ordered = TRUE)
-IRRsimData$ResponseDist <- cut(IRRsimData$MaxResponseDiff,
-							   breaks = c(-Inf, 0.1, 0.2, 0.3, Inf),
-							   labels = c('Uniform', 'Lightly Skewed', 'Moderately Skewed', 'Highly Skewed'),
-							   ordered = TRUE)
-head(IRRsimData)
-str(IRRsimData)
-dim(IRRsimData)
-save(IRRsimData, file = 'data/IRRsimData.rda')
-rm(IRRsimulations)
-
-load("data/IRRsimData.rda")
-
-dim(IRRsimData)
-head(IRRsimData)
-
-
-ggplot(IRRsimData, aes(x = agreement, y = ICC1, color = ResponseDist)) +
-	   	geom_smooth() +
-	   	facet_wrap(~ k + k_per_event)
+demo('IRRsim') # See demo/IRRsim.R for examples.
 
 
 # Build prediction table
@@ -130,7 +59,7 @@ for(n in unique(IRRsimData$nLevels)) {
 print(rsquared.df, digits = 2)
 summary(rsquared.df)
 
-write.csv(rsquared.df, file = 'r-squared.csv', row.names = FALSE)
+# write.csv(rsquared.df, file = 'r-squared.csv', row.names = FALSE)
 
 icc1.out <- lm(ICC1 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
 			   data = IRRsimData)
@@ -164,9 +93,3 @@ df.summary <- rbind(
 row.names(df.summary) <- c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k')
 print(t(df.summary), digits = 2)
 
-
-lme.out1 <- lmer(ICC1 ~ agreement + I(agreement^2) + MaxResponseDiff + (1 | nLevels) + (1 | k), data = IRRsimData)
-MuMIn::r.squaredGLMM(lme.out1)
-
-lme.out1k <- lmer(ICC1k ~ agreement + I(agreement^2) + MaxResponseDiff + (1 | nLevels) + (1 | k), data = IRRsimData)
-MuMIn::r.squaredGLMM(lme.out1k)
