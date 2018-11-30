@@ -8,6 +8,6 @@ vignettes/IRRsim_cache
 Articles/
 inst/slides/IRRsim-Presentation_cache
 inst/slides/IRRsim-Presentation_files
-IRRsimulations.rda
+data-raw/IRRsimulations.rda
 NCME1.png
 NCME2.png

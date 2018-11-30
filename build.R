@@ -12,6 +12,7 @@ build(vignettes = FALSE)
 # Generate the data files used in the Vignette
 source('data-raw/IRRguidelines.R') # Generate the IRRguidelines data file
 source('data-raw/IRRsimulations.R') # WARNING! Will take a long time to run
+tools::resaveRdaFiles('data')
 data("IRRsimData")
 data("IRRguidelines")
 

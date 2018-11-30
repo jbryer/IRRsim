@@ -47,6 +47,7 @@ load('data-raw/IRRsimulations.rda')
 IRRsimData <- data.frame()
 for(i in seq_len(length(IRRsimulations))) {
 	tmp <- as.data.frame(IRRsimulations[[i]]$raw)
+	tmp <- tmp[,!names(tmp) %in% c('Cohen_Kappa')]
 	# tmp$ResponseDist <- IRRsimulations[[i]]$response.probs.name
 	IRRsimData <- rbind(IRRsimData, tmp)
 }
