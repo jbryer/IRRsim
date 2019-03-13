@@ -1,5 +1,8 @@
 library(devtools)
 
+# Install dependencies (if necessary)
+install_dev_deps()
+
 # Documentation
 document()
 build_vignettes()
@@ -20,6 +23,9 @@ data("IRRguidelines")
 test()
 check(cran = TRUE)
 # submit_cran()
+
+library(RColorBrewer)
+display.brewer.all()
 
 ################################################################################
 # Basic usage

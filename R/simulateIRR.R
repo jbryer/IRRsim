@@ -151,7 +151,7 @@ simulateIRR <- function(nRaters = c(2),
 				test <- IRRsim::simulateRatingMatrix(nLevels = nLevels,
 													 nEvents = nEvents,
 													 k = tests[i,]$k,
-													 k_per_event = tests[i,]$k,
+													 k_per_event = tests[i,]$k_per_event,
 													 agree = tests[i,]$simAgreement,
 													 response.probs = response.probs)
 				test2 <- as.integer(test)

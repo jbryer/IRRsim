@@ -27,6 +27,8 @@ set.seed(2112)
 linebreak <- "<br/>"
 ```
 
+## Motivation
+
 
 
 ## Measuring Inter-rater Reliability
@@ -209,20 +211,20 @@ tests.9levels <- simulateIRR(nRaters = c(6, 9, 12), nRatersPerEvent = 2, nLevels
 ## {.centered}
 
 ```{r ploticc3, echo = FALSE, fig.width = 10, fig.height = 6}
-plot(tests.3levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
+plot(tests.3levels, stat = 'ICC1') + ylim(c(-0.2, 1.0)) + scale_color_brewer(type = 'qual')
 ```
 
 
 ## {.centered}
 
 ```{r ploticc5, echo = FALSE, fig.width = 10, fig.height = 6}
-plot(tests.5levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
+plot(tests.5levels, stat = 'ICC1') + ylim(c(-0.2, 1.0)) + scale_color_brewer(type = 'qual')
 ```
 
 ## {.centered}
 
 ```{r ploticc9, echo = FALSE, fig.width = 10, fig.height = 6}
-plot(tests.9levels, stat = 'ICC1') + ylim(c(-0.2, 1.0))
+plot(tests.9levels, stat = 'ICC1') + ylim(c(-0.2, 1.0)) + scale_color_brewer(type = 'qual')
 ```
 
 ##
@@ -313,10 +315,11 @@ ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 			  aes(label = labels, y = y, x = 0)) +
 	geom_smooth(method = 'loess', se = FALSE, aes(linetype = factor(k))) +
 	scale_linetype('n Raters') +
+	# scale_color_brewer(palette = 'Set3') +
 	xlab('Percent Agreement') +
 	ggtitle('ICC1 vs Percent Agreement',
 			subtitle = "Cicchetti's Guidelines Provided")
-```
+	```
 
 ## Modeling ICC from Percent Agreement
 
