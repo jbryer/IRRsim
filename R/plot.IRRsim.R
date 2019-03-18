@@ -17,7 +17,8 @@ plot.IRRsim <- function(x,
 						...) {
 	p <- NULL
 	test <- as.data.frame(x)
-	test$k <- as.character(test$k)
+	test$k <- factor(test$k, levels = unique(test$k)[order(unique(test$k))], ordered = TRUE)
+	# test$k <- as.character(test$k)
 	if(missing(stat)) {
 		tests.melted <- reshape2::melt(test, id.vars = c('nLevels', 'nEvents',
 				'k', 'k_per_event', 'simAgreement', 'agreement',
@@ -54,7 +55,7 @@ plot.IRRsim <- function(x,
 	}
 
 	if(length(unique(test$k)) > 1) {
-		p <- p + scale_color_hue('n Raters')
+		p <- p + scale_color_brewer('n Raters', palette = 'Dark2')
 	} else {
 		p <- p + scale_color_grey('') + theme(legend.position="none")
 	}
