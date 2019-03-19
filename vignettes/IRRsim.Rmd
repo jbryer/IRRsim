@@ -7,9 +7,7 @@ author:
   affiliation: University at Albany
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-fig_width: 6.5
-fig_height: 4.0
-abstract: Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated (R² > 0.9) for most designs.
+abstract: Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated (R² > 0.9) for most designs used in education.
 vignette: >
   %\VignetteIndexEntry{Relationship between Intraclass Correlation (ICC) and Percent Rater Agreement}
   %\VignetteEncoding{UTF-8}
@@ -26,8 +24,8 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   error = FALSE, 
-  fig.width=6.5, 
-  fig.height=4
+  fig.width=7.5, 
+  fig.height=4.5
 )
 options(scipen=1, digits=2)
 library(IRRsim)
@@ -35,6 +33,8 @@ library(ggplot2)
 set.seed(2112) # For reproducibility
 output.type <- 'html' # html or latex
 ggplot2::theme_set(theme_bw())
+
+data("IRRsimData", package = "IRRsim")
 
 linebreak <- switch(output.type,
 					html = "<br>",
@@ -59,7 +59,7 @@ Table 1. *Descriptions and formulas of IRR measures*
 | ICC(3,*k*)        | Two-way mixed effects; consistency; average measures. | $\frac{MS_R - MS_E}{MS_R}$ |
 | Cohen's Kappa (κ) | Absolute agreement    | $\frac{P_o - P_e}{1 - P_e}$ |
 
-*Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for risudal sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.
+*Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for residual sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.
 
 ### Percent Agreement
 
@@ -119,13 +119,13 @@ Given the different types of ICC and guidelines for interpretation, this paper i
 
 # Method
 
-There are several designs for establishing IRR. We are generally concerned with the ratings of **m** subjects by **k** raters. The simplest design is $m x 2$ where two raters score all **m** subjects. However, it is common in education to have $k > 2$ raters where each subject is scored by $k_m = 2$ resulting in a **sparce** matrix. Shrout and Fleiss (1979) provide guidance on which of the six types of ICC to use depending on your design (see Table 1).
+There are several designs for establishing IRR. We are generally concerned with the ratings of *m* subjects by *k* raters. The simplest design is $m x 2$ where two raters score all *m* subjects. However, it is common in education to have $k > 2$ raters where each subject is scored by $k_m = 2$ resulting in a *sparce* matrix. Shrout and Fleiss (1979) provide guidance on which of the six types of ICC to use depending on your design (see Table 1). Six versions of ICC will be calculated for each rating matrix, however it should be noted that typically only one version of ICC is appropriate depending on the scoring design.
 
 The `IRRsim` package implements several functions to facilitate simulating various scoring designs. The `simulateRatingMatrix` function will generate an *m* x *k* scoring matrix with a specified desired percent rater agreement. The algorithm works as follows:
 
-1. For each row one rater is selected at random.
-2. For that rater, a score is randomly selected from the distribution defined by the `response.probs` paramter. If not specified, uniform distribution is used.
-3. A random number between zero and one is generated. If that number is less than or equal to the desired percent rater agreement as defined by the `agree` parameter, the score for the remaining raters is set equal to the score from step two. Otherwise, scores are randomly selected for the remaining raters using the same distribution from step two.
+1. For each scoring event (i.e. row) one rater is selected at random.
+2. For that rater, a score is randomly selected from the distribution specified by the `response.probs` parameter. If not specified, a uniform distribution is used.
+3. A random number between zero and one is generated. If that number is less than or equal to the desired percent rater agreement as specified by the `agree` parameter, the score for the remaining raters is set equal to the score from step two. Otherwise, scores are randomly selected from the distribution specified by the `response.probs` parameter for the remaining raters.
 4. If $k_m < k$, then $k - k_m$ raters from each row are selected and their scores are deleted (i.e. set to `NA`).
 
 The following example demonstrates creating a 10 x 6 scoring matrix with four scoring levels and a desired percent rater agreement of 60%.
@@ -152,7 +152,7 @@ test2 <- IRRsim::simulateRatingMatrix(nLevels = 4,
 test2
 ```
 
-The `agreement` function calculates the percent rater agreement for an indiviual scoring matrix. 
+The `agreement` function calculates the percent rater agreement for an individual scoring matrix. 
 
 ```{r agreementTest}
 IRRsim::agreement(test1)
@@ -169,55 +169,134 @@ test3 <- IRRsim::simulateIRR(nLevels = 4,
 							 nSamples = 10,
 							 parallel = FALSE,
 							 showTextProgress = FALSE)
-plot(test3)
 ```
 
-The figure above representes the relationship between percent rater agreement and six variations of ICC and Cohen's Kappa (note Cohen's Kappa is only calcualted when $k_m = 2$). 
+The `simulateIRR` function in this example returns an object representing `r length(test3)` rating matrices with percent rater agreements ranging between `r min(sapply(test3, FUN = function(x) { x$agreement })) * 100`% and `r max(sapply(test3, FUN = function(x) { x$agreement }))`%. Figure 1 generated using the `plot` function represents the relationship between percent rater agreement and six variations of ICC and Cohen's Kappa (note Cohen's Kappa is only calculated when $k_m = 2$). 
 
-For the remainder of the document, we wish to estimate ICC for 6, 9, and 12 raters under the conditions of 3, 5, and 9 scoring levels.
+```{r simulateIRRexamplePlot, echo=FALSE, fig.cap='Figure 1. Inter-rater reliability with 4 scoring levels and 2 out of 10 raters per scoring event'}
+plot(test3) + ggtitle('')
+```
 
-```{r simulate, cache = TRUE, message = FALSE, warning = FALSE, results = 'hide'}
+## Applications to educational designs ($k_m = 2$)
+
+In educational contexts, it is common to have two random raters (i.e. $k_m = 2$) from $k > 2$ available raters. Under this scoring design, ICC1 is the appropriate statistic according to Shrout and Fleiss (1979). To examine the impact of ICC1 as *k* increases, scoring matrices with four scoring levels are simulated for *k* equal to 6, 9, and 12 available raters.
+
+```{r simulate, cache=TRUE, message=FALSE, warning=FALSE, results='hide'}
 tests.4levels <- IRRsim::simulateIRR(nLevels = 4,
 									 nRaters = c(6, 9, 12), 
 									 nRatersPerEvent = 2)
 ```
 
-The `as.data.frame` function provides the IRR statistics for each of the simulated samples.
+## Overall relationship between ICC and PRA
 
-```{r dataframe}
-test.4levels.df <- as.data.frame(tests.4levels)
-dim(test.4levels.df)
-head(test.4levels.df)
+To explore the overall relationship between ICC and PRA, `r prettyNum(nrow(IRRsimData), big.mark=',')` scoring matrices were simulated with between 2 and 5 scoring levels; 2, 4, 8, and 16 raters; uniform, lightly skewed, moderately skewed, and highly skewed response distributions; and $k_m$ ranging from 2 to *k*.[^1] For each scoring design, a quadratic regression was estimated and the distribution of $R^2$ will be presented.
+
+[^1]: Data file for this analysis can be loaded using the `data('IRRsimData') command. The R script to generate this data file is available at https://rmarkdown.rstudio.com/lesson-8.html
+
+
+# Results
+
+```{r, echo=FALSE}
+test3.df <- as.data.frame(test3)
+test3.r.squared <- c(
+	ICC1 = summary(lm(ICC1 ~ I(agreement^2) + agreement, data = test3.df))$adj.r.squared,
+	ICC2 = summary(lm(ICC2 ~ I(agreement^2) + agreement, data = test3.df))$adj.r.squared,
+	ICC3 = summary(lm(ICC3 ~ I(agreement^2) + agreement, data = test3.df))$adj.r.squared,
+	ICC1k = summary(lm(ICC1k ~ I(agreement^2) + agreement, data = test3.df))$adj.r.squared,
+	ICC2k = summary(lm(ICC2k ~ I(agreement^2) + agreement, data = test3.df))$adj.r.squared,
+	ICC3k = summary(lm(ICC3k ~ I(agreement^2) + agreement, data = test3.df))$adj.r.squared
+)
 ```
 
+Figure 1 represents the relationship between PRA and ICC (six forms described in Table 1) and Cohen's Kappa for scoring design of 2 random raters from 10 available raters with a uniform response distribution. Each point represents on scoring matrix and regression lines ($ICC = \beta_{PRA}^2 + \beta_{PRA} + B_0$) are overlayed revealing a strong relationship between PRA and ICC. The $R^2$ ranged from `r min(test3.r.squared)` to `r max(test3.r.squared)`.
 
-The following three figures show ICC1 against percent rater agreement.
+## $k_m = 2$ for 6, 9, and 12 raters
 
-```{r ploticc1, fig.height=4, fig.width=6.5, message=FALSE, warning=FALSE}
-plot(tests.4levels, stat = 'ICC1')
+```{r, echo=FALSE}
+tests.4levels.df <- as.data.frame(tests.4levels)
+test3.lm <- list(
+	Raters6 = lm(ICC1 ~ I(agreement^2) + agreement, 
+						 data = tests.4levels.df[tests.4levels.df$k == 6,]),
+	Raters9 = lm(ICC1 ~ I(agreement^2) + agreement, 
+						 data = tests.4levels.df[tests.4levels.df$k == 9,]),
+	Raters12 = lm(ICC1 ~ I(agreement^2) + agreement, 
+						  data = tests.4levels.df[tests.4levels.df$k == 12,])
+)
+test3.r.squared <- c(
+	Raters6 = summary(test3.lm[['Raters6']])$adj.r.squared,
+	Raters9 = summary(test3.lm[['Raters9']])$adj.r.squared,
+	Raters12 = summary(test3.lm[['Raters12']])$adj.r.squared
+)
 ```
 
-The figure below show the relationship between percent rater agreement and intraclass correlation for the six types of ICC.
+Figure 2 represents the relationship between PRA and ICC1 when $k_m = 2$ and $k$ is 6, 9, or 12. As also shown in Figure 1, there is a strong quadratic relationship between PRA and ICC1 with $R^2$s of `r test3.r.squared['Raters6']`, `r test3.r.squared['Raters9']`, and `r test3.r.squared['Raters12']`, respectively. With all aspects of the scoring design held constant, ICC1 will be lower for any given PRA as the number of available raters increases. For example, with a PRA of 75%, ICC1 decreases from `r predict(test3.lm[['Raters6']], newdata = data.frame(agreement=c(0.75)))` when $k = 6$ to `r predict(test3.lm[['Raters12']], newdata = data.frame(agreement=c(0.75)))` when $k = 12$.
 
-```{r plotall}
-plot(tests.4levels)
+```{r ploticc1, echo=FALSE, fig.height=4, fig.width=6.5, message=FALSE, warning=FALSE, fig.cap="Figure 2. ICC1 with 4 scoring levels and 2 out of 6, 9, and 12 raters per scoring event with Cicchetti's (2001) guidelines."}
+guideline <- IRRguidelines[['Cicchetti']]$breaks[-1]
+guideline.df <- data.frame(label = names(guideline), ICC = unname(guideline))
+plot(tests.4levels, stat = 'ICC1', point.alpha = 0.1) + 
+	ggtitle('') +
+	geom_hline(yintercept = guideline) +
+	geom_text(data = guideline.df, aes(label = label, y = ICC), x = 0, 
+			  color = 'black', vjust = -0.8, hjust = 0, size = 3)
 ```
 
-The literature suggests that ICC be used over percent agreement. However, the figures above suggest there is a strong relationship between percent rater agreement and ICC. Below, we fit a quadratic model predicting ICC1 from percent agreement. In all three cases the resulting $R^2$ is greater than .9!
+## Overall relationship between ICC and PRA
 
-```{r summaryfun}
-tests.4levels.sum <- summary(tests.4levels, stat = 'ICC1', method = 'quadratic')
-summary(tests.4levels.sum$model[[1]]) # k = 6 raters
-summary(tests.4levels.sum$model[[2]]) # k = 9 raters
-summary(tests.4levels.sum$model[[3]]) # k = 12 raters
+```{r, echo=FALSE}
+rsquared.df <- data.frame()
+for(n in unique(IRRsimData$nLevels)) {
+	tmp.n <- IRRsimData[IRRsimData$nLevels == n,]
+	for(k in unique(tmp.n$k)) {
+		tmp.k <- tmp.n[tmp.n$k == k,]
+		for(k_per_event in unique(tmp.k$k_per_event)) {
+			tmp <- tmp.k[tmp.k$k_per_event == k_per_event,]
+			icc1.out <- lm(ICC1 ~ agreement + I(agreement^2), data = tmp)
+			icc2.out <- lm(ICC2 ~ agreement + I(agreement^2), data = tmp)
+			icc3.out <- lm(ICC3 ~ agreement + I(agreement^2), data = tmp)
+			icc1k.out <- lm(ICC1k ~ agreement + I(agreement^2), data = tmp)
+			icc2k.out <- lm(ICC2k ~ agreement + I(agreement^2), data = tmp)
+			icc3k.out <- lm(ICC3k ~ agreement + I(agreement^2), data = tmp)
+			rsquared.df <- rbind(rsquared.df, data.frame(
+				nLevels = n,
+				k = k,
+				k_per_event = k_per_event,
+				ICC1 = summary(icc1.out)$r.squared,
+				ICC2 = summary(icc2.out)$r.squared,
+				ICC3 = summary(icc3.out)$r.squared,
+				ICC1k = summary(icc1k.out)$r.squared,
+				ICC2k = summary(icc2k.out)$r.squared,
+				ICC3k = summary(icc3k.out)$r.squared
+			))
+		}
+	}
+}
+r.squared.summary <- data.frame(
+	`Mean` = apply(rsquared.df[,-c(1:3)], 2, mean),
+	`Minimum` = apply(rsquared.df[,-c(1:3)], 2, min),
+	`Maximum` = apply(rsquared.df[,-c(1:3)], 2, max),
+	stringsAsFactors = FALSE
+)
+
+```
+
+The results above suggest there is a strong relationship between PRA and ICC1 with PRA accounting for over 90% of the variance in ICC1. To determine if this relationship holds for multiple scoring designs, `r prettyNum(nrow(IRRsimData), big.mark=',')` scoring matrices were simulated using the same method described above. Table 3 provides the mean $R^2$ values for each of the six most common forms of ICC (see Appendix A for all the $R^2$ values). In the case of the single measure estimates (i.e. ICC1, ICC2, and ICC3), $R^2 > .81$ for all designs indicating a very strong relationship between PRA and ICC. For the average measure estimates (i.e. ICC1k, ICC2k, and ICC3k), the relationship is weaker as $k_m$ approaches $k$. For scoring designs where $k_m < \frac{k}{2}$, $R^2 > 0.8$. Moreover, for the $k_m = 2$ scoring designs common in education, one could predict ICC from PRA or vice versa.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(r.squared.summary, caption = 'Table 3. R-Squared values for PRA and ICC')
 ```
 
 # Discussion
 
 Methodologists have consistently argued that ICC is preferred over PRA for reporting inter-
-rater reliability (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). Although some recommendations for interpreting ICC have been given (Table 2), the form of ICC (Table 1) those recommendations apply to has not specified by the authors. Furthermore, the nature of the design, especially with regard to the number of possible raters, has substantial impact on the magnitude of ICC (Figure 2). For example, all other things kept equal, increasing the design from 2 to 12 raters changes the required PRA from 61% to 91% to achieve Cicchitti's (2001) “fair” threshold. And with eight or more raters, “good” or “excellent” reliability are not even possible under this design.
+rater reliability (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). Although some recommendations for interpreting ICC have been given (Table 2), the form of ICC (Table 1) those recommendations apply to has not specified by the authors. Furthermore, the nature of the design, especially with regard to the number of possible raters, has substantial impact on the magnitude of ICC (Figure 2). For example, all other things kept equal, increasing the design from 2 to 12 raters changes the required PRA from 61% to 91% to achieve Cicchitti's (2001) "fair" threshold. And with eight or more raters, "good" or "excellent" reliability are not achievable under this design.
 
-We concur with Kottner et al (2011) and Koo and Li (2016) recommendation that the design features along with multiple IRR statistics be reported by researchers. Given the ease of interpretability of PRA, this may be a desirable metric during the rating process. To assist researchers on interpreting ICC in relation to PRA, we have developed an R Shiny application (Figure 3). This application allows researchers to specify their rating design and explore the relationship between various IRR metrics and PRA, superimpose multiple recommendations (Table 2), and predict ICC values from PRA.
+We concur with Kottner et al (2011) and Koo and Li (2016) recommendation that the design features along with multiple IRR statistics be reported by researchers. Given the ease of interpretability of PRA, this may be a desirable metric during the rating process. To assist researchers in determining expected ICC metrics for varying PRA and scoring designs, the `IRRsim` package includes an interactive Shiny (Chang et al, 2018) application that can be started with the `IRRsim::IRRsim_demo()` function (Figure 3). This application allows the researcher to specify the parameters of the scoring design and simulate scoring matrices. The guidelines presented in Table 2 can be super imposed over the plots. Additionally, prediction tables are provided providing 95% confidence intervals for the six types of ICC at varying PRA intervals.
+
+```{r, echo=FALSE, fig.cap='Figure 3. Screenshot of the IRRsim Shiny application'}
+knitr::include_graphics('IRRsimShinyApp.png')
+```
+
 
 # References
 
@@ -227,6 +306,8 @@ American Educational Research Association, American Psychological Association, &
 
 Brage, M. E., Rockett, M., Vraney, R., Anderson, R., & Toledano, A. (1998). Ankle fracture classification: A comparison of reliability of three x-ray views versus two. *Foot & Ankle International, 19*(8), 555-562.
 
+Chang W., Cheng, J., Allaire, J.J., Xie, Y., & McPherson, J. (2018). shiny: Web Application Framework for R. R package version 1.2.0. https://CRAN.R-project.org/package=shiny
+  
 Cicchetti, D. V. (2001). Methodological Commentary. The precision of reliability and validity estimates re-visited: Distinguishing between clinical and statistical significance of sample size requirements. *Journal of Clinical and Experimental Neuropsychology, 23*(5), 695- 700.
 
 Cicchetti, D. V., & Sparrow, S. A. (1981). Developing criteria for establishing interrater reliability of specific items: Applications to assessment of adaptive behavior. *American Journal of Mental Deficiency, 86*(2), 127-137.
@@ -257,6 +338,21 @@ Trevethan, R. (2017). Intraclass correlation coefficients: Clearing the air, ext
 
 Zegers, M., de Bruijne, M.C., Wagner, C., Groenewegen, P.P., van der Wal, G., de Vet, H.C. (2010). The inter-rater agreement of retrospective assessments of adverse events does not improve with two reviewers per patient record. *Journal of Clinical Epidemiology, 63*(1), 94–102.
 
+# Appendix A: Simulation Results
+
+The following tables provide the $R^2$ for scoring models with number of scoring levels ranging from 2 to 5, $k$ ranging from 2 to 16, and $k_m$ ranging from 2 to $k$. The following regression was estimated for each scoring design:
+
+$$ICC = \beta_{PRA} + \beta_{PRA}^2 + \beta_0$$
+
+```{r, echo=FALSE, results='asis'}
+nLevels <- unique(rsquared.df$nLevels)
+for(i in seq_along(nLevels)) {
+	tab <- rsquared.df[rsquared.df$nLevels == nLevels[i],-1]
+	print(knitr::kable(tab, caption = paste0('Table A.', i, '. R-Squared results for ',
+									   nLevels[1], ' possible scores per event.'),
+					   format = output.type))
+}
+```
 
 ```{r, echo=FALSE, results='asis'}
 if(output.type == 'html') {

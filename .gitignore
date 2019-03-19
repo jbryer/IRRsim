@@ -5,9 +5,11 @@ doc
 .RData
 .Ruserdata
 vignettes/IRRsim_cache
+vignettes/IRRsim_files
 Articles/
 inst/slides/IRRsim-Presentation_cache
 inst/slides/IRRsim-Presentation_files
+inst/ncme
 data-raw/IRRsimulations.rda
 NCME1.png
 NCME2.png
