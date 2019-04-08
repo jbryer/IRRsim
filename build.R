@@ -6,6 +6,9 @@ install_dev_deps()
 # Documentation
 document()
 build_vignettes()
+file.copy('inst/slides/IRRsim-Presentation.html',
+		  'docs/IRRsim-Presentation.html',
+		  overwrite = TRUE) # copy the slides to the docs directory
 pkgdown::build_site()
 
 # Install / Build package

@@ -452,7 +452,7 @@ IRRsim_demo()
 
 > - Skewness in the response distribution does not appear to impact ICC. This may not be desirable. As one score increases in likelihood (say, response C in four possible scores), agreement by chance of the raters should also increase. ICC, which is suppose to account for agreement-by-chance, does not for this situation.
 
-> - When $k = 2$ (and more generally when $k_m < \frac{k}{2}$), there is a substantial penalty in ICC as *k* increases.
+> - When $k_m = 2$ (and more generally when $k_m < \frac{k}{2}$), there is a substantial penalty in ICC as *k* increases.
 
 > - The published guidelines for interpreting ICC may not be appropriate for one-way designs (i.e. ICC(1,1) and ICC(1,k)). For many common scoring designs in education (e.g. $k_m = 2$, $k > 20$), achieving "excellent" (Cicchetti, 2001) inter-rater reliability is not possible.
 
@@ -470,15 +470,15 @@ IRRsim_demo()
 ### Jason Bryer, Ph.D.
 
 Excelsior College  
-jason@bryer.org
+[jason@bryer.org](mailto:jason@bryer.org), [twitter.com/@jbryer](https://twitter.com/@jbryer)
 
 ### Guher Gorgun
 
 University at Albany  
-ggorgun@albany.edu
+[ggorgun@albany.edu](mailto:ggorgun@albany.edu)
 
-### Website: http://irrsim.bryer.org/
-### Source Code: https://github.com/jbryer/IRRsim
+### Website: [irrsim.bryer.org](http://irrsim.bryer.org/)
+### Source Code: [github.com/jbryer/IRRsim](https://github.com/jbryer/IRRsim)
 
 <br/>
 
