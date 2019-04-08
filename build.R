@@ -74,6 +74,10 @@ for(n in unique(IRRsimData$nLevels)) {
 print(rsquared.df, digits = 2)
 apply(rsquared.df[,-c(1:3)], 2, mean) # Average R-squared for each ICC
 
+l <- loess(ICC1 ~ agreement, data = IRRsimData[IRRsimData$k == 2,])
+summary(l)
+plot(seq(0.01, 0.99, 0.01), predict(l, data.frame(agreement = seq(0.01, 0.99, 0.01))), type = 'l')
+
 rsquared.df.melted <- melt(rsquared.df, id.vars = c('nLevels','k','k_per_event'),
 						   variable.name = 'ICC', value.name = 'R-Squared')
 # ggplot(rsquared.df.melted, aes(x = ))

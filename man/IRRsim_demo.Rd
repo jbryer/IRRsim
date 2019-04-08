@@ -4,7 +4,7 @@
 \alias{IRRsim_demo}
 \title{Run the Inter-Rater Reliability shiny app.}
 \usage{
-IRRsim_demo()
+IRRsim_demo(clean = FALSE)
 }
 \description{
 Run the Inter-Rater Reliability shiny app.

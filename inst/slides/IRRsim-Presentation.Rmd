@@ -3,12 +3,9 @@ title: "Relationship Between ICC and Percent Agreement"
 author: Jason Bryer & Guher Gorgun
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
-  ioslides_presentation:
-    self_contained: true
-    widescreen: true
-    smaller: true
-editor_options: 
-  chunk_output_type: console
+  ioslides_presentation: 
+    smaller: yes
+    widescreen: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -27,8 +24,56 @@ set.seed(2112)
 linebreak <- "<br/>"
 ```
 
+<style>
+div.footnotes {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+  width: 80%;
+  font-size: 0.6em;
+}
+.forceBreak { -webkit-column-break-after: always; break-after: column; }
+</style>
+<!-- Use for forced two column break: <p class="forceBreak"></p> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('slide:not(.backdrop):not(.title-slide)').append('<div class=\"footnotes\">');
+
+  $('footnote').each(function(index) {
+    var text  = $(this).html();
+    var fnNum = (index+1).toString();
+    $(this).html(fnNum.sup());
+
+    var footnote   = fnNum + '. ' + text + '<br/>';
+    var oldContent = $(this).parents('slide').children('div.footnotes').html();
+    var newContent = oldContent + footnote;
+    $(this).parents('slide').children('div.footnotes').html(newContent);
+  });
+});
+</script>
+
+
 ## Motivation
 
+* The Diagnostic Assessment and Achievement of College Skills (DAACS; [www.DAACS.net](https://www.daacs.net)) is a  suite of technological and social supports to optimize student learning. DAACS  provides personalized feedback about students’ strengths and weaknesses in  terms of key academic and self-regulated learning skills, linking them to the  resources to help them be successful students.
+* Writing is one of the assessments in DAACS. We were trying to establish inter-rater reliability in two ways:
+	1. Human-to-human
+	2. Human-to-machine
+* Literature clearly suggests ICC is the appropriate measure, however most of that literature is from the medical literature.
+* Guidance on interpretation of ICC is not very clear.
+
+## {.flexbox .vcenter}
+
+<p align="center"><font size="12">Communicating with the public<br/><br/>about educational measurement.</font></p>
+
+<div align="right"><font size="4">NCME 2019 Conference Theme</font></div>
+
+## Guiding Research Questions
+
+1. What is the relationship between ICC and PRA?
+2. Are the published guidelines for interpreting ICC appropriate for all rating designs?
 
 
 ## Measuring Inter-rater Reliability
@@ -82,7 +127,7 @@ Consistency or absolute agreement:
 | ICC(3,*k*)        | Two-way mixed effects; consistency; average measures. | $\frac{MS_R - MS_E}{MS_R}$ |
 | Cohen's Kappa (κ) | Absolute agreement    | $\frac{P_o - P_e}{1 - P_e}$ |
 
-<font size="3">*Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for risudal sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.</font>
+<font size="3">*Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for residual sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.</font>
 
 
 ## Guidelines for Interpreting IRR {.columns-2 }
@@ -134,9 +179,9 @@ ggplot(guidelines, aes(x = Reference, y = Value, label = Description)) +
 
 ## Guidelines for Education
 
-In education, ICC1 is *often* the most appropriate intra-class correlation (ICC) metric to use given each subject is measured by two randomly selected raters (one-way), single measures are used, and absolute agreement is desired.
+In education, ICC(1,1) is *often* the most appropriate intra-class correlation (ICC) metric to use given each subject is measured by two randomly selected raters (one-way), single measures are used, and absolute agreement is desired.
 
-Guidelines for interpreting ICC is largely provided from the medical literature. When discussing to ICC1, Koo and Li (2016) state that "practically, this model is rarely used in clinical reliability analysis because majority of the reliability studies typically involve the same set of raters to measure all subjects" (pp. 156-157).
+Guidelines for interpreting ICC is largely provided from the medical literature. When discussing to ICC(1,1), Koo and Li (2016) state that **"practically, this model is rarely used in clinical reliability analysis because majority of the reliability studies typically involve the same set of raters to measure all subjects"** (pp. 156-157).
 
 The guidelines for interpreting ICC may not be appropriate for all forms of ICC. As will be shown, the magnitude of the ICC vary greatly for the same percent agreement.
 
@@ -173,7 +218,7 @@ For each scoring event (i.e. row within a scoring matrix):
 	* If *x* is less than the specified desired percent agreement, the remaining values in the row are set to *y*.
 	* Otherwise, scores for the remaining raters are randomly selected from the response distribution.
 4. Repeat steps 1 through 3 for the remaining scoring events.
-5. If $k_n < k$, then $k - k_n$ scores per row are set to `NA` (missing).
+5. If $k_m < k$, then $k - k_m$ scores per row are set to `NA` (missing).
 
 
 ## Simulating Scoring Matrices { .columns-2 }
@@ -234,7 +279,7 @@ tests.3levels.sum <- summary(tests.3levels, stat = 'ICC1', method = 'quadratic')
 summary(tests.3levels.sum$model[[1]]) # k = 6 raters
 ```
 
-**`r round(summary(tests.3levels.sum$model[[1]])$r.squared * 100)`% of the variance in ICC1 is accounted for by percent agreement!**
+**`r round(summary(tests.3levels.sum$model[[1]])$r.squared * 100)`% of the variance in ICC(1,1) is accounted for by percent agreement!**
 
 ## Simulating Different Response Distributions
 
@@ -262,7 +307,7 @@ test4.3levels.df <- as.data.frame(test4.3levels)
 test1.3levels.df$ResponseDist <- 'Uniform'
 test2.3levels.df$ResponseDist <- 'Moderately Skewed'
 test3.3levels.df$ResponseDist <- 'Highly Skewed'
-test4.3levels.df$ResponseDist <- 'Ligthly Skewed'
+test4.3levels.df$ResponseDist <- 'Lightly Skewed'
 test.3levels.df <- rbind(test1.3levels.df, test2.3levels.df, test3.3levels.df, test4.3levels.df)
 ```
 
@@ -317,11 +362,11 @@ ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 	scale_linetype('n Raters') +
 	# scale_color_brewer(palette = 'Set3') +
 	xlab('Percent Agreement') +
-	ggtitle('ICC1 vs Percent Agreement',
+	ggtitle('ICC(1,1) vs Percent Agreement',
 			subtitle = "Cicchetti's Guidelines Provided")
-	```
+```
 
-## Modeling ICC from Percent Agreement
+## Modeling ICC from Percent Agreement {.columns-2}
 
 ```{r, echo=FALSE}
 data("IRRsimData")
@@ -331,38 +376,58 @@ levels(IRRsimData$k) <- c('Two', 'Four', 'Eight', 'Sixteen')
 IRRsimData$k <- as.character(IRRsimData$k)
 ```
 
-Simulated `r prettyNum(nrow(IRRsimData), big.mark = ',')` scoring matrices (each 100 x *k*) with *k* between 2 and 16 raters and four response distributions (i.e. uniform, lightly skewed, moderately skewed, and highly skewed).
-
-```{r}
-icc1.out <- lm(ICC1 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-			   data = IRRsimData)
-icc2.out <- lm(ICC2 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-			   data = IRRsimData)
-icc3.out <- lm(ICC3 ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-			   data = IRRsimData)
-icc1k.out <- lm(ICC1k ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-				data = IRRsimData)
-icc2k.out <- lm(ICC2k ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-				data = IRRsimData)
-icc3k.out <- lm(ICC3k ~ nLevels + k + agreement + I(agreement^2) + MaxResponseDiff,
-				data = IRRsimData)
-```
+Simulated `r prettyNum(nrow(IRRsimData), big.mark = ',')` scoring matrices<footnote>The results are included in the package and can be loaded using the `data(IRRsimData)` command. The script to generate these results is available here: https://github.com/jbryer/IRRsim/blob/master/data-raw/IRRsimulations.R </footnote> (each 100 x *k*) with *k* between 2 and 16 raters and four response distributions (i.e. uniform, lightly skewed, moderately skewed, and highly skewed).
 
 
-## 
+For each scoring desing (i.e. $k$, $k_m$, & number of scoring levels), the following model was estimated: 
 
-```{r, echo=FALSE, results='asis'}
-df.summary <- rbind(
-	c('r-squared' = summary(icc1.out)$r.squared, icc1.out$coefficients),
-	c('r-squared' = summary(icc2.out)$r.squared, icc2.out$coefficients),
-	c('r-squared' = summary(icc3.out)$r.squared, icc3.out$coefficients),
-	c('r-squared' = summary(icc1k.out)$r.squared, icc1k.out$coefficients),
-	c('r-squared' = summary(icc2k.out)$r.squared, icc2k.out$coefficients),
-	c('r-squared' = summary(icc3k.out)$r.squared, icc3k.out$coefficients)
+$$ICC = \beta_{PRA}^2 + \beta_{PRA} + B_0$$
+
+For ICC(1,1), ICC(2,1), and ICC(3,1), $R^2 \ge 0.82$
+
+For ICC(1,k), ICC(2,k), and ICC(3,k), the relationship is weaker as $k_m$ approaches $k$. 
+
+However, when $k_m < \frac{k}{2}$, $R^2 \ge 0.80$.
+
+<p class="forceBreak"></p>
+
+```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
+rsquared.df <- data.frame()
+for(n in unique(IRRsimData$nLevels)) {
+	tmp.n <- IRRsimData[IRRsimData$nLevels == n,]
+	for(k in unique(tmp.n$k)) {
+		tmp.k <- tmp.n[tmp.n$k == k,]
+		for(k_per_event in unique(tmp.k$k_per_event)) {
+			tmp <- tmp.k[tmp.k$k_per_event == k_per_event,]
+			icc1.out <- lm(ICC1 ~ agreement + I(agreement^2), data = tmp)
+			icc2.out <- lm(ICC2 ~ agreement + I(agreement^2), data = tmp)
+			icc3.out <- lm(ICC3 ~ agreement + I(agreement^2), data = tmp)
+			icc1k.out <- lm(ICC1k ~ agreement + I(agreement^2), data = tmp)
+			icc2k.out <- lm(ICC2k ~ agreement + I(agreement^2), data = tmp)
+			icc3k.out <- lm(ICC3k ~ agreement + I(agreement^2), data = tmp)
+			rsquared.df <- rbind(rsquared.df, data.frame(
+				nLevels = n,
+				k = k,
+				k_per_event = k_per_event,
+				ICC1 = summary(icc1.out)$r.squared,
+				ICC2 = summary(icc2.out)$r.squared,
+				ICC3 = summary(icc3.out)$r.squared,
+				ICC1k = summary(icc1k.out)$r.squared,
+				ICC2k = summary(icc2k.out)$r.squared,
+				ICC3k = summary(icc3k.out)$r.squared
+			))
+		}
+	}
+}
+r.squared.summary <- data.frame(
+	`Mean` = apply(rsquared.df[,-c(1:3)], 2, mean),
+	`Minimum` = apply(rsquared.df[,-c(1:3)], 2, min),
+	`Maximum` = apply(rsquared.df[,-c(1:3)], 2, max),
+	stringsAsFactors = FALSE
 )
-row.names(df.summary) <- c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k')
-knitr::kable(t(df.summary), digits = 2)
+knitr::kable(r.squared.summary)
 ```
+
 
 ## Shiny Application
 
@@ -382,11 +447,33 @@ IRRsim_demo()
 
 * ICC and percent agreement are highly correlated with percent agreement account for approximately 90% of the variance in ICC.
 * Skewness in the response distribution does not appear to impact ICC. This may not be desirable. As one score increases in likelihood (say, response C in four possible scores), agreement by chance of the raters should also increase. ICC, which is suppose to account for agreement-by-chance, does not for this situation.
-* When $k_n = 2$, there is a penalty in ICC as *k* increases.
-* The published guidelines for interpreting ICC may not be appropriate for one-way designs (i.e. ICC1 and ICC1k). For many common scoring designs (e.g. $k_n = 2$, $k > 20$) in education, achieving "excellent" inter-rater reliability is not possible.
+* When $k_m = 2$, there is a penalty in ICC as *k* increases.
+* The published guidelines for interpreting ICC may not be appropriate for one-way designs (i.e. ICC(1,1) and ICC(1,k)). For many common scoring designs (e.g. $k_m = 2$, $k > 20$) in education, achieving "excellent" inter-rater reliability is not possible.
 * The Shiny web application is a tool to help researchers interpret their ICC results in relation to the percent agreement achieved.
 
-### Recommendations
+##  Recommendations
 
-* Researchers should report their full scoring design including $k$, $k_n$, and number of scoring levels.
-* Report/utilize percent agreement. This metric is much more understandable. 
+* Researchers should **report their full scoring design** including $k$, $k_m$, and number of scoring levels.
+* **Report/utilize percent agreement**. This metric is much more understandable. 
+
+## Thank You!
+
+<br/>
+
+### Jason Bryer, Ph.D.
+
+Excelsior College  
+jason@bryer.org
+
+### Guher Gorgun
+
+University at Albany  
+ggorgun@albany.edu
+
+### Website: http://irrsim.bryer.org/
+### Source Code: https://github.com/jbryer/IRRsim
+
+<br/>
+
+<font size="3">DAACS was developed under grant #P116F150077 from the U.S. Department of Education. However, the contents do not necessarily represent the policy of the U.S. Department of Education, and you should not assume endorsement by the Federal Government.</font>
+
