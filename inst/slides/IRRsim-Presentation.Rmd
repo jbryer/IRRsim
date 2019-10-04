@@ -1,6 +1,6 @@
 ---
 title: "Relationship Between ICC and Percent Agreement"
-author: Jason Bryer & Guher Gorgun
+author: Jason Bryer, Ph.D.
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
   ioslides_presentation: 
@@ -64,11 +64,6 @@ $(document).ready(function() {
 * Literature clearly suggests ICC is the appropriate measure, however most of that research is from the medical literature.
 * Guidance on interpretation of ICC is not very clear.
 
-## {.flexbox .vcenter}
-
-<p align="center"><font size="12">Communicating with the public<br/><br/>about educational measurement.</font></p>
-
-<div align="right"><font size="4">NCME 2019 Conference Theme</font></div>
 
 ## Guiding Research Questions
 
@@ -472,15 +467,11 @@ IRRsim_demo()
 Excelsior College  
 [jason@bryer.org](mailto:jason@bryer.org), [twitter.com/@jbryer](https://twitter.com/@jbryer)
 
-### Guher Gorgun
-
-University at Albany  
-[ggorgun@albany.edu](mailto:ggorgun@albany.edu)
 
 ### Website: [irrsim.bryer.org](http://irrsim.bryer.org/)
 ### Source Code: [github.com/jbryer/IRRsim](https://github.com/jbryer/IRRsim)
 
-<br/>
+<br/><br/><br/><br/>
 
 <font size="3">DAACS was developed under grant #P116F150077 from the U.S. Department of Education. However, the contents do not necessarily represent the policy of the U.S. Department of Education, and you should not assume endorsement by the Federal Government.</font>
 

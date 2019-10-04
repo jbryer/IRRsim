@@ -7,6 +7,7 @@
 #' @keywords package IRR simulation interrater reliability
 #' @import ggplot2
 #' @import reshape2
+#' @importFrom cowplot plot_grid
 #' @importFrom psych ICC cohen.kappa skew kurtosi
 #' @importFrom foreach foreach
 #' @importFrom parallel detectCores
@@ -44,3 +45,39 @@ NA
 #' names(IRRguidelines) # Names of the guidelines
 #' IRRguidelines[['Cicchetti']] # Cicchetti's (1994) guidelines
 'IRRguidelines'
+
+#' Automated Student Assessment Prize Dataset 2
+#'
+#' Data from the Kaggle Automated Essay Scoring (AES) competition. This is essay
+#' set 2 which used the following prompt:
+#'
+#' \emph{"All of us can think of a book that we hope none of our children or any other
+#' children have taken off the shelf. But if I have the right to remove that
+#' book from the shelf -- that work I abhor -- then you also have exactly the
+#' same right and so does everyone else. And then we have no books left on the
+#' shelf for any of us." --Katherine Paterson, Author}
+#'
+#' \emph{Write a persuasive essay to a newspaper reflecting your vies on censorship in
+#' libraries. Do you believe that certain materials, such as books, music,
+#' movies, magazines, etc., should be removed from the shelves if they are
+#' found offensive? Support your position with convincing arguments from your
+#' own experience, observations, and/or reading.}
+#'
+#' The data frame has the following variables:
+#'
+#' \describe{
+#'     \item{essay_id}{A unique identifier for each individual student essay}
+#'     \item{rater1_domain1}{Rater 1's domain 1 score}
+#'     \item{rater2_domain1}{Rater 2's domain 1 score}
+#'     \item{domain1_score}{Resolved score between the raters}
+#'     \item{rater1_domain2}{Rater 1's domain 2 score}
+#'     \item{rater2_domain2}{Rater 2's domain 2 score}
+#'     \item{domain2_score}{Resolved score between the raters}
+#'     \item{essay}{The ascii text of a student's response}
+#' }
+#'
+#' More information available here: \url{https://www.kaggle.com/c/asap-aes/data}
+#'
+#' @examples
+#' data(asap2)
+'asap2'
