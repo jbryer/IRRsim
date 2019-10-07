@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulate Inter-Rater Reliability Statistics — IRRsim-package • IRRsim</title>
+<title>Simulate data to test logistic regression. — simulatePredictionData • IRRsim</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Simulate Inter-Rater Reliability Statistics — IRRsim-package" />
+<meta property="og:title" content="Simulate data to test logistic regression. — simulatePredictionData" />
 
-<meta property="og:description" content="Simulate Inter-Rater Reliability Statistics" />
+<meta property="og:description" content="Simulate data to test logistic regression." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,27 +114,78 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Simulate Inter-Rater Reliability Statistics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jbryer/IRRsim/blob/master/R/IRRsim-package.R'><code>R/IRRsim-package.R</code></a></small>
-    <div class="hidden name"><code>IRRsim-package.Rd</code></div>
+    <h1>Simulate data to test logistic regression.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jbryer/IRRsim/blob/master/R/simulatePredictionData.R'><code>R/simulatePredictionData.R</code></a></small>
+    <div class="hidden name"><code>simulatePredictionData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Simulate Inter-Rater Reliability Statistics</p>
+    <p>Simulate data to test logistic regression.</p>
     
     </div>
 
-        
+    <pre class="usage"><span class='fu'>simulatePredictionData</span>(<span class='kw'>mean1</span> <span class='kw'>=</span> -<span class='fl'>0.1</span>, <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean2</span> <span class='kw'>=</span> -<span class='no'>mean1</span>,
+  <span class='kw'>n2</span> <span class='kw'>=</span> <span class='no'>n1</span>, <span class='kw'>mean_unknown</span> <span class='kw'>=</span> (<span class='no'>mean1</span> + <span class='no'>mean2</span>)/<span class='fl'>2</span>, <span class='kw'>n_unknown</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='no'>n1</span>/<span class='fl'>2</span>),
+  <span class='kw'>ratio_unknown</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>group_labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"NA"</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>mean1</th>
+      <td><p>the mean of group 1.</p></td>
+    </tr>
+    <tr>
+      <th>n1</th>
+      <td><p>the size of group 1.</p></td>
+    </tr>
+    <tr>
+      <th>mean2</th>
+      <td><p>the mean of group 2.</p></td>
+    </tr>
+    <tr>
+      <th>n2</th>
+      <td><p>the size of group 2.</p></td>
+    </tr>
+    <tr>
+      <th>mean_unknown</th>
+      <td><p>the mean of the group with a random outcome.</p></td>
+    </tr>
+    <tr>
+      <th>n_unknown</th>
+      <td><p>the size of the group with a random outcome.</p></td>
+    </tr>
+    <tr>
+      <th>ratio_unknown</th>
+      <td><p>the probability of outcome 1 occurring in the random group.</p></td>
+    </tr>
+    <tr>
+      <th>sd</th>
+      <td><p>the standard deviation for each group (i.e. parameter passed to
+<code>rnorm</code>). Variance is assumed to be equal across all groups.</p></td>
+    </tr>
+    <tr>
+      <th>group_labels</th>
+      <td><p>the labels for the groups in the <code>data.frame</code>.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a <code>data.frame</code> with <code>n1 + n2 + n_unknown</code> rows and 3
+       variables (<code>Group</code>, <code>X</code>, and <code>Y</code>).</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
-    <h2>Author</h2>
-    <p><a href='mailto:jason@bryer.org'>jason@bryer.org</a></p>
   </div>
 </div>
 

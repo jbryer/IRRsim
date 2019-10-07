@@ -48,6 +48,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/LRsim.html">Prediction Accuracy with Uncertain Responses</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -71,15 +83,12 @@
       <h1>Relationship Between Intraclass Correlation (ICC) and Percent Agreement</h1>
                         <h4 class="author">Jason Bryer</h4>
             <address class="author_afil">
-      Excelsior College<br><h4 class="author">Guher Gorgun</h4>
-            <address class="author_afil">
-      University at Albany<br><h4 class="date">2019-04-08</h4>
+      Excelsior College<br><h4 class="date">2019-10-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jbryer/IRRsim/blob/master/vignettes/IRRsim.Rmd"><code>vignettes/IRRsim.Rmd</code></a></small>
       <div class="hidden name"><code>IRRsim.Rmd</code></div>
 
     </address>
-</address>
 </div>
 
     
@@ -256,21 +265,21 @@
 <a class="sourceLine" id="cb2-6" data-line-number="6">                                      <span class="dt">nEvents =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">test2</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;    aa ab ac ad ae af</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 1   1 NA  1 NA NA NA</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 2   4 NA NA NA  4 NA</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 3   3 NA NA  4 NA NA</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; 4  NA  1 NA NA NA  3</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 1  NA  1 NA  1 NA NA</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 2  NA NA  4 NA NA  4</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 3  NA NA NA  4  4 NA</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; 4   4  1 NA NA NA NA</span></a>
 <a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 5  NA  2  2 NA NA NA</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 6  NA  2 NA NA  2 NA</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; 7   2 NA NA NA  2 NA</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; 8  NA NA  3 NA  4 NA</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; 9   4  4 NA NA NA NA</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; 10 NA  4  4 NA NA NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 6  NA NA  2  2 NA NA</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; 7  NA  2 NA NA NA  4</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; 8  NA  3 NA  1 NA NA</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; 9  NA  4 NA  2 NA NA</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; 10 NA NA  4 NA NA  4</span></a></code></pre></div>
 <p>The <code>agreement</code> function calculates the percent rater agreement for an individual scoring matrix.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">IRRsim<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/IRRsim/topics/agreement">agreement</a></span>(test1)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [1] 0.5</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">IRRsim<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/IRRsim/topics/agreement">agreement</a></span>(test2)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [1] 0.7</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [1] 0.6</span></a></code></pre></div>
 <p>To examine the relationship between percent rater agreement and other inter-rater reliability statistics, we will simulate many scoring matrices with percent-rater agreements spanning the full range of values from 0% to 100%. The <code>simulateIRR</code> utilizes the <code>simulateRatingMatrix</code> for generating many scoring matrices for varying percent rater agreements.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">test3 &lt;-<span class="st"> </span>IRRsim<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/IRRsim/topics/simulateIRR">simulateIRR</a></span>(<span class="dt">nLevels =</span> <span class="dv">4</span>,</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">                             <span class="dt">nRaters =</span> <span class="dv">10</span>,</a>
@@ -279,7 +288,7 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5">                             <span class="dt">nSamples =</span> <span class="dv">10</span>,</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">                             <span class="dt">parallel =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">                             <span class="dt">showTextProgress =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>The <code>simulateIRR</code> function in this example returns an object representing 90 rating matrices with percent rater agreements ranging between 22% and 0.95%. Figure 1 generated using the <code>plot</code> function represents the relationship between percent rater agreement and six variations of ICC and Cohen’s Kappa (note Cohen’s Kappa is only calculated when <span class="math inline">\(k_m = 2\)</span>).</p>
+<p>The <code>simulateIRR</code> function in this example returns an object representing 90 rating matrices with percent rater agreements ranging between 23% and 0.97%. Figure 1 generated using the <code>plot</code> function represents the relationship between percent rater agreement and six variations of ICC and Cohen’s Kappa (note Cohen’s Kappa is only calculated when <span class="math inline">\(k_m = 2\)</span>).</p>
 <div class="figure">
 <img src="IRRsim_files/figure-html/simulateIRRexamplePlot-1.png" alt="Figure 1. Inter-rater reliability with 4 scoring levels and 2 out of 10 raters per scoring event" width="720"><p class="caption">
 Figure 1. Inter-rater reliability with 4 scoring levels and 2 out of 10 raters per scoring event
@@ -302,7 +311,7 @@ Figure 1. Inter-rater reliability with 4 scoring levels and 2 out of 10 raters p
 <div id="results" class="section level1">
 <h1 class="hasAnchor">
 <a href="#results" class="anchor"></a>Results</h1>
-<p>Figure 1 represents the relationship between PRA and ICC (six forms described in Table 1) and Cohen’s Kappa for scoring design of 2 random raters from 10 available raters with a uniform response distribution. Each point represents on scoring matrix and regression lines (<span class="math inline">\(ICC = \beta_{PRA}^2 + \beta_{PRA} + B_0\)</span>) are overlayed revealing a strong relationship between PRA and ICC. The <span class="math inline">\(R^2\)</span> ranged from 0.94 to 0.95.</p>
+<p>Figure 1 represents the relationship between PRA and ICC (six forms described in Table 1) and Cohen’s Kappa for scoring design of 2 random raters from 10 available raters with a uniform response distribution. Each point represents on scoring matrix and regression lines (<span class="math inline">\(ICC = \beta_{PRA}^2 + \beta_{PRA} + B_0\)</span>) are overlayed revealing a strong relationship between PRA and ICC. The <span class="math inline">\(R^2\)</span> ranged from 0.9 to 0.94.</p>
 <div id="k_m-2-for-6-9-and-12-raters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#k_m-2-for-6-9-and-12-raters" class="anchor"></a><span class="math inline">\(k_m = 2\)</span> for 6, 9, and 12 raters</h2>
