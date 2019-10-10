@@ -353,7 +353,7 @@ guide <- data.frame(
 )
 ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 	geom_hline(yintercept = c(0.4, 0.6, 0.75), alpha = 0.5) +
-	geom_text(data = guide, color = 'black', linetype = 1, hjust = 0, vjust = -0.5,
+	geom_text(data = guide, color = 'black', hjust = 0, vjust = -0.5,
 			  aes(label = labels, y = y, x = 0)) +
 	geom_smooth(method = 'loess', se = FALSE, aes(linetype = factor(k))) +
 	scale_linetype('n Raters') +

@@ -52,7 +52,7 @@ summary.IRRsim <- function(object,
 			model.out <- list()
 			prediction.df <- data.frame(Agreement = agreements)
 			df <- as.data.frame(object)
-			irr.stats <- names(df)[6:ncol(df)]
+			irr.stats <- names(df)[7:ncol(df)]
 			for(i in irr.stats) {
 				tmp <- summary.IRRsim(object,
 									  method = method,

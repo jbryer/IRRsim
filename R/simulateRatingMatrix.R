@@ -44,7 +44,7 @@ simulateRatingMatrix <- function(nLevels, k, k_per_event = 2, agree, nEvents = 1
 			# probs <- c(agree, rep((1 - agree) / (nLevels - 1), times = (nLevels - 1)))
 			# thedata[i, -((i %% k) + 1)] <- base::sample(l, size = k - 1,
 			# 											replace = TRUE, prob = probs)
-			thedata[i, -((i %% k) + 1)] <- base::sample(l,
+			thedata[i, -((i %% k) + 1)] <- base::sample(nLevels,
 														size = k - 1,
 														replace = TRUE,
 														prob = response.probs)
