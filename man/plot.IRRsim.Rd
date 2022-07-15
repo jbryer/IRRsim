@@ -4,8 +4,7 @@
 \alias{plot.IRRsim}
 \title{Plot the results of an IRR simulation.}
 \usage{
-\method{plot}{IRRsim}(x, method = "loess", stat, point.alpha = 0.3,
-  title = TRUE, ...)
+\method{plot}{IRRsim}(x, method = "loess", stat, point.alpha = 0.3, title = TRUE, ...)
 }
 \arguments{
 \item{x}{the result of \code{\link{simulateIRR}}.}

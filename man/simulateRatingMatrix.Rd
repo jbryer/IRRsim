@@ -4,8 +4,14 @@
 \alias{simulateRatingMatrix}
 \title{Simulate a rating matrix.}
 \usage{
-simulateRatingMatrix(nLevels, k, k_per_event = 2, agree, nEvents = 100,
-  response.probs = rep(1/nLevels, nLevels))
+simulateRatingMatrix(
+  nLevels,
+  k,
+  k_per_event = 2,
+  agree,
+  nEvents = 100,
+  response.probs = rep(1/nLevels, nLevels)
+)
 }
 \arguments{
 \item{nLevels}{the number of possible outcomes there are for each rating.}

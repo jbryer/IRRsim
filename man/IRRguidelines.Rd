@@ -4,10 +4,12 @@
 \name{IRRguidelines}
 \alias{IRRguidelines}
 \title{Guidelines for interpreting inter-rater reliability statistics.}
-\format{A List object with numeric vectors containing the thresholds for
+\format{
+A List object with numeric vectors containing the thresholds for
         interpreting IRR statistics. The names of the vectors correspond to
         the labels use by the authors. The name in the List object corresponds
-        the first author's name. See vignette for more information.}
+        the first author's name. See vignette for more information.
+}
 \usage{
 data(IRRguidelines)
 }

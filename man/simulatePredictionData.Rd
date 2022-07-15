@@ -4,9 +4,17 @@
 \alias{simulatePredictionData}
 \title{Simulate data to test logistic regression.}
 \usage{
-simulatePredictionData(mean1 = -0.1, n1 = 100, mean2 = -mean1,
-  n2 = n1, mean_unknown = (mean1 + mean2)/2, n_unknown = round(n1/2),
-  ratio_unknown = 0.5, sd = 0.2, group_labels = c("A", "B", "NA"))
+simulatePredictionData(
+  mean1 = -0.1,
+  n1 = 100,
+  mean2 = -mean1,
+  n2 = n1,
+  mean_unknown = (mean1 + mean2)/2,
+  n_unknown = round(n1/2),
+  ratio_unknown = 0.5,
+  sd = 0.2,
+  group_labels = c("A", "B", "NA")
+)
 }
 \arguments{
 \item{mean1}{the mean of group 1.}

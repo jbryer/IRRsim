@@ -11,11 +11,12 @@ data(IRRguidelines)
 ui <- fluidPage(
 
    # Application title
-   # titlePanel("Inter-Rater Reliability Simulation"),
+   titlePanel("Inter-Rater Reliability Simulation"),
 
    # Sidebar with a slider input for number of bins
    sidebarLayout(
       sidebarPanel(
+      	style = "height: 90vh; overflow-y: auto;",
       	sliderInput('nLevels', 'Number of Scoring Levels:',
       				min = 2, max = 10, step = 1, value = 4, round = TRUE),
 		sliderInput('nRaters', 'Number of Raters:',

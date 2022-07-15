@@ -10,8 +10,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
-RoxygenNote: 7.0.2
-Depends: psych, DescTools, ggplot2, reshape2, shiny, parallel, foreach, doParallel, doSNOW, cowplot
+RoxygenNote: 7.2.0
+Depends: R (>= 3.5.0), psych, DescTools, ggplot2, reshape2, shiny, parallel, foreach, doParallel, doSNOW, cowplot
 Suggests: irr, knitr, rmarkdown, testthat, magrittr, xtable
 VignetteBuilder: knitr
 URL: http://irrsim.bryer.org, http://github.com/jbryer/IRRsim

@@ -4,7 +4,9 @@
 \name{IRRsimData}
 \alias{IRRsimData}
 \title{Simulated data used to create tables of expected IRR metrics}
-\format{A data.frame}
+\format{
+A data.frame
+}
 \usage{
 data(IRRsimData)
 }

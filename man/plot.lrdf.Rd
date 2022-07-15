@@ -4,8 +4,13 @@
 \alias{plot.lrdf}
 \title{Logistic Regression Plot}
 \usage{
-\method{plot}{lrdf}(x, colors = c("#1b9e77", "#7570b3", "#d95f02"),
-  rel_heights = c(0.4, 0.6), title, ...)
+\method{plot}{lrdf}(
+  x,
+  colors = c("#1b9e77", "#7570b3", "#d95f02"),
+  rel_heights = c(0.4, 0.6),
+  title,
+  ...
+)
 }
 \arguments{
 \item{x}{the results of \code{\link{simulatePredictionData}}.}

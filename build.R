@@ -1,4 +1,4 @@
-library(devtools)
+ library(devtools)
 
 # Install dependencies (if necessary)
 install_dev_deps()
