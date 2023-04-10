@@ -1,3 +1,6 @@
+utils::globalVariables(c("value", "k", "X", "Group", "Y", "params"))
+
+
 #' Simulate Inter-Rater Reliability Statistics
 #'
 #' @name IRRsim-package
@@ -7,28 +10,33 @@
 #' @keywords package IRR simulation interrater reliability
 #' @import ggplot2
 #' @import reshape2
+#' @import shiny
 #' @importFrom cowplot plot_grid
 #' @importFrom psych ICC cohen.kappa skew kurtosi
-#' @importFrom foreach foreach
+#' @importFrom foreach foreach `%dopar%`
 #' @importFrom parallel detectCores
 #' @importFrom snow makeCluster clusterEvalQ stopCluster
 #' @importFrom doSNOW registerDoSNOW
+#' @importFrom stats lm as.formula loess predict runif glm binomial pnorm rnorm var
+#' @importFrom utils getTxtProgressBar txtProgressBar setTxtProgressBar
 NA
 
-#' Simulated data used to create tables of expected IRR metrics
-#'
-#' This data frame is the results of simulating data sets with following parameters:
-#' * Between 2 and 5 scoring levels
-#' * Between 2 adn 12 raters
-#' * Four response distributions including: uniform, lightly skewed, moderately
-#'   skewed, and highly skewed.
-#'
-#' @name IRRsimData
-#' @docType data
-#' @usage data(IRRsimData)
-#' @format A data.frame
-#' @keywords datasets
-'IRRsimData'
+# THIS DATASET IS TOO LARGE TO INCLUDE IN THE PACKAGE
+#
+# Simulated data used to create tables of expected IRR metrics
+#
+# This data frame is the results of simulating data sets with following parameters:
+# * Between 2 and 5 scoring levels
+# * Between 2 adn 12 raters
+# * Four response distributions including: uniform, lightly skewed, moderately
+#   skewed, and highly skewed.
+#
+# @name IRRsimData
+# @docType data
+# @usage data(IRRsimData)
+# @format A data.frame
+# @keywords datasets
+# 'IRRsimData'
 
 #' Guidelines for interpreting inter-rater reliability statistics.
 #'

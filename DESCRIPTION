@@ -1,18 +1,41 @@
 Package: IRRsim
+Title: Simulate Inter-Rater Reliability Statistics
 Version: 1.0.0
 Date: 2018-02-06
-Title: Simulate Inter-Rater Reliability Statistics
-Description: This package provides functions and a shiny application to simulate inter-rater 
-	reliability statistics based on various scoring and response models. The initial motivation for 
-	this package is to understand the relationship between percent rater agreement and intraclass correlation.
-Authors@R: person("Jason", "Bryer", , "jason@bryer.org", c("aut", "cre"))
+Authors@R: 
+    person("Jason", "Bryer", , "jason@bryer.org", role = c("aut", "cre"))
+Description: Functions and shiny application to simulate inter-rater
+    reliability statistics based on various scoring and response models.
+    The initial motivation for this package is to understand the
+    relationship between percent rater agreement and intraclass
+    correlation.
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-ByteCompile: true
-RoxygenNote: 7.2.0
-Depends: R (>= 3.5.0), psych, DescTools, ggplot2, reshape2, shiny, parallel, foreach, doParallel, doSNOW, cowplot
-Suggests: irr, knitr, rmarkdown, testthat, magrittr, xtable
-VignetteBuilder: knitr
 URL: http://irrsim.bryer.org, http://github.com/jbryer/IRRsim
 BugReports: https://github.com/jbryer/IRRsim/issues
+Depends: 
+    R (>= 3.5.0)
+Imports:
+    cowplot,
+    DescTools,
+    doSNOW,
+    foreach,
+    ggplot2,
+    parallel,
+    psych,
+    reshape2,
+    shiny,
+    snow,
+    stats
+Suggests: 
+    irr,
+    knitr,
+    magrittr,
+    rmarkdown,
+    testthat,
+    xtable
+VignetteBuilder: 
+    knitr
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3

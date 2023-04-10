@@ -1,19 +1,24 @@
- library(devtools)
+library(devtools)
 
 # Install dependencies (if necessary)
 install_dev_deps()
 
 # Documentation
-document()
-build_vignettes()
+usethis::use_tidy_description()
+devtools::document()
+devtools::build_vignettes()
 file.copy('inst/slides/IRRsim-Presentation.html',
 		  'docs/IRRsim-Presentation.html',
 		  overwrite = TRUE) # copy the slides to the docs directory
 pkgdown::build_site()
 
 # Install / Build package
-install()
-build(vignettes = FALSE)
+devtools::install()
+devtools::build(vignettes = FALSE)
+
+# Testing/getting ready for CRAN submission
+devtools::test()
+devtools::check(cran = TRUE)
 
 library(IRRsim)
 ls('package:IRRsim')
@@ -25,10 +30,8 @@ tools::resaveRdaFiles('data')
 data("IRRsimData")
 data("IRRguidelines")
 
-# Testing/getting ready for CRAN submission
-test()
-check(cran = TRUE)
-# submit_cran()
+
+tools::resaveRdaFiles('data/')
 
 library(RColorBrewer)
 display.brewer.all()

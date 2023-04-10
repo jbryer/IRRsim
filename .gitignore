@@ -17,3 +17,5 @@ data-raw/IRRsimulations.rda
 NCME1.png
 NCME2.png
 data-raw/
+private/
+data-releases/*.rda

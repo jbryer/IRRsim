@@ -2,7 +2,7 @@
 title: "Relationship Between Intraclass Correlation (ICC) and Percent Agreement"
 author:
 - name: Jason Bryer
-  affiliation: Excelsior College
+  affiliation: City University of New York
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 abstract: Inter-rater reliability (IRR) is a critical component of establishing the reliability of measures when more than one rater is necessary. There are numerous IRR statistics available to researchers including percent rater agreement, Cohen's Kappa, and several types of intraclass correlations (ICC). Several methodologists suggest using ICC over percent rater agreement (Hallgren, 2012; Koo & Li, 2016; McGraw & Wong, 1996; Shrout & Fleiss, 1979). However, the literature provides little guidance on the interpretation of ICC results. This article explores the relationship between ICC and percent rater agreement using simulations. Results suggest that ICC and percent rater agreement are highly correlated (R² > 0.9) for most designs used in education.
@@ -32,7 +32,14 @@ set.seed(2112) # For reproducibility
 output.type <- 'html' # html or latex
 ggplot2::theme_set(theme_bw())
 
-data("IRRsimData", package = "IRRsim")
+# data("IRRsimData", package = "IRRsim")
+if(file.exists('../data-releases/IRRsimData.rda')) {
+	load('../data-releases/IRRsimData.rda')
+} else {
+	tmpfile <- tempfile()
+	download.file('https://github.com/jbryer/IRRsim/releases/download/IRRsimData/IRRsimData.rda', tmpfile)
+	load(tmpfile)
+}
 
 linebreak <- switch(output.type,
 					html = "<br>",

@@ -17,6 +17,7 @@ test_that("simulateIRR", {
 })
 
 test_that("simulateIRR with multiple raters", {
+	set.seed(2112)
 	tests.3levels <- simulateIRR(nRaters = c(6, 9, 12), nLevels = 3, nSamples = 50)
 	expect_equal_to_reference(tests.3levels, file = 'simulateIRR3')
 })
