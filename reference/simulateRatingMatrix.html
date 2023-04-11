@@ -104,17 +104,16 @@ This is independent of the percent agreement parameter.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">simulateRatingMatrix</span><span class="op">(</span>nLevels <span class="op">=</span> <span class="fl">3</span>, k <span class="op">=</span> <span class="fl">2</span>, agree <span class="op">=</span> <span class="fl">0.6</span>, nEvents <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/ICC.html" class="external-link">ICC</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: psych::ICC(x = test)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intraclass correlation coefficients </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                          type  ICC F df1 df2       p lower bound upper bound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Single_raters_absolute   ICC1 0.66 5  99 100 1.4e-14        0.54        0.76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Single_random_raters     ICC2 0.66 5  99  99 1.8e-14        0.54        0.76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Single_fixed_raters      ICC3 0.66 5  99  99 1.8e-14        0.54        0.76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Average_raters_absolute ICC1k 0.80 5  99 100 1.4e-14        0.70        0.86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Average_random_raters   ICC2k 0.80 5  99  99 1.8e-14        0.70        0.86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Average_fixed_raters    ICC3k 0.80 5  99  99 1.8e-14        0.70        0.86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          type  ICC   F df1 df2       p lower bound upper bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Single_raters_absolute   ICC1 0.59 3.9  99 100 2.8e-11        0.45        0.71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Single_random_raters     ICC2 0.59 4.0  99  99 2.1e-11        0.45        0.71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Single_fixed_raters      ICC3 0.60 4.0  99  99 2.1e-11        0.46        0.71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Average_raters_absolute ICC1k 0.74 3.9  99 100 2.8e-11        0.62        0.83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Average_random_raters   ICC2k 0.75 4.0  99  99 2.1e-11        0.62        0.83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Average_fixed_raters    ICC3k 0.75 4.0  99  99 2.1e-11        0.63        0.83</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Number of subjects = 100     Number of Judges =  2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> See the help file for a discussion of the other 4 McGraw and Wong estimates,</span>
