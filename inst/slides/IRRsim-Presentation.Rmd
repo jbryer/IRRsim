@@ -484,4 +484,3 @@ City University of New York
 <br/><br/><br/><br/>
 
 <font size="3">DAACS was developed under grant #P116F150077 from the U.S. Department of Education. However, the contents do not necessarily represent the policy of the U.S. Department of Education, and you should not assume endorsement by the Federal Government.</font>
-
