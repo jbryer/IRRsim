@@ -1,7 +1,7 @@
 on:
   push:
     paths:
-      - inst/slides/IRRsim-Presenation.Rmd
+      - inst/slides/IRRsim-Presentation.Rmd
 
 name: Render IRRsim-Presenation
 
