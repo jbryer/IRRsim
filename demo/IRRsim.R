@@ -45,32 +45,9 @@ icc1.summary
 summary(icc1.summary$model)
 plot(test1, stat = 'ICC1')
 
-# Cicchetti's guidelines
-newdata = data.frame(agreement = seq(0.01, 1, 0.01))
-predictions <- predict(icc1.summary$model, newdata = newdata)
-tab <- data.frame(ICC = IRRguidelines[['Cicchetti']],
-				  Agreement = sapply(IRRguidelines[['Cicchetti']],
-				  				   FUN = function(x) { min(which(predictions >= x)) / 100 }))
-plot(test1, stat = 'ICC1', method = 'quadratic') +
-	geom_segment(data = tab, color = 'black', x = -Inf,
-				 aes(y = ICC, yend = ICC, xend = Agreement)) +
-	geom_segment(data = tab, color = 'black', y = -Inf,
-				 aes(x = Agreement, xend = Agreement, yend = ICC)) +
-	geom_text(data = tab, aes(x = 0, y = ICC, label = ICC),
-			  color = 'black', vjust = -0.5, size = 3) +
-	geom_text(data = tab, aes(x = Agreement, y = min(predictions),
-							  label = paste0(round(Agreement*100), '%')),
-			  color = 'black', size = 3, hjust = -0.1)
-
-
 # Get the distribution of scores
 tmp <- sapply(test1, FUN = function(x) { as.integer(x$data) })
 prop.table(table(tmp))
-
-test3 <- simulateIRR(response.probs = c(.1, .3, .6))
-tmp3 <- sapply(test3, FUN = function(x) { as.integer(x$data) })
-prop.table(table(tmp3))
-
 
 
 ##### Uniform response distribution
@@ -79,10 +56,6 @@ test1.3levels.df <- as.data.frame(test1.3levels)
 # Check the actual distribution
 tmp <- unlist(sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }))
 prop.table(table(tmp))
-
-sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }) |>
-	unlist |> table |> prop.table
-
 
 plot(test1.3levels, stat = 'ICC1')
 
@@ -127,14 +100,14 @@ test.3levels.df <- rbind(test1.3levels.df, test2.3levels.df, test3.3levels.df, t
 
 ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 	geom_point(alpha = 0.1) +
-	geom_smooth(method = 'loess', se = FALSE) +
+	geom_smooth(method = 'loess', formula = y ~ x, se = FALSE) +
 	facet_wrap(~ factor(k))
 
 ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist, linetype = factor(k))) +
 	# geom_point(alpha = 0.1) +
 	geom_hline(yintercept = c(0.4, 0.6, 0.75), alpha = 0.5) +
 	# geom_vline(xintercept = c(0.7), alpha = 0.5) +
-	geom_smooth(method = 'loess', se = FALSE) +
+	geom_smooth(method = 'loess', formula = y ~ x, se = FALSE) +
 	scale_linetype('n Raters') +
 	xlab('Percent Agreement') +
 	ggtitle('ICC1 vs Percent Agreement')
@@ -144,7 +117,7 @@ ggplot(test.3levels.df, aes(x = agreement, y = ICC1k, color = ResponseDist, line
 	# geom_point(alpha = 0.1) +
 	geom_hline(yintercept = c(0.4, 0.6, 0.75), alpha = 0.5) +
 	# geom_vline(xintercept = c(0.7), alpha = 0.5) +
-	geom_smooth(method = 'loess', se = FALSE) +
+	geom_smooth(method = 'loess', formula = y ~ x, se = FALSE) +
 	scale_linetype('n Raters') +
 	xlab('Percent Agreement') +
 	ggtitle('ICC1k vs Percent Agreement')
