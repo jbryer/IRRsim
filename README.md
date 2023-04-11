@@ -1,10 +1,10 @@
 
-# `IRRsim`: An R Package for Simulating Inter-Rater Reliability
+# <img src="man/figures/IRRsim.png" align="right" width="120" align="right" /> `IRRsim`: An R Package for Simulating Inter-Rater Reliability
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml)
-[![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/jbryer/IRRsim)
+[![](https://img.shields.io/badge/devel%20version-1.0.1-blue.svg)](https://github.com/jbryer/IRRsim)
 [![](https://www.r-pkg.org/badges/version/IRRsim)](https://cran.r-project.org/package=IRRsim)
 <!--
 [![CRAN Status](https://badges.cranchecks.info/flavor/release/IRRsim.svg)](https://cran.r-project.org/web/checks/check_results_IRRsim.html)
@@ -18,17 +18,12 @@ relationship between percent rater agreement and intraclass correlation.
 
 Documentation is available at <http://irrsim.bryer.org>
 
-Slides for NCME 2019 talk are here:
-<a href="http://irrsim.bryer.org/IRRsim-Presentation.html" target="_blank">http://irrsim.bryer.org/IRRsim-Presentation.html</a>
-
 ## Install
 
 The development version of `IRRsim` can be downloaded from Github using
-the `devtools` package:
+the `remotes` package:
 
-``` r
-devtools::install_github('jbryer/IRRsim')
-```
+`{r, eval=FALSE) remotes::install_github('jbryer/IRRsim')`
 
 ## Shiny App
 
@@ -40,7 +35,10 @@ application.
 IRRsim::IRRsim_demo()
 ```
 
-![IRRsim Shiny App](man/figures/IRRsimShinyApp.png)
+<figure>
+<img src="man/figures/IRRsimShinyApp.png" alt="IRRsim Shiny App" />
+<figcaption aria-hidden="true">IRRsim Shiny App</figcaption>
+</figure>
 
 ## Data
 
