@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# `IRRsim`: An R Package for Simulating Inter-Rater Reliability
+# <img src="man/figures/IRRsim.png" align="right" width="120" align="right" /> `IRRsim`: An R Package for Simulating Inter-Rater Reliability
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml)
@@ -20,8 +20,6 @@ reliability statistics based on various scoring and response models. The initial
 this package is to understand the relationship between percent rater agreement and intraclass correlation.
 
 Documentation is available at http://irrsim.bryer.org
-
-Slides for NCME 2019 talk are here: <a href="http://irrsim.bryer.org/IRRsim-Presentation.html" target="_blank">http://irrsim.bryer.org/IRRsim-Presentation.html</a>
 
 ## Install
 

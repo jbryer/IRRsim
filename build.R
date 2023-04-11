@@ -105,7 +105,6 @@ rsquared.df.melted <- melt(rsquared.df, id.vars = c('nLevels','k','k_per_event')
 
 # write.csv(rsquared.df, file = 'r-squared.csv', row.names = FALSE)
 
-
 icc1.out <- lm(ICC1 ~ nLevels + k + k_per_event + agreement + I(agreement^2) + MaxResponseDiff,
 			   data = IRRsimData)
 summary(icc1.out)
@@ -137,3 +136,23 @@ df.summary <- rbind(
 )
 row.names(df.summary) <- c('ICC1', 'ICC2', 'ICC3', 'ICC1k', 'ICC2k', 'ICC3k')
 print(t(df.summary), digits = 3)
+
+##### Hex Logo #################################################################
+library(hexSticker)
+
+p <- "private/people.png"
+hexSticker::sticker(p,
+					filename = 'man/figures/IRRsim.png',
+					p_size = 16,
+					package = 'IRRsim',
+					url = "irrsim.bryer.org",
+					# p_family = 'gochi',
+					u_size = 9.0,
+					s_width = .7, s_height = .7,
+					s_x = 1, s_y = 1.15,
+					p_x = 1, p_y = 0.45,
+					p_color = "#8da0cb",
+					h_fill = '#FFFFFF',
+					h_color = '#8da0cb',
+					u_color = '#a6d854',
+					white_around_sticker = FALSE)
