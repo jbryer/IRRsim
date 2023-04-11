@@ -13,3 +13,6 @@ Articles/
 README.Rmd
 private/
 .github/
+^_pkgdown\.yml$
+^pkgdown$
+^\.github$
