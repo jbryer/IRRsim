@@ -218,26 +218,26 @@ See [IRRsim::simulateRatingMatrix()] for more information.</p></dd>
 <span class="r-in"><span>                       showTextProgress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">icctest</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Prediction table for 2 raters.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Agreement      skewness  kurtosis MaxResponseDiff      ICC1      ICC2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0.1            NA        NA              NA        NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.2            NA        NA              NA        NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       0.3            NA        NA              NA        NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       0.4 -0.0408750535 -1.521283      0.05182557 0.1052903 0.1049881</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       0.5 -0.0003017208 -1.511766      0.05492384 0.2368069 0.2359747</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       0.6  0.0008969460 -1.487814      0.05586583 0.3939788 0.3935335</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       0.7 -0.0259988886 -1.440087      0.06661124 0.5507317 0.5507986</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       0.8 -0.0371914550 -1.453150      0.08116479 0.6944106 0.6945257</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       0.9  0.0017438633 -1.490879      0.07144630 0.8368732 0.8368833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Agreement     skewness  kurtosis MaxResponseDiff       ICC1      ICC2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0.1           NA        NA              NA         NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.2           NA        NA              NA         NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       0.3           NA        NA              NA         NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       0.4  0.001220400 -1.501746      0.04146644 0.09974772 0.1000455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       0.5  0.032119335 -1.509715      0.03813980 0.24919501 0.2499546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       0.6  0.021263320 -1.513135      0.04069260 0.39011432 0.3899606</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       0.7 -0.002677723 -1.487019      0.04617624 0.53965679 0.5394767</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       0.8 -0.015539897 -1.460998      0.05761178 0.69967584 0.6998141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       0.9  0.017262929 -1.436328      0.06952314 0.84634494 0.8464201</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        ICC3     ICC1k     ICC2k     ICC3k Cohen_Kappa</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA        NA        NA        NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        NA        NA        NA        NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA        NA        NA        NA          NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.1052589 0.1882415 0.1873944 0.1877272  0.09975145</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.2357177 0.3749044 0.3735560 0.3732048  0.24815132</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.3930555 0.5626316 0.5621368 0.5616156  0.39777449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.5510780 0.7090006 0.7090615 0.7092473  0.54718041</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.6948183 0.8193662 0.8194548 0.8196955  0.69700105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 0.8367891 0.9115751 0.9115901 0.9115462  0.84831996</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.1003667 0.1630092 0.1631078 0.1636692   0.1013587</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.2501391 0.3920801 0.3933090 0.3936315   0.2498210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.3896946 0.5585984 0.5584192 0.5581995   0.3982911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.5391603 0.6982505 0.6980749 0.6977855   0.5482248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.7000514 0.8218083 0.8219379 0.8221577   0.6982775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 0.8464353 0.9173147 0.9173782 0.9174450   0.8484651</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
