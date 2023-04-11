@@ -13,7 +13,7 @@
 )
 }
 \arguments{
-\item{x}{the results of \code{\link{simulatePredictionData}}.}
+\item{x}{the results of [IRRsim::simulatePredictionData()].}
 
 \item{colors}{the color scheme used for the three groups.}
 
@@ -24,7 +24,7 @@
 \item{...}{other parameters passed to \code{cowplot::plot_grid}.}
 }
 \value{
-a ggplot2 plot of the logistic regression results.
+a ggplot2 expression of the logistic regression results.
 }
 \description{
 Logistic Regression Plot

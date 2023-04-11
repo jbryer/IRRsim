@@ -9,6 +9,7 @@
 #' @param point.alpha the alpha used for points.
 #' @param title the title of the plot
 #' @param ... currently unused.
+#' @return a `ggplot2` expression.
 #' @export
 plot.IRRsim <- function(x,
 						method = 'loess',

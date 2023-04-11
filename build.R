@@ -12,15 +12,8 @@ devtools::build_vignettes()
 # 		  'docs/IRRsim-Presentation.html',
 # 		  overwrite = TRUE) # copy the slides to the docs directory
 rmarkdown::render('inst/slides/IRRsim-Presentation.Rmd',
-				  output_format = 'ioslides_presentation')
-# install.packages("webshot")
-# webshot::install_phantomjs()
-# webshot::rmdshot('inst/slides/IRRsim-Presentation.Rmd',
-# 				 'inst/slides/IRRsim-Presentation.pdf',
-# 				 vwidth = 992,
-# 				 vheight = 744)
-# rmarkdown::render('inst/slides/IRRsim-Presentation.Rmd',
-# 				  output_format = 'pdf_document')
+				  output_format = 'ioslides_presentation',
+				  output_dir = 'docs/')
 
 # Install / Build package
 devtools::install()
@@ -62,9 +55,17 @@ LRsim_demo()
 
 demo('IRRsim') # See demo/IRRsim.R for examples.
 
-
 # Build prediction table
-data('IRRsimData', package = 'IRRsim')
+# The IRRsimData is not included in the package due to being too large.
+# data('IRRsimData', package = 'IRRsim')
+if(file.exists('../data-releases/IRRsimData.rda')) {
+	load('../data-releases/IRRsimData.rda')
+} else {
+	tmpfile <- tempfile()
+	download.file('https://github.com/jbryer/IRRsim/releases/download/IRRsimData/IRRsimData.rda', tmpfile)
+	load(tmpfile)
+}
+
 rsquared.df <- data.frame()
 for(n in unique(IRRsimData$nLevels)) {
 	tmp.n <- IRRsimData[IRRsimData$nLevels == n,]

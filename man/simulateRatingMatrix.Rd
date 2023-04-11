@@ -32,6 +32,9 @@ This allows situations where some responses are more common than
 others (e.g. 50\% of students get a 3, 30\% get a 2, and 20\% get a 1).
 This is independent of the percent agreement parameter.}
 }
+\value{
+a data frame with a simulated rating matrix.
+}
 \description{
 This function will generate a \code{nEvents} x \code{k} scoring matrix.
 }

@@ -11,6 +11,9 @@
 
 \item{...}{currently unused.}
 }
+\value{
+nothing returned.
+}
 \description{
 Prints the results from `simulateIRR.`
 }

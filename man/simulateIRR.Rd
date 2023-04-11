@@ -34,7 +34,7 @@ simulateIRR(
 \item{agreements}{vector of percent agreements to simulate.}
 
 \item{response.probs}{probability weights for the distribution of scores.
-See \code{\link{simulateRatingMatrix}} for more information.}
+See [IRRsim::simulateRatingMatrix()] for more information.}
 
 \item{showShinyProgress}{show progress bar as simulations are generated.}
 
@@ -44,7 +44,7 @@ See \code{\link{simulateRatingMatrix}} for more information.}
 
 \item{parallel}{whether to simulated the data using multiple cores.}
 
-\item{...}{other parameters.}
+\item{...}{currently not used.}
 }
 \value{
 a list of length \code{nSamples * length(nRaters) * length(agreements)}.
@@ -69,8 +69,17 @@ a list of length \code{nSamples * length(nRaters) * length(agreements)}.
        }
 }
 \description{
-Calculates intraclass correlations (ICC) for simulated samples of raters and
-evaluations.
+This function wraps the [IRRsim::simulateRatingMatrix()] function to estimate
+inter-rater reliability statistics across many simulated rating matrices.
+It returns a `list` with all the runs but can be converted to a data frame
+using the `as.data.frame()` function. By default this function will run the
+simulations in parallel using the `parallel` package using one less the number
+of available cores. Set `parallel = FALSE` to run the simulations on one
+thread.
+}
+\details{
+For reproducibility using the [base::set.seed()] function be sure to set
+`parallel = FALSE`.
 }
 \examples{
 icctest <- simulateIRR(nLevels = 3,

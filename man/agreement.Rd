@@ -9,6 +9,9 @@ agreement(thedata)
 \arguments{
 \item{thedata}{rating matrix.}
 }
+\value{
+percent rater agreement.
+}
 \description{
 Calculate percent agreement.
 }

@@ -31,6 +31,9 @@ loess, linear, and quadratic.}
 
 \item{...}{currently unused.}
 }
+\value{
+list with summary statistics from [IRRsim::IRRsim()].
+}
 \description{
 This function will provide predicted IRR statistics for various percent
 agreements. There are two elements in the returned list: `model` and

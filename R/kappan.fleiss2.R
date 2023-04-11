@@ -5,12 +5,13 @@
 #' do not have all raters score all essays. This function will still calculate Fleiss' Kappa for
 #' those situations.
 #'
-#' See \code{irr::kappam.fleis} for more information.
+#' See [irr::kappam.fleis()] for more information.
 #'
 #' @param ratings n*m matrix or dataframe, n subjecs of m raters.
 #' @param exact a logical indicating whether the exact Kappa (Conger, 1980) or the Kappa described
 #'        by Fleiss (1971) should be computed.
 #' @param detail a logical indicating whether category-wise Kappas should be computed
+#' @return see [irr::kappam.fleis()] for details.
 #' @export
 kappam.fleiss2 <- function (ratings, exact = FALSE, detail = FALSE) {
 	#ratings <- as.matrix(na.omit(ratings))

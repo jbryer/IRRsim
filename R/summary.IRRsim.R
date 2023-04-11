@@ -17,6 +17,7 @@
 #' @param predict.interval Type of interval calculation. Can be none, confidence,
 #'.       or prediction.
 #' @param ... currently unused.
+#' @return list with summary statistics from [IRRsim::IRRsim()].
 #' @export
 summary.IRRsim <- function(object,
 						   method = 'loess',
@@ -120,6 +121,7 @@ summary.IRRsim <- function(object,
 #'
 #' @param x the results from [IRRsim::summary.IRRsim()]
 #' @param ... currently unused.
+#' @return nothing returned.
 #' @export
 print.IRRsimSummary <- function(x, ...) {
 	if(length(x$k) > 1) {

@@ -1,4 +1,4 @@
-#' Run the Inter-Rater Reliability shiny app.
+#' Run the Inter-Rater Reliability shiny application.
 #'
 #' @param clean if `TRUE` the cache file will be deleted when the application finishes.
 #' @export

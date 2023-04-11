@@ -14,6 +14,9 @@ by Fleiss (1971) should be computed.}
 
 \item{detail}{a logical indicating whether category-wise Kappas should be computed}
 }
+\value{
+see [irr::kappam.fleis()] for details.
+}
 \description{
 This function fixes an issue in the \code{kappam.fleiss} function in the \code{irr} package.
 Specifically, the original function removes all missing values. However, many rating designs
@@ -21,5 +24,5 @@ do not have all raters score all essays. This function will still calculate Flei
 those situations.
 }
 \details{
-See \code{irr::kappam.fleis} for more information.
+See [irr::kappam.fleis()] for more information.
 }

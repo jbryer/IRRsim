@@ -14,6 +14,7 @@
 #'        This allows situations where some responses are more common than
 #'        others (e.g. 50\% of students get a 3, 30\% get a 2, and 20\% get a 1).
 #'        This is independent of the percent agreement parameter.
+#' @return a data frame with a simulated rating matrix.
 #' @export
 #' @examples
 #' test <- simulateRatingMatrix(nLevels = 3, k = 2, agree = 0.6, nEvents = 100)
@@ -60,14 +61,15 @@ simulateRatingMatrix <- function(nLevels, k, k_per_event = 2, agree, nEvents = 1
 
 #' Simulate a rating matrix with two ratings per event.
 #'
-#' This is a alternative implementation of the \code{\link{simulateRatingMatrix}}
+#' This is a alternative implementation of the [IRRsim::simulateRatingMatrix()\
 #' function for when each event is has two ratings from k available raters.
 #' For each event, one rater is randomly selected and given a rating from the
 #' distribution defined by the \code{response.probs} parameter. A second randomly
 #' selected rater will have the same rating with a probability defined by the
-#'  \code{agree} parameter.
+#' `agree` parameter.
 #'
 #' @inheritParams simulateRatingMatrix
+#' @return a data frame with a simulated rating matrix.
 #' @export
 simulateRatingMatrix2 <- function(nLevels, k, agree, nEvents = 100,
 								 response.probs = rep(1 / nLevels, nLevels)) {

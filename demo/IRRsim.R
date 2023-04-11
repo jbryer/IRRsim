@@ -1,5 +1,4 @@
 library(IRRsim)
-library(magrittr)
 
 # Guidelines for interpreting IRR
 data(IRRguidelines)
@@ -81,8 +80,8 @@ test1.3levels.df <- as.data.frame(test1.3levels)
 tmp <- unlist(sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }))
 prop.table(table(tmp))
 
-sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }) %>%
-	unlist %>% table %>% prop.table
+sapply(test1.3levels, FUN = function(x) { as.integer(x$data) }) |>
+	unlist |> table |> prop.table
 
 
 plot(test1.3levels, stat = 'ICC1')

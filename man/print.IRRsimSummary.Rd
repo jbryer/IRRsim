@@ -11,6 +11,9 @@
 
 \item{...}{currently unused.}
 }
+\value{
+nothing returned.
+}
 \description{
 The [IRRsim::summary.IRRsimm()] will return a list with \code{model} and
 \code{summary} objects. The former are the results of the modeling function,

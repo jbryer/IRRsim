@@ -1,6 +1,17 @@
 #' Calculates intraclass correlations (ICC) for simulated samples of raters and
 #' evaluations.
 #'
+#' This function wraps the [IRRsim::simulateRatingMatrix()] function to estimate
+#' inter-rater reliability statistics across many simulated rating matrices.
+#' It returns a `list` with all the runs but can be converted to a data frame
+#' using the `as.data.frame()` function. By default this function will run the
+#' simulations in parallel using the `parallel` package using one less the number
+#' of available cores. Set `parallel = FALSE` to run the simulations on one
+#' thread.
+#'
+#' For reproducibility using the [base::set.seed()] function be sure to set
+#' `parallel = FALSE`.
+#'
 #' @param nRaters the number of available raters
 #' @param nRatersPerEvent the number of ratings for each per scoring event.
 #' @param nLevels the number of possible outcomes there are for each rating.
@@ -8,12 +19,12 @@
 #' @param nEvents the number of rating events within each matrix.
 #' @param agreements vector of percent agreements to simulate.
 #' @param response.probs probability weights for the distribution of scores.
-#'        See \code{\link{simulateRatingMatrix}} for more information.
+#'        See [IRRsim::simulateRatingMatrix()] for more information.
 #' @param parallel whether to simulated the data using multiple cores.
 #' @param numCores number of cores to use if the simulation is run in parallel.
 #' @param showShinyProgress show progress bar as simulations are generated.
 #' @param showTextProgress show progress bar as simulations are generated.
-#' @param ... other parameters.
+#' @param ... currently not used.
 #' @return a list of length \code{nSamples * length(nRaters) * length(agreements)}.
 #'        Each element of the list represents one simulation with the following
 #'        values: \describe{

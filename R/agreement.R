@@ -1,6 +1,7 @@
 #' Calculate percent agreement.
 #'
 #' @param thedata rating matrix.
+#' @return percent rater agreement.
 #' @export
 agreement <- function(thedata) {
 	return(unname(prop.table(table(
@@ -8,4 +9,3 @@ agreement <- function(thedata) {
 			length(unique(x[!is.na(x)])) == 1
 		})))['TRUE']))
 }
-

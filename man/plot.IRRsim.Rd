@@ -20,6 +20,9 @@ loess, linear, and quadratic.}
 
 \item{...}{currently unused.}
 }
+\value{
+a `ggplot2` expression.
+}
 \description{
 Returns a \code{ggplot2} expression.
 }
