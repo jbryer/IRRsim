@@ -1,9 +1,10 @@
 Package: IRRsim
 Title: Simulate Inter-Rater Reliability Statistics
-Version: 1.0.0
-Date: 2018-02-06
+Version: 1.0.1
+Date: 2023-04-10
 Authors@R: 
-    person("Jason", "Bryer", , "jason@bryer.org", role = c("aut", "cre"))
+    person("Jason", "Bryer", , "jason@bryer.org", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-2454-0402"))
 Description: Functions and shiny application to simulate inter-rater
     reliability statistics based on various scoring and response models.
     The initial motivation for this package is to understand the
