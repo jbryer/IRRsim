@@ -6,6 +6,7 @@ output:
   ioslides_presentation: 
     smaller: no
     widescreen: yes
+    self_contained: true
 ---
 
 ```{r setup, include=FALSE}
@@ -18,6 +19,7 @@ knitr::opts_chunk$set(echo = TRUE,
 library(magrittr)
 library(IRRsim)
 library(knitr)
+library(ggplot2)
 
 set.seed(2112)
 
@@ -120,7 +122,7 @@ Consistency or absolute agreement:
 | ICC(1,*k*)        | One-way random effects; absolute agreement; average measures. | $\frac{MS_R - MS_W}{MS_R}$ |
 | ICC(2,*k*)        | Two-way random effects; absolute agreement; average measures. | $\frac{MS_R - MS_E}{MS_R | \frac{MS_C - MS_E}{n}}$ |
 | ICC(3,*k*)        | Two-way mixed effects; consistency; average measures. | $\frac{MS_R - MS_E}{MS_R}$ |
-| Cohen's Kappa (κ) | Absolute agreement    | $\frac{P_o - P_e}{1 - P_e}$ |
+| Cohen's Kappa | Absolute agreement    | $\frac{P_o - P_e}{1 - P_e}$ |
 
 <font size="3">*Note.* $MS_R$ = mean square for rows; $MS_W$ = mean square for residual sources of variance; $MS_E$ = mean square error; $MS_C$ = mean square for columns; $P_o$ = observed agreement rates; $P_e$ = expected agreement rates.</font>
 
@@ -366,7 +368,14 @@ ggplot(test.3levels.df, aes(x = agreement, y = ICC1, color = ResponseDist)) +
 ## Modeling ICC from Percent Agreement {.columns-2 .smaller}
 
 ```{r, echo=FALSE}
-data("IRRsimData")
+# data("IRRsimData", package = "IRRsim")
+if(file.exists('../data-releases/IRRsimData.rda')) {
+	load('../data-releases/IRRsimData.rda')
+} else {
+	tmpfile <- tempfile()
+	download.file('https://github.com/jbryer/IRRsim/releases/download/IRRsimData/IRRsimData.rda', tmpfile)
+	load(tmpfile)
+}
 levels(IRRsimData$nLevels) <- c('Two', 'Three', 'Four', 'Five')
 IRRsimData$nLevels <- as.character(IRRsimData$nLevels)
 levels(IRRsimData$k) <- c('Two', 'Four', 'Eight', 'Sixteen')
@@ -464,8 +473,8 @@ IRRsim_demo()
 
 ### Jason Bryer, Ph.D.
 
-Excelsior College  
-[jason@bryer.org](mailto:jason@bryer.org), [twitter.com/@jbryer](https://twitter.com/@jbryer)
+City University of New York  
+[jason@bryer.org](mailto:jason@bryer.org)
 
 
 ### Website: [irrsim.bryer.org](http://irrsim.bryer.org/)

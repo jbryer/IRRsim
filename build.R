@@ -1,22 +1,31 @@
 library(devtools)
 
 # Install dependencies (if necessary)
-install_dev_deps()
+devtools::install_dev_deps()
 
 # Documentation
 usethis::use_tidy_description()
 devtools::document()
+devtools::build_readme()
 devtools::build_vignettes()
 # file.copy('inst/slides/IRRsim-Presentation.html',
 # 		  'docs/IRRsim-Presentation.html',
 # 		  overwrite = TRUE) # copy the slides to the docs directory
-pkgdown::build_site()
+rmarkdown::render('inst/slides/IRRsim-Presentation.Rmd',
+				  output_format = 'ioslides_presentation')
+# install.packages("webshot")
+# webshot::install_phantomjs()
+# webshot::rmdshot('inst/slides/IRRsim-Presentation.Rmd',
+# 				 'inst/slides/IRRsim-Presentation.pdf',
+# 				 vwidth = 992,
+# 				 vheight = 744)
+# rmarkdown::render('inst/slides/IRRsim-Presentation.Rmd',
+# 				  output_format = 'pdf_document')
 
 # Install / Build package
 devtools::install()
 devtools::build(vignettes = FALSE)
 
-devtools::build_readme()
 
 # Testing/getting ready for CRAN submission
 devtools::test()

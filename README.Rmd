@@ -15,8 +15,6 @@ editor_options:
 --
 <!-- badges: end -->
 
-
-
 This package provides functions and a shiny application to simulate inter-rater 
 reliability statistics based on various scoring and response models. The initial motivation for 
 this package is to understand the relationship between percent rater agreement and intraclass correlation.
@@ -27,17 +25,17 @@ Slides for NCME 2019 talk are here: <a href="http://irrsim.bryer.org/IRRsim-Pres
 
 ## Install
 
-The development version of `IRRsim` can be downloaded from Github using the `devtools` package:
+The development version of `IRRsim` can be downloaded from Github using the `remotes` package:
 
-```r
-devtools::install_github('jbryer/IRRsim')
+```{r, eval=FALSE)
+remotes::install_github('jbryer/IRRsim')
 ```
 
 ## Shiny App
 
 Many of features of this package can be explored using the included shiny applications. The `IRRsim_shiny()` function will run the application.
 
-```r
+```{r, eval=FALSE}
 IRRsim::IRRsim_demo()
 ```
 
