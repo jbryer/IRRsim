@@ -10,7 +10,9 @@ editor_options:
 [![R-CMD-check](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml)
 `r badger::badge_devel("jbryer/IRRsim", "blue")`
 `r badger::badge_cran_release("IRRsim")`
+<!--
 [![CRAN Status](https://badges.cranchecks.info/flavor/release/IRRsim.svg)](https://cran.r-project.org/web/checks/check_results_IRRsim.html)
+--
 <!-- badges: end -->
 
 

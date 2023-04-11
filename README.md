@@ -6,8 +6,9 @@
 [![R-CMD-check](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml)
 [![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/jbryer/IRRsim)
 [![](https://www.r-pkg.org/badges/version/IRRsim)](https://cran.r-project.org/package=IRRsim)
-[![CRAN
-Status](https://badges.cranchecks.info/flavor/release/IRRsim.svg)](https://cran.r-project.org/web/checks/check_results_IRRsim.html)
+<!--
+[![CRAN Status](https://badges.cranchecks.info/flavor/release/IRRsim.svg)](https://cran.r-project.org/web/checks/check_results_IRRsim.html)
+--
 <!-- badges: end -->
 
 This package provides functions and a shiny application to simulate
