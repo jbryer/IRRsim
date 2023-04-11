@@ -40,10 +40,7 @@ application.
 IRRsim::IRRsim_demo()
 ```
 
-<figure>
-<img src="man/figures/IRRsimShinyApp.png" alt="IRRsim Shiny App" />
-<figcaption aria-hidden="true">IRRsim Shiny App</figcaption>
-</figure>
+![IRRsim Shiny App](man/figures/IRRsimShinyApp.png)
 
 ## Data
 
