@@ -16,6 +16,8 @@ loess, linear, and quadratic.}
 
 \item{point.alpha}{the alpha used for points.}
 
+\item{title}{the title of the plot}
+
 \item{...}{currently unused.}
 }
 \description{

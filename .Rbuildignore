@@ -8,3 +8,8 @@ IRRsimScreen.png
 data-raw/
 slides/
 data-releases/
+Articles/
+^LICENSE\.md$
+README.Rmd
+private/
+.github/

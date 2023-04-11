@@ -15,6 +15,8 @@
 )
 }
 \arguments{
+\item{object}{the result of IRRsim::simulateIRR().}
+
 \item{method}{the method used to find predicted values. Possible values are
 loess, linear, and quadratic.}
 
@@ -24,16 +26,17 @@ loess, linear, and quadratic.}
 
 \item{k}{which number of raters to print summary of.}
 
-\item{...}{currently unused.}
+\item{predict.interval}{Type of interval calculation. Can be none, confidence,
+.       or prediction.}
 
-\item{x}{the result of \code{\link{simulateIRR}}.}
+\item{...}{currently unused.}
 }
 \description{
 This function will provide predicted IRR statistics for various percent
-agreements. There are two elements in the returned list: \code{model} and
-\code{summary}. The former are the results of the modeling function and the
+agreements. There are two elements in the returned list: `model` and
+`summary`. The former are the results of the modeling function and the
 latter is a \code{data.frame} providing the predicted values for various
-percent agreements. If \code{stat = 'all'} is specified, the summary
+percent agreements. If `stat = 'all'` is specified, the summary
 table contains the predicted values. If a specific IRR statistic is specified,
-the summary table contains the predicted value along with the interval.#'
+the summary table contains the predicted value along with the interval.
 }

@@ -2,15 +2,15 @@
 % Please edit documentation in R/print.IRRsim.R
 \name{print.IRRsim}
 \alias{print.IRRsim}
-\title{Prints the results from simulateIRR.}
+\title{Prints the results from `simulateIRR.`}
 \usage{
 \method{print}{IRRsim}(x, ...)
 }
 \arguments{
-\item{x}{the results of \code{\link{simulateIRR}}.}
+\item{x}{the results of IRRsim::simulateIRR().}
 
 \item{...}{currently unused.}
 }
 \description{
-Prints the results from simulateIRR.
+Prints the results from `simulateIRR.`
 }

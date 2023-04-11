@@ -12,12 +12,12 @@ test_that("simulateIRR", {
 
 	expect_is(test1, 'IRRsim')
 	expect_is(test2, 'IRRsim')
-	expect_equal_to_reference(test1, file = 'simulateIRR1')
+	# expect_equal_to_reference(test1, file = 'simulateIRR1') # Shoudn't match since running in parallel
 	expect_equal_to_reference(test2, file = 'simulateIRR2')
 })
 
 test_that("simulateIRR with multiple raters", {
 	set.seed(2112)
-	tests.3levels <- simulateIRR(nRaters = c(6, 9, 12), nLevels = 3, nSamples = 50)
+	tests.3levels <- simulateIRR(nRaters = c(6, 9, 12), nLevels = 3, nSamples = 50, parallel = FALSE)
 	expect_equal_to_reference(tests.3levels, file = 'simulateIRR3')
 })

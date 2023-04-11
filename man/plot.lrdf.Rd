@@ -19,9 +19,12 @@
 
 \item{rel_heights}{the relative heights of histogram to scatter plot.}
 
-\item{...}{other parameters passed to \code{cowplot::plot_grid}.}
+\item{title}{the title of plot.}
 
-\item{a}{ggplot2 plot of the logistic regerssion results.}
+\item{...}{other parameters passed to \code{cowplot::plot_grid}.}
+}
+\value{
+a ggplot2 plot of the logistic regression results.
 }
 \description{
 Logistic Regression Plot

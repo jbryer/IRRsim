@@ -1,5 +1,6 @@
 #' Run the Inter-Rater Reliability shiny app.
 #'
+#' @param clean if `TRUE` the cache file will be deleted when the application finishes.
 #' @export
 IRRsim_demo <- function(clean = FALSE) {
 	dir <- paste0(find.package('IRRsim'), '/shiny')

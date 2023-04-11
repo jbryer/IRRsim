@@ -7,12 +7,12 @@
 \method{print}{IRRsimSummary}(x, ...)
 }
 \arguments{
-\item{x}{the results from \code{\link{summary.IRRsim}}}
+\item{x}{the results from [IRRsim::summary.IRRsim()]}
 
 \item{...}{currently unused.}
 }
 \description{
-The \code{\link{summary.IRRsimm}} will return a list with \code{model} and
+The [IRRsim::summary.IRRsimm()] will return a list with \code{model} and
 \code{summary} objects. The former are the results of the modeling function,
 the latter is a \code{data.frame} that summarizes the predicted results of
 the model. This function will only print the \code{data.frame}.

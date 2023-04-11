@@ -4,7 +4,7 @@
 \alias{LRsim_demo}
 \title{Run the logistic regression shiny app.}
 \usage{
-LRsim_demo(clean = FALSE)
+LRsim_demo()
 }
 \description{
 Run the logistic regression shiny app.

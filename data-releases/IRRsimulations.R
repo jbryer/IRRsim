@@ -1,11 +1,15 @@
 library(IRRsim)
 
+# Directory to save the simulated data
+out_dir <- 'data-releases'
+
 # Set run_parallel = FALSE to ensure subsequent runs generate the same data.
 run_parallel <- TRUE
 set.seed(2112)
 # nRaters = 2:12  # Number of raters
 nRaters <- c(2, 4, 8, 16)
 nLevels <- 2:5  # The number of scoring levels
+
 IRRsimulations <- list()
 for(i in nLevels) {
 	probability.weights <- list(
@@ -40,10 +44,10 @@ for(i in nLevels) {
 		}
 	}
 }
-save(IRRsimulations, file = 'data-raw/IRRsimulations.rda')
+save(IRRsimulations, file = paste0(out_dir, '/IRRsimulations.rda'))
 
 # Create a data.frame combining the results of the simulations
-load('data-raw/IRRsimulations.rda')
+load(paste0(out_dir, '/IRRsimulations.rda'))
 IRRsimData <- data.frame()
 for(i in seq_len(length(IRRsimulations))) {
 	tmp <- as.data.frame(IRRsimulations[[i]]$raw)
@@ -59,8 +63,8 @@ IRRsimData$ResponseDist <- cut(IRRsimData$MaxResponseDiff,
 							   breaks = c(-Inf, 0.1, 0.2, 0.3, Inf),
 							   labels = c('Uniform', 'Lightly Skewed', 'Moderately Skewed', 'Highly Skewed'),
 							   ordered = TRUE)
-save(IRRsimData, file = 'data-raw/IRRsimData.rda')
+save(IRRsimData, file = paste0(out_dir, '/IRRsimData.rda'))
 
-tools::resaveRdaFiles('data-raw/')
+tools::resaveRdaFiles(out_dir)
 
 rm(IRRsimulations)

@@ -9,7 +9,7 @@ Description: Functions and shiny application to simulate inter-rater
     The initial motivation for this package is to understand the
     relationship between percent rater agreement and intraclass
     correlation.
-License: GPL-3
+License: GPL (>= 3)
 URL: http://irrsim.bryer.org, http://github.com/jbryer/IRRsim
 BugReports: https://github.com/jbryer/IRRsim/issues
 Depends: 

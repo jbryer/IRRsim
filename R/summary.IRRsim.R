@@ -1,19 +1,21 @@
 #' Returns a summary of a IRR simulation.
 #'
 #' This function will provide predicted IRR statistics for various percent
-#' agreements. There are two elements in the returned list: \code{model} and
-#' \code{summary}. The former are the results of the modeling function and the
+#' agreements. There are two elements in the returned list: `model` and
+#' `summary`. The former are the results of the modeling function and the
 #' latter is a \code{data.frame} providing the predicted values for various
-#' percent agreements. If \code{stat = 'all'} is specified, the summary
+#' percent agreements. If `stat = 'all'` is specified, the summary
 #' table contains the predicted values. If a specific IRR statistic is specified,
-#' the summary table contains the predicted value along with the interval.#'
+#' the summary table contains the predicted value along with the interval.
 #'
-#' @param x the result of \code{\link{simulateIRR}}.
+#' @param object the result of IRRsim::simulateIRR().
 #' @param method the method used to find predicted values. Possible values are
 #'        loess, linear, and quadratic.
 #' @param agreements vector of percent agreements to include in the summary table.
 #' @param stat the IRR statistic to return summary for, or missing for all metrics.
 #' @param k which number of raters to print summary of.
+#' @param predict.interval Type of interval calculation. Can be none, confidence,
+#'.       or prediction.
 #' @param ... currently unused.
 #' @export
 summary.IRRsim <- function(object,
@@ -111,12 +113,12 @@ summary.IRRsim <- function(object,
 
 #' Print the result of summary.IRRsim
 #'
-#' The \code{\link{summary.IRRsimm}} will return a list with \code{model} and
+#' The [IRRsim::summary.IRRsimm()] will return a list with \code{model} and
 #' \code{summary} objects. The former are the results of the modeling function,
 #' the latter is a \code{data.frame} that summarizes the predicted results of
 #' the model. This function will only print the \code{data.frame}.
 #'
-#' @param x the results from \code{\link{summary.IRRsim}}
+#' @param x the results from [IRRsim::summary.IRRsim()]
 #' @param ... currently unused.
 #' @export
 print.IRRsimSummary <- function(x, ...) {

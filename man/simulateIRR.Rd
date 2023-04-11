@@ -36,6 +36,10 @@ simulateIRR(
 \item{response.probs}{probability weights for the distribution of scores.
 See \code{\link{simulateRatingMatrix}} for more information.}
 
+\item{showShinyProgress}{show progress bar as simulations are generated.}
+
+\item{showTextProgress}{show progress bar as simulations are generated.}
+
 \item{numCores}{number of cores to use if the simulation is run in parallel.}
 
 \item{parallel}{whether to simulated the data using multiple cores.}
@@ -69,7 +73,11 @@ Calculates intraclass correlations (ICC) for simulated samples of raters and
 evaluations.
 }
 \examples{
-icctest <- simulateIRR(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
+icctest <- simulateIRR(nLevels = 3,
+                       nRaters = 2,
+                       nSamples = 10,
+                       parallel = FALSE,
+                       showTextProgress = FALSE)
 summary(icctest)
 }
 \seealso{

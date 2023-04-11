@@ -3,8 +3,9 @@
 #' @param x the results of \code{\link{simulatePredictionData}}.
 #' @param colors the color scheme used for the three groups.
 #' @param rel_heights the relative heights of histogram to scatter plot.
+#' @param title the title of plot.
 #' @param ... other parameters passed to \code{cowplot::plot_grid}.
-#' @param a ggplot2 plot of the logistic regerssion results.
+#' @return a ggplot2 plot of the logistic regression results.
 #' @export
 plot.lrdf <- function(x,
 					  colors = c("#1b9e77","#7570b3","#d95f02"),

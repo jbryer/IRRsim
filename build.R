@@ -7,9 +7,9 @@ install_dev_deps()
 usethis::use_tidy_description()
 devtools::document()
 devtools::build_vignettes()
-file.copy('inst/slides/IRRsim-Presentation.html',
-		  'docs/IRRsim-Presentation.html',
-		  overwrite = TRUE) # copy the slides to the docs directory
+# file.copy('inst/slides/IRRsim-Presentation.html',
+# 		  'docs/IRRsim-Presentation.html',
+# 		  overwrite = TRUE) # copy the slides to the docs directory
 pkgdown::build_site()
 
 # Install / Build package
@@ -23,11 +23,14 @@ devtools::check(cran = TRUE)
 library(IRRsim)
 ls('package:IRRsim')
 
+
+
+
 # Generate the data files used in the Vignette
 source('data-raw/IRRguidelines.R') # Generate the IRRguidelines data file
 source('data-raw/IRRsimulations.R') # WARNING! Will take a long time to run
 tools::resaveRdaFiles('data')
-data("IRRsimData")
+# data("IRRsimData")
 data("IRRguidelines")
 
 

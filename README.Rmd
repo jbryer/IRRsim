@@ -43,5 +43,12 @@ IRRsim::IRRsim_demo()
 
 ## Data
 
+The analysis done in the vignette requires a large number of simulated datasets. Not only does it take a long time for those datasets to be generated, the file sizes exceed what is allowed in R packages. The data are stored as [Github releases](https://github.com/jbryer/IRRsim/releases/tag/IRRsimData). See the [data-releases/IRRsimulations.R](data-releases/IRRsimulations.R) R script for how these data files are generated. Alternatively, you can download the data using the following commands in R:
 
+```{r, eval = FALSE}
+download_dir <- getwd()
+download.file('https://github.com/jbryer/IRRsim/releases/download/IRRsimData/IRRsimData.rda', 
+			  paste0(download_dir, '/IRRsimData.rda'))
+load(paste0(download_dir, '/IRRsimData.rda))
+```
 

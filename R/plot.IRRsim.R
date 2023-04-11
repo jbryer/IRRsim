@@ -7,6 +7,7 @@
 #'        loess, linear, and quadratic.
 #' @param stat the IRR statistic to return summary for, or "all" for all metrics.
 #' @param point.alpha the alpha used for points.
+#' @param title the title of the plot
 #' @param ... currently unused.
 #' @export
 plot.IRRsim <- function(x,

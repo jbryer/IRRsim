@@ -6,6 +6,9 @@
 \usage{
 IRRsim_demo(clean = FALSE)
 }
+\arguments{
+\item{clean}{if `TRUE` the cache file will be deleted when the application finishes.}
+}
 \description{
 Run the Inter-Rater Reliability shiny app.
 }

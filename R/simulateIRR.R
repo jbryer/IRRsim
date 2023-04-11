@@ -11,6 +11,8 @@
 #'        See \code{\link{simulateRatingMatrix}} for more information.
 #' @param parallel whether to simulated the data using multiple cores.
 #' @param numCores number of cores to use if the simulation is run in parallel.
+#' @param showShinyProgress show progress bar as simulations are generated.
+#' @param showTextProgress show progress bar as simulations are generated.
 #' @param ... other parameters.
 #' @return a list of length \code{nSamples * length(nRaters) * length(agreements)}.
 #'        Each element of the list represents one simulation with the following
@@ -35,7 +37,11 @@
 #' @seealso as.data.frame.IRRsim
 #' @export
 #' @examples
-#' icctest <- simulateIRR(nLevels = 3, nRaters = 2, nSamples = 10, parallel = FALSE, showTextProgress = FALSE)
+#' icctest <- simulateIRR(nLevels = 3,
+#'                        nRaters = 2,
+#'                        nSamples = 10,
+#'                        parallel = FALSE,
+#'                        showTextProgress = FALSE)
 #' summary(icctest)
 simulateIRR <- function(nRaters = c(2),
 						nRatersPerEvent = nRaters,
