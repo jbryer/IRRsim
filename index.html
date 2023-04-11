@@ -75,39 +75,37 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="irrsim-an-r-package-for-simulating-inter-rater-reliability">
-<code>IRRsim</code>: An R Package for Simulating Inter-Rater Reliability<a class="anchor" aria-label="anchor" href="#irrsim-an-r-package-for-simulating-inter-rater-reliability"></a>
+<div class="page-header"><h1 id="id_-irrsim-an-r-package-for-simulating-inter-rater-reliability">
+<img src="reference/figures/IRRsim.png" align="right" width="120"><code>IRRsim</code>: An R Package for Simulating Inter-Rater Reliability<a class="anchor" aria-label="anchor" href="#id_-irrsim-an-r-package-for-simulating-inter-rater-reliability"></a>
 </h1></div>
 <!-- badges: start -->
 
 <p>This package provides functions and a shiny application to simulate inter-rater reliability statistics based on various scoring and response models. The initial motivation for this package is to understand the relationship between percent rater agreement and intraclass correlation.</p>
 <p>Documentation is available at <a href="http://irrsim.bryer.org" class="external-link uri">http://irrsim.bryer.org</a></p>
-<p>Slides for NCME 2019 talk are here: <a href="http://irrsim.bryer.org/IRRsim-Presentation.html" target="_blank" class="external-link">http://irrsim.bryer.org/IRRsim-Presentation.html</a></p>
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
-<p>The development version of <code>IRRsim</code> can be downloaded from Github using the <code>devtools</code> package:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'jbryer/IRRsim'</span><span class="op">)</span></span></code></pre></div>
+<p>The development version of <code>IRRsim</code> can be downloaded from Github using the <code>remotes</code> package:</p>
+<p><code>{r, eval=FALSE) remotes::install_github('jbryer/IRRsim')</code></p>
 </div>
 <div class="section level2">
 <h2 id="shiny-app">Shiny App<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
 </h2>
 <p>Many of features of this package can be explored using the included shiny applications. The <code>IRRsim_shiny()</code> function will run the application.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">IRRsim</span><span class="fu">::</span><span class="fu"><a href="reference/IRRsim_demo.html">IRRsim_demo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="reference/figures/IRRsimShinyApp.png" alt=""><p class="caption">IRRsim Shiny App</p>
-</div>
+<figure><img src="reference/figures/IRRsimShinyApp.png" alt="IRRsim Shiny App"><figcaption aria-hidden="true">
+IRRsim Shiny App
+</figcaption></figure>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
 <p>The analysis done in the vignette requires a large number of simulated datasets. Not only does it take a long time for those datasets to be generated, the file sizes exceed what is allowed in R packages. The data are stored as <a href="https://github.com/jbryer/IRRsim/releases/tag/IRRsimData" class="external-link">Github releases</a>. See the <a href="data-releases/IRRsimulations.R">data-releases/IRRsimulations.R</a> R script for how these data files are generated. Alternatively, you can download the data using the following commands in R:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>download_dir <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">'https://github.com/jbryer/IRRsim/releases/download/IRRsimData/IRRsimData.rda'</span>, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">paste0</span>(download_dir, <span class="st">'/IRRsimData.rda'</span>))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste0</span>(download_dir, <span class="st">'/IRRsimData.rda))</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>download_dir <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">'https://github.com/jbryer/IRRsim/releases/download/IRRsimData/IRRsimData.rda'</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">paste0</span>(download_dir, <span class="st">'/IRRsimData.rda'</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste0</span>(download_dir, <span class="st">'/IRRsimData.rda))</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -145,7 +143,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jbryer/IRRsim/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://github.com/jbryer/IRRsim" class="external-link"><img src="https://img.shields.io/badge/devel%20version-1.0.0-blue.svg"></a></li>
+<li><a href="https://github.com/jbryer/IRRsim" class="external-link"><img src="https://img.shields.io/badge/devel%20version-1.0.1-blue.svg"></a></li>
 <li><a href="https://cran.r-project.org/package=IRRsim" class="external-link"><img src="https://www.r-pkg.org/badges/version/IRRsim"></a></li>
 </ul>
 </div>
