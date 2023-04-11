@@ -473,6 +473,7 @@ IRRsim_demo()
 
 ### Jason Bryer, Ph.D.
 
+Assistant Professor and Associate Director  
 City University of New York  
 [jason@bryer.org](mailto:jason@bryer.org)
 
