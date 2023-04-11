@@ -16,6 +16,8 @@ pkgdown::build_site()
 devtools::install()
 devtools::build(vignettes = FALSE)
 
+devtools::build_readme()
+
 # Testing/getting ready for CRAN submission
 devtools::test()
 devtools::check(cran = TRUE)

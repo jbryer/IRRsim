@@ -32,7 +32,8 @@ Suggests:
     magrittr,
     rmarkdown,
     testthat,
-    xtable
+    xtable,
+    lme4
 VignetteBuilder: 
     knitr
 ByteCompile: true
