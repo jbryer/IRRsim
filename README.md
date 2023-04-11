@@ -23,7 +23,9 @@ Documentation is available at <http://irrsim.bryer.org>
 The development version of `IRRsim` can be downloaded from Github using
 the `remotes` package:
 
-`{r, eval=FALSE) remotes::install_github('jbryer/IRRsim')`
+``` r
+remotes::install_github('jbryer/IRRsim')
+```
 
 ## Shiny App
 
